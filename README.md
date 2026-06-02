@@ -1,0 +1,2 @@
+# CSC4526-JIN4
+CSC4526/JIN4 micro projet
