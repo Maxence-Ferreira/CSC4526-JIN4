@@ -14,12 +14,13 @@ set (BUILD_SHARED_LIBS FALSE)
 set(CMAKE_CXX_STANDARD 23)
 
 cmake_policy(SET CMP0135 NEW) # This cmake_policy avoids warning by cmake when we fetch contents based on URL
-FetchContent_Declare(
-    pugixml
-    URL https://github.com/zeux/pugixml/releases/download/v1.15/pugixml-1.15.tar.gz
-)
 
-FetchContent_MakeAvailable(pugixml)
+FetchContent_Declare( sfml
+  URL https://github.com/SFML/SFML/archive/refs/tags/3.0.1.tar.gz
+)
+option(SFML_BUILD_AUDIO "Build audio" OFF)
+option(SFML_BUILD_NETWORK "Build network" OFF)
+FetchContent_MakeAvailable(sfml)
 
 add_subdirectory(src/core)
 add_subdirectory(src/main)
