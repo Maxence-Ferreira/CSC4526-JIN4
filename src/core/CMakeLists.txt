@@ -1,16 +1,16 @@
 add_library(lib_core
-  myMain.cpp myMain.h
-  Enemy.cpp Enemy.h
-  "Terrain.cpp" "Terrain.h"
-  "Tile.h" "Tile.cpp"
-  "Path.cpp" "Path.h" "Ground.h" "Ground.cpp" "EndPath.h" "EndPath.cpp" "BeginPath.h" "BeginPath.cpp"
-  "FirearmSoldier.cpp" "FirearmSoldier.h"
-  "MeleeSoldier.cpp" "MeleeSoldier.h"
-  "Cyrano.cpp" "Cyrano.h"
-  "Dog.cpp" "Dog.h"
-  "HorseSoldier.cpp" "HorseSoldier.h"
-  "Kamikaze.cpp" "Kamikaze.h"
-  "Attack.h" "Attack.cpp")
+  "myMain.cpp" "myMain.h"
+  "enemy/Enemy.cpp" "enemy/Enemy.h"
+  "map/Terrain.cpp" "map/Terrain.h"
+  "map/Tile.h" "map/Tile.cpp"
+  "map/Path.cpp" "map/Path.h" "map/Ground.h" "map/Ground.cpp" "map/EndPath.h" "map/EndPath.cpp" "map/BeginPath.h" "map/BeginPath.cpp"
+  "enemy/FirearmSoldier.cpp" "enemy/FirearmSoldier.h"
+  "enemy/MeleeSoldier.cpp" "enemy/MeleeSoldier.h"
+  "enemy/Cyrano.cpp" "enemy/Cyrano.h"
+  "enemy/Dog.cpp" "enemy/Dog.h"
+  "enemy/HorseSoldier.cpp" "enemy/HorseSoldier.h"
+  "enemy/Kamikaze.cpp" "enemy/Kamikaze.h"
+  "enemy/Attack.h" "enemy/Attack.cpp")
 
 target_include_directories(lib_core PUBLIC ./)
 target_link_libraries(lib_core PUBLIC sfml-graphics)
