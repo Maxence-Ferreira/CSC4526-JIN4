@@ -61,7 +61,7 @@ Tous les visuels sont en pixel art
 - Canon
 - mousquetaire arme blanche
 - mousquetaire arme à feu
-/
+
 - Attaques ulti
 - grenade qui pue smr
 - pigeons voyageur à caca corrosif 
