@@ -1,6 +1,6 @@
 # CSC4526-JIN4 - Post Me If You Can
 Chaque jour, l’amour de Cyrano, ne cesse de grandir pour VOTRE crush, ceci n’est pas envisageable. Vous devez empêcher Cyrano de mettre son gros nez trop près de votre dulciné. Pour ce faire, vous devez l'empêcher chaque jour d’envoyer sa lettre. Cependant tous les jours il reviendra plus fort. Ainsi, vous devrez faire de même et armer votre poste préféré. 
-\
+
 ## Idées précédentes :
 - crossy road (cyrano va à la poste et doit éviter des obstacle)
 - empiler des anneaux qui tombent sur le nez de cyrano
@@ -31,7 +31,7 @@ Chaque jour, l’amour de Cyrano, ne cesse de grandir pour VOTRE crush, ceci n’est
 - les menus
 - organisation générale
 
-## Organisation :\
+## Organisation :
 _Ysee_
 - creation d’ennemis
 - interactions
@@ -61,7 +61,7 @@ Tous les visuels sont en pixel art
 - Canon
 - mousquetaire arme blanche
 - mousquetaire arme à feu
-\
+/
 - Attaques ulti
 - grenade qui pue smr
 - pigeons voyageur à caca corrosif 
