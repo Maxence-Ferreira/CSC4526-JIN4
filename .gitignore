@@ -1,0 +1,10 @@
+CMakeSettings.json
+# Ignore directories used by CLion for project generation
+.idea
+cmake-build-debug
+# Ignore directory used by Visual Studio for project generation
+.vs
+out
+# Ignore directory used by Visual Studio Code for project generation
+.vscode
+build
