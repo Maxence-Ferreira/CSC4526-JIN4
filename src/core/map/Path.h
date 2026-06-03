@@ -2,6 +2,7 @@
 #include "Tile.h"
 
 #include <vector>
+#include <map>
 
 class Path : public Tile
 {
@@ -9,11 +10,13 @@ public:
 	Path(int x, int y);
 public:
 	void addNeighbor(Path* nei);
-	int cost()const;
 	Path* next()const;
 private:
 protected:
+	//TODO
+	unsigned int cost()const;
+	void repath();
 	std::vector<Path*> m_neighbors;
 	unsigned int m_distance;
-	std::vector<Path*> m_way;
+	Path* m_next;
 };

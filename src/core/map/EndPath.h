@@ -5,6 +5,7 @@
 class EndPath :public Path {
 public:
 	EndPath(int x, int y);
+	void update();
 private:
 protected:
 };

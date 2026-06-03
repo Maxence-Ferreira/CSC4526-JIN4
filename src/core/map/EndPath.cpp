@@ -3,3 +3,8 @@
 EndPath::EndPath(int x, int y):Path(x,y)
 {
 }
+
+void EndPath::update()
+{
+	repath();
+}

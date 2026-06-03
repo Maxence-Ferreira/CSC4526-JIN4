@@ -5,7 +5,9 @@
 #include "BeginPath.h"
 #include "Ground.h"
 
-Terrain::Terrain(int size_x, int size_y) : m_tiles((long long)size_x* (long long)size_y),m_width(size_x),m_height(size_y)
+#include <map>
+
+Terrain::Terrain(int size_x, int size_y) : m_tiles((long long)size_x* (long long)size_y),m_width(size_x),m_height(size_y),m_end(0),m_inputs{}
 {
 	std::vector<Path*> paths;
 	for (int j = 0; j < size_y; j++)
@@ -28,12 +30,20 @@ int Terrain::getHeight() const
 
 void Terrain::update(int dt)
 {
-	//
+	m_end->update();
 }
 
 std::vector<Tile*> Terrain::pathfind(int from_x, int from_y) const
 {
-	return std::vector<Tile*>();
+	Path* p=dynamic_cast<Path*>(m_tiles[from_y * (long long)m_width + from_x].get());
+	if(!p)
+		return std::vector<Tile*>();
+	std::vector<Tile*>r{ p };
+	while (p->next()) {
+		p = p->next();
+		r.push_back(p);
+	}
+	return r;
 }
 
 Tile* Terrain::getTile(int x, int y) const
