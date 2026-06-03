@@ -10,7 +10,7 @@ add_library(lib_core
   "enemy/Dog.cpp" "enemy/Dog.h"
   "enemy/HorseSoldier.cpp" "enemy/HorseSoldier.h"
   "enemy/Kamikaze.cpp" "enemy/Kamikaze.h"
-  "enemy/Attack.h" "enemy/Attack.cpp")
+  "enemy/Attack.h" "enemy/Attack.cpp" "common.h")
 
 target_include_directories(lib_core PUBLIC ./)
 target_link_libraries(lib_core PUBLIC sfml-graphics)

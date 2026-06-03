@@ -1,7 +1,7 @@
 #include "Path.h"
 #include <algorithm>
 
-Path::Path(int x, int y):Tile(x,y), m_neighbors{}
+Path::Path(int x, int y):Tile(x,y), m_neighbors{},m_distance{-1}
 {
 }
 

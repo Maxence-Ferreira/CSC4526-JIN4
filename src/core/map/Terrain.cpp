@@ -26,6 +26,16 @@ int Terrain::getHeight() const
 	return m_height;
 }
 
+void Terrain::update(int dt)
+{
+	//
+}
+
+std::vector<Tile*> Terrain::pathfind(int from_x, int from_y) const
+{
+	return std::vector<Tile*>();
+}
+
 Tile* Terrain::getTile(int x, int y) const
 {
 	return m_tiles[y * (long long)m_width + x].get();
