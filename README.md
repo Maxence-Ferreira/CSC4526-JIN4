@@ -91,3 +91,8 @@ Pause :
 - classe batiment : heritage pour chaque type (tile, type d’attaque, niveau, vitesse d’attaque)
 - classe ulti :  soit grenade(plusieurs attaques) soit pigeon(ennemi) (strategie)
 - classe attaque : types d’attaque: degat, portee, vitesse, position de l’attaque, position de la cible
+
+## TODO
+_Maxence_ :
+- Idee du context a revoir
+- renseigner sur les dessins

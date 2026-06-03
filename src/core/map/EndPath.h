@@ -5,7 +5,7 @@
 class EndPath :public Path {
 public:
 	EndPath(int x, int y);
-	void update();
+	virtual void update(int dt) override;
 private:
 protected:
 };

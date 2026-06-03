@@ -1,8 +1,10 @@
 #include "Path.h"
 #include <algorithm>
 #include <queue>
+#include <unordered_set>
+#include "enemy/Enemy.h"
 
-Path::Path(int x, int y):Tile(x,y), m_neighbors{},m_distance{-1},m_next(0)
+Path::Path(int x, int y):Tile(x,y), m_neighbors{},m_distance{(unsigned int)(-1)},m_next(0),m_enemies{}
 {
 }
 
@@ -21,6 +23,18 @@ Path* Path::next() const
 	return m_next;
 }
 
+void Path::update(int dt)
+{
+	for (Enemy* e : m_enemies)
+	{
+		e->move(dt);
+	}
+}
+
+void Path::draw(const context& ctx)
+{
+}
+
 unsigned int Path::cost() const
 {
 	return 1;
@@ -28,36 +42,25 @@ unsigned int Path::cost() const
 
 void Path::repath()
 {
-	std::priority_queue<
-		std::pair<unsigned int, Path*>,
-		std::vector<std::pair<unsigned int, Path*>>, 
-		std::greater<>> 
-		distmap;
-	Path* cur = this;
-	Path* c;
-	unsigned int d = 0;
-	while (true) {
+	//liste trié
+	std::priority_queue<std::pair<unsigned int,Path*>,std::vector<std::pair<unsigned int, Path*>>,std::greater<>>totreat;
+	totreat.push({ 0,this });
+	m_distance = 0;
+	while (!totreat.empty()) {
+		// On prend le plus petit
+		auto[dist,cur]= totreat.top();
+		totreat.pop();
+		if (dist > cur->m_distance)continue;
+		//on update ses neighbors si ca diminue leur distance
 		for (Path* p : cur->m_neighbors)
 		{
-			if (p->cost() + cur->m_distance < p->m_distance)
+			unsigned int d = dist + p->cost();
+			if (d < p->m_distance)
 			{
-				p->m_distance = p->cost() + cur->m_distance;
-				distmap.push({ p->m_distance,p });
+				p->m_distance = d;
+				p->m_next = cur;
+				totreat.push({ d,p });
 			}
 		}
-		while (!distmap.empty())
-		{
-			const auto& [d_, c_] = distmap.top();
-			d = d_;
-			c = c_;
-			distmap.pop();
-
-			if (d == c->m_distance)
-				break;
-		}
-		if (distmap.empty() && d != c->m_distance)
-			break;
-		c->m_next = cur;
-		cur = c;
 	}
 }

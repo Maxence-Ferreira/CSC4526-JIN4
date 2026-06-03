@@ -28,9 +28,17 @@ int Terrain::getHeight() const
 	return m_height;
 }
 
+void Terrain::draw(const context& ctx)
+{
+	for (const auto& i : m_tiles)
+	{
+		i->draw(ctx);
+	}
+}
+
 void Terrain::update(int dt)
 {
-	m_end->update();
+	if(m_end)m_end->update(dt);
 }
 
 std::vector<Tile*> Terrain::pathfind(int from_x, int from_y) const
