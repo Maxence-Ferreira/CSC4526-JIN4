@@ -15,8 +15,9 @@ class Enemy {
   double y;
   std::unique_ptr<Tile> currentTile;
   bool isDead;
-  int bounty;  // pièces gagnées à la mort de l'ennemi
-               // visuel a mettre texture ?
+  int bounty;              // pièces gagnées à la mort de l'ennemi
+                           // visuel a mettre texture ?
+  double currentCooldown;  // temps restant avant de pouvoir attaquer à nouveau
 
  public:
   Enemy(double maxHealth, double movementSpeed, int attackDamage,

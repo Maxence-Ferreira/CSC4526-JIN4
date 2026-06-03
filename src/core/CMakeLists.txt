@@ -9,7 +9,8 @@ add_library(lib_core
   "Cyrano.cpp" "Cyrano.h"
   "Dog.cpp" "Dog.h"
   "HorseSoldier.cpp" "HorseSoldier.h"
-  "Kamikaze.cpp" "Kamikaze.h")
+  "Kamikaze.cpp" "Kamikaze.h"
+  "Attack.h" "Attack.cpp")
 
 target_include_directories(lib_core PUBLIC ./)
 target_link_libraries(lib_core PUBLIC sfml-graphics)

@@ -5,7 +5,7 @@ Enemy::Enemy(double maxHealth, double movementSpeed, int attackDamage, double at
                double attackCooldown, double x, double y, int bounty)
     : maxHealth(maxHealth), currentHealth(maxHealth), movementSpeed(movementSpeed),
       attackDamage(attackDamage), attackRange(attackRange), attackCooldown(attackCooldown),
-      x(x), y(y), isDead(false), bounty(bounty) {};
+      x(x), y(y), isDead(false), bounty(bounty), currentCooldown(0) {};
 
 void Enemy::move(vector<Tile*> path) {}; //à faire
 
