@@ -1,7 +1,8 @@
 #pragma once
 #include <vector>
 
-#include "Tile.h"
+#include "../map/Tile.h"
+#include "Attack.h"
 
 class Enemy {
  protected:
