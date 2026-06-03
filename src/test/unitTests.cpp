@@ -2,7 +2,6 @@
 
 #include <string>
 
-#include "pugixml.hpp"
 TEST(PACK, Nom) {
 
 }

@@ -1,3 +1,9 @@
 #pragma once
 
-class Tile;
+class Tile
+{
+public:
+	Tile(int x, int y);
+private:
+protected:
+};
