@@ -11,6 +11,9 @@ Terrain::Terrain(int size_x, int size_y) : m_tiles((long long)size_x* (long long
 	for (int j = 0; j < size_y; j++)
 		for (int i = 0; i < size_x; i++)
 			m_tiles[j* (long long)size_x+i]=std::make_unique<Ground>(i,j);
+	for (auto it = paths.begin(); it != paths.end(); it++)
+		for (auto it2 = it+1; it2 != paths.end(); it2++)
+			(*it)->addNeighbor(*it2);//auto eject non neighbor case 
 }
 
 int Terrain::getWidth() const

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "EndTile.h"
+#include "Tile.h"
 #include "Tile.h"
 #include <vector>
 #include <memory>
@@ -14,6 +16,8 @@ public:
 	int getHeight() const;
 private:
 protected:
+
 	std::vector<std::unique_ptr<Tile>> m_tiles;
+	std::unique_ptr<Tile> m_tiles;
 	const int m_width, m_height;
 };
