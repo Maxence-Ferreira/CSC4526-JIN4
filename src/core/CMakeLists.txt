@@ -1,5 +1,6 @@
 add_library(lib_core
   myMain.cpp myMain.h
+  Enemy.cpp Enemy.h
 )
 
 target_include_directories(lib_core PUBLIC ./)
