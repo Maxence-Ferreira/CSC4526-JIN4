@@ -3,7 +3,7 @@
 
 class Cyrano : public Enemy {
  public:
-  Cyrano(double x, double y);
+  Cyrano(Path* beginPath);
   ~Cyrano() = default;
   virtual void attacking(Tile* targetTile) override;
 };

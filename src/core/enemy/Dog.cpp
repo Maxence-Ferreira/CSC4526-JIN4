@@ -1,6 +1,6 @@
 #include "Dog.h"
 
-Dog::Dog(double x, double y) : Enemy(75.0, 3.0, 20, 1.0, 0.5, x, y, 15, 0) {};
+Dog::Dog(Path* beginPath) : Enemy(75.0, 3.0, 20, 1.0, 0.5, 15, beginPath) {};
 
 void Dog::attacking(Tile* targetTile) {
     if (currentCooldown <= 0) {

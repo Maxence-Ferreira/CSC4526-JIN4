@@ -1,6 +1,6 @@
 #include "MeleeSoldier.h"
 
-MeleeSoldier::MeleeSoldier(double x, double y) : Enemy(100.0, 1.0, 20, 1.0, 1.0, x, y, 10,0) {};
+MeleeSoldier::MeleeSoldier(Path* beginPath) : Enemy(100.0, 1.0, 20, 1.0, 1.0, 10, beginPath) {};
 
 void MeleeSoldier::attacking(Tile* targetTile) {
     if (currentCooldown <= 0) {

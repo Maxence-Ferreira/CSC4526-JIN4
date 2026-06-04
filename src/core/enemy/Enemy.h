@@ -23,7 +23,7 @@ class Enemy {
 
  public:
   Enemy(double maxHealth, double movementSpeed, int attackDamage,
-        double attackRange, double attackCooldown, double x, double y,
+        double attackRange, double attackCooldown,
         int bounty, Path* beginPath);
   virtual ~Enemy() = default;
 

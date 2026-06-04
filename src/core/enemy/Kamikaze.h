@@ -3,7 +3,7 @@
 
 class Kamikaze : public Enemy {
  public:
-  Kamikaze(double x, double y);
+  Kamikaze(Path* beginPath);
   ~Kamikaze() = default;
   virtual void attacking(Tile * targetTile) override;
 };

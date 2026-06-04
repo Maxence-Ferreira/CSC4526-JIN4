@@ -1,6 +1,6 @@
 #include "HorseSoldier.h"
 
-HorseSoldier::HorseSoldier(double x, double y) : Enemy(150.0, 2.0, 20, 5.0, 2, x, y, 30,0) {};
+HorseSoldier::HorseSoldier(Path* beginPath) : Enemy(150.0, 2.0, 20, 5.0, 2, 30, beginPath) {};
 
 void HorseSoldier::attacking(Tile* targetTile) {
     if (currentCooldown <= 0) {

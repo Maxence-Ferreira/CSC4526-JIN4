@@ -1,6 +1,6 @@
 #include "Cyrano.h"
 
-Cyrano::Cyrano(double x, double y) : Enemy(500.0, 1.0, 30, 3.0, 1.0, x, y, 100, 0) {};
+Cyrano::Cyrano(Path* beginPath) : Enemy(500.0, 1.0, 30, 3.0, 1.0, 100, beginPath) {};
 
 void Cyrano::attacking(Tile* targetTile) {
     if (currentCooldown <= 0) {
