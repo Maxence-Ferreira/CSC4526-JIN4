@@ -5,5 +5,5 @@ class Kamikaze : public Enemy {
  public:
   Kamikaze(double x, double y);
   ~Kamikaze() = default;
-  void attack() override;
+  void attacking() override;
 };

@@ -5,5 +5,5 @@ class Dog : public Enemy {
  public:
   Dog (double x, double y);
   ~Dog() = default;
-  void attack() override;
+  void attacking() override;
 };

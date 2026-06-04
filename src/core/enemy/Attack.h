@@ -14,4 +14,5 @@ class Attack {
  public:
   Attack(double damage, double speed, double range, double x, double y, Tile* targetTile);
   virtual ~Attack() = default;
+  
 };

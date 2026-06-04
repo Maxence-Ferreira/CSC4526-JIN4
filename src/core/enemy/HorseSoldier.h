@@ -5,5 +5,5 @@ class HorseSoldier : public Enemy {
  public:
   HorseSoldier(double x, double y);
   ~HorseSoldier() = default;
-  void attack() override;
+  void attacking() override;
 };

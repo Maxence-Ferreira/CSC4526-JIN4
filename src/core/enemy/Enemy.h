@@ -28,7 +28,7 @@ class Enemy {
   virtual ~Enemy() = default;
 
   void move(const int dt);
-  virtual void attack() = 0;
+  virtual void attacking(Tile* targetTile) = 0;
   void takeDamage(double damage);
   bool isAlive() const { return !isDead; };
   int getBounty() const { return bounty; };
