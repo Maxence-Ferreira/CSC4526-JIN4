@@ -5,5 +5,5 @@ class Dog : public Enemy {
  public:
   Dog (double x, double y);
   ~Dog() = default;
-  void attacking() override;
+  virtual void attacking(Tile * targetTile) override;
 };

@@ -2,7 +2,7 @@
 
 HorseSoldier::HorseSoldier(double x, double y) : Enemy(150.0, 2.0, 20, 5.0, 2, x, y, 30,0) {};
 
-void HorseSoldier::attack() {
+void HorseSoldier::attacking(Tile* targetTile) {
     if (currentCooldown <= 0) {
         // attaque à implémenter 
         currentCooldown = attackCooldown; 

@@ -14,6 +14,7 @@ public:
 	Tile* getTile(int x, int y) const;
 	int getWidth() const;
 	int getHeight() const;
+	const std::vector<BeginPath*>& getEntry() const;
 	void draw(const context& ctx);
 	void update(int dt);
 	std::vector<Tile*> pathfind(int from_x, int from_y) const;

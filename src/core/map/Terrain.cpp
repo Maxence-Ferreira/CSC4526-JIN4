@@ -28,6 +28,11 @@ int Terrain::getHeight() const
 	return m_height;
 }
 
+const std::vector<BeginPath*>& Terrain::getEntry() const
+{
+	return m_inputs;
+}
+
 void Terrain::draw(const context& ctx)
 {
 	for (const auto& i : m_tiles)

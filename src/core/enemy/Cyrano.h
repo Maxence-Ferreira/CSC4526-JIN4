@@ -5,5 +5,5 @@ class Cyrano : public Enemy {
  public:
   Cyrano(double x, double y);
   ~Cyrano() = default;
-  void attacking() override;
+  virtual void attacking(Tile* targetTile) override;
 };

@@ -8,10 +8,16 @@ Ground::Ground(int x, int y):Tile(x,y)
 
 void Ground::draw(const context& ctx)
 {
+	static std::unique_ptr<sf::Drawable> sprite(getSprite());
+	sf::Transform t;
+	t.translate({ TILE_SIZE * m_x, TILE_SIZE * m_y });
+	ctx.window->draw(*sprite,t);
+}
+
+std::unique_ptr<sf::Drawable> Ground::getSprite()
+{
 	sf::RectangleShape sp({ TILE_SIZE,TILE_SIZE });
-	sp.setPosition({ m_x * TILE_SIZE ,m_y * TILE_SIZE });
-	sp.setFillColor(sf::Color::Green);
-	sp.setOutlineColor(sf::Color(0, 200, 0));
-	sp.setOutlineThickness(2);
-	ctx.window->draw(sp);
+	sf::Texture t("resources/map/ground.png");
+	sp.setTexture(&t);
+	return std::make_unique<sf::RectangleShape>(sp);
 }
