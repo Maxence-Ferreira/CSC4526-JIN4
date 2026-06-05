@@ -3,7 +3,7 @@
 
 class MeleeSoldier : public Enemy {
  public:
-  MeleeSoldier(double x, double y);
+  MeleeSoldier(Path* beginPath);
   ~MeleeSoldier() = default;
   virtual void attacking(Tile * targetTile) override;
 };

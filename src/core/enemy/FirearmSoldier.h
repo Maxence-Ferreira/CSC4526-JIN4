@@ -3,7 +3,7 @@
 
 class FirearmSoldier : public Enemy {
  public:
-  FirearmSoldier(double x, double y);
+  FirearmSoldier(Path* beginPath);
   ~FirearmSoldier() = default;
   void attacking(Tile* targetTile) override;
 };

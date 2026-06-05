@@ -3,7 +3,7 @@
 #include <cmath>
 
 Enemy::Enemy(double maxHealth, double movementSpeed, int attackDamage,
-             double attackRange, double attackCooldown, double x, double y,
+             double attackRange, double attackCooldown,
              int bounty, Path* beginPath)
     : maxHealth(maxHealth),
       currentHealth(maxHealth),
@@ -11,8 +11,8 @@ Enemy::Enemy(double maxHealth, double movementSpeed, int attackDamage,
       attackDamage(attackDamage),
       attackRange(attackRange),
       attackCooldown(attackCooldown),
-      x(x),
-      y(y),
+      x(beginPath->getX() + 0.5),
+      y(beginPath->getY() + 0.5),
       isDead(false),
       bounty(bounty),
       currentCooldown(0),
