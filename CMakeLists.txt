@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.26)
 
 include(FetchContent)
-project(CorrigeAnalyseFichierXML VERSION 1.0.0 LANGUAGES CXX)
+project(CSC4526-JIN4 VERSION 1.0.0 LANGUAGES CXX)
 
 if(WIN32)
   # SonarLint support for CMake requires the following flag to be set on.
