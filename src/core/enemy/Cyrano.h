@@ -6,4 +6,5 @@ class Cyrano : public Enemy {
   Cyrano(Path* beginPath);
   ~Cyrano() = default;
   virtual void attacking(Tile* targetTile) override;
+  void draw(const context& ctx) override;
 };

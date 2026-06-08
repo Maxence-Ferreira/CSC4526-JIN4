@@ -6,4 +6,5 @@ class MeleeSoldier : public Enemy {
   MeleeSoldier(Path* beginPath);
   ~MeleeSoldier() = default;
   virtual void attacking(Tile * targetTile) override;
+  void draw(const context& ctx) override;
 };

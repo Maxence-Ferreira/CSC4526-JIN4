@@ -18,6 +18,7 @@ static BeginPath* getRandomPath(const std::vector<BeginPath*>& path) {
   return path[dis(gen)];
 }
 
+//crée un ensemble d'ennemis a chaque vague 
 void EnemyManager::newWave(Terrain* terrain) {
   waveNumber++;
   int totalEnemies = waveNumber * 5;
