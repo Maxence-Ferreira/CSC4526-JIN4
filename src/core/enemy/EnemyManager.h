@@ -2,6 +2,7 @@
 #include <vector>
 
 #include "Enemy.h"
+#include "../map/Terrain.h"
 
 class EnemyManager {
  private:

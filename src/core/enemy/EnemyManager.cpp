@@ -8,7 +8,15 @@
 #include "HorseSoldier.h"
 #include "Kamikaze.h"
 #include "MeleeSoldier.h"
-#include "Terrain.h"
+#include "../map/Terrain.h"
+#include "../map/BeginPath.h"
+
+static BeginPath* getRandomPath(const std::vector<BeginPath*>& path) {
+  static std::random_device rd;
+  static std::mt19937 gen(rd());
+  std::uniform_int_distribution<> dis(0, path.size() - 1);
+  return path[dis(gen)];
+}
 
 void EnemyManager::newWave(Terrain* terrain) {
   waveNumber++;
@@ -52,12 +60,7 @@ void EnemyManager::newWave(Terrain* terrain) {
   }
 }
 
-static BeginPath* getRandomPath(const std::vector<BeginPath*>& path) {
-  static std::random_device rd;
-  static std::mt19937 gen(rd());
-  std::uniform_int_distribution<> dis(0, path.size() - 1);
-  return path[dis(gen)];
-}
+
 
 void EnemyManager::removeDeadEnemies(Enemy* targetEnemy) {
     if (targetEnemy->isAlive()) {

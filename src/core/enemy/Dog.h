@@ -3,7 +3,7 @@
 
 class Dog : public Enemy {
  public:
-  Dog (dPath* beginPath);
+  Dog (Path* beginPath);
   ~Dog() = default;
   virtual void attacking(Tile * targetTile) override;
 };
