@@ -13,4 +13,5 @@ class Drawable
 public:
 	virtual ~Drawable() = default;
 	virtual void draw(const context& ctx)=0;
+	virtual void update(const context& ctx){};
 };

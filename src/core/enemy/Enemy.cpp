@@ -40,3 +40,12 @@ void Enemy::move(const int dt) {
       isDead = true;
     }
   }
+
+  void Enemy::update(const context& ctx) {
+    //this->move(ctx.dt);
+    animationTimer += ctx.dt;
+    if (animationTimer >= timePerFrame) {
+    isFrameTwo = !isFrameTwo;
+    animationTimer -= timePerFrame;
+    }
+  }
