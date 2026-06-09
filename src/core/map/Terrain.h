@@ -6,7 +6,7 @@
 #include <vector>
 #include <memory>
 
-class Terrain
+class Terrain :public Drawable
 {
 public:
 	Terrain(int size_x, int size_y, int difficulty = 5);
@@ -16,7 +16,7 @@ public:
 	int getHeight() const;
 	const std::vector<BeginPath*>& getEntry() const;
 	void draw(const context& ctx);
-	void update(int dt);
+	virtual void update(const context& ctx)override;
 	std::vector<Tile*> pathfind(int from_x, int from_y) const;
 private:
 protected:

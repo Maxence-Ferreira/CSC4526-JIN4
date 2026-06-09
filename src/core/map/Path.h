@@ -13,7 +13,7 @@ public:
 public:
 	void addNeighbor(Path* nei);
 	Path* next()const;
-	virtual void update(int dt);
+	virtual void update(const context& ctx)override;
 	virtual void draw(const context & ctx)override;
 private:
 	static std::unique_ptr<sf::RectangleShape> createSprite();

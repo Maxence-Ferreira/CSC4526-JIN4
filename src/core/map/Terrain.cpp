@@ -104,15 +104,16 @@ Terrain::Terrain(int size_x, int size_y, int difficulty) : m_tiles((long long)si
 		max = 0;
 		x_ = x;
 	}
-	for (int Y = ((y < size_y / 2) ? y : (size_y / 2)); Y <= ((y > size_y / 2) ? y : (size_y / 2)); Y++)
-	{
-		std::cout << "pb en x:"<< size_x - 3 <<" y:"<<Y << std::endl;
+	for (
+		int Y = ((y < size_y / 2) ? y : (size_y / 2)); 
+		Y <= ((y > size_y / 2) ? y : (size_y / 2)); 
+		Y++)
 		m_tiles[size_x - 3 + Y * size_x] = std::make_unique<Path>(size_x - 3, Y);
-	}
 	//link paths
 	for (auto it = paths.begin(); it != paths.end(); it++)
 		for (auto it2 = it+1; it2 != paths.end(); it2++)
 			(*it)->addNeighbor(*it2);//auto eject non neighbor case 
+	m_end->update({});
 }
 
 int Terrain::getWidth() const
@@ -140,9 +141,9 @@ void Terrain::draw(const context& ctx)
 	}
 }
 
-void Terrain::update(int dt)
+void Terrain::update(const context& ctx)
 {
-	if(m_end)m_end->update(dt);
+	if(m_end)m_end->update(ctx);
 }
 
 std::vector<Tile*> Terrain::pathfind(int from_x, int from_y) const

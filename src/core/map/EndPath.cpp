@@ -4,8 +4,8 @@ EndPath::EndPath(int x, int y):Path(x,y)
 {
 }
 
-void EndPath::update(int dt)
+void EndPath::update(const context& ctx)
 {
 	repath();
-	Path::update(dt);
+	Path::update(ctx);
 }

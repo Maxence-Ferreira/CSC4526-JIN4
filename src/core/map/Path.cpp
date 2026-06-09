@@ -23,18 +23,18 @@ Path* Path::next() const
 	return m_next;
 }
 
-void Path::update(int dt)
+void Path::update(const context& ctx)
 {
 	for (Enemy* e : m_enemies)
 	{
-		e->move(dt);
+		e->move(ctx.dt);
 	}
 }
 
 void Path::draw(const context& ctx)
 {
 	sf::Transform t;
-	t.translate({ TILE_SIZE * m_x, TILE_SIZE * m_y }).rotate(angle);
+	t.translate({ TILE_SIZE * (m_x+.5f), TILE_SIZE * (m_y + .5f) }).rotate(angle);
 	ctx.window->draw(*g_sprite, t);
 }
 
