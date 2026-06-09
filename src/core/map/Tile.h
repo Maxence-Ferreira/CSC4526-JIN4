@@ -1,6 +1,7 @@
 #pragma once
+#include "Drawable.h"
 #include "common.h"
-class Tile
+class Tile : public Drawable
 {
 public:
 	Tile(int x, int y);
@@ -13,8 +14,6 @@ public:
 	/// </summary>
 	/// <param name="dt">temps écoulé depuis le dernier affichage (pour gérer les animations si besoin)</param>
 	virtual void draw(const context& ctx) = 0;
-private:
-	virtual std::unique_ptr<sf::Drawable> getSprite() = 0;
 protected:
 	int m_x, m_y;
 };
