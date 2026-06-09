@@ -6,4 +6,5 @@ class HorseSoldier : public Enemy {
   HorseSoldier(Path* beginPath);
   ~HorseSoldier() = default;
   virtual void attacking(Tile * targetTile) override;
+  void draw(const context& ctx) override;
 };

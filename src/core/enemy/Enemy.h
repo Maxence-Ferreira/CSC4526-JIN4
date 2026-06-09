@@ -4,8 +4,10 @@
 #include "../map/Tile.h"
 #include "../map/Path.h"
 #include "Attack.h"
+#include "../Drawable.h"
 
-class Enemy {
+
+class Enemy : public Drawable{
  protected:
   double maxHealth;
   double currentHealth;
