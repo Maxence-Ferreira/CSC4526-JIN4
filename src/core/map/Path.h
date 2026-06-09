@@ -16,6 +16,9 @@ public:
 	virtual void update(int dt);
 	virtual void draw(const context & ctx)override;
 private:
+	static std::unique_ptr<sf::RectangleShape> createSprite();
+	sf::Angle angle;
+	static std::unique_ptr<sf::RectangleShape> g_sprite;
 protected:
 	//TODO
 	unsigned int cost()const;

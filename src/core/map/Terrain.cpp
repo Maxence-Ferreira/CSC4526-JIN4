@@ -7,6 +7,7 @@
 
 #include <map>
 #include <random>
+#include <iostream>
 
 Terrain::Terrain(int size_x, int size_y, int difficulty) : m_tiles((long long)size_x* (long long)size_y),m_width(size_x),m_height(size_y),m_end(0),m_inputs{}
 {
@@ -49,9 +50,9 @@ Terrain::Terrain(int size_x, int size_y, int difficulty) : m_tiles((long long)si
 		max_ = max_ > pos ? max_ : pos;
 		std::unique_ptr<BeginPath> beg(std::make_unique<BeginPath>(1, pos));
 		m_inputs.push_back(beg.get());
-		m_tiles[pos * (long long)size_x] = std::move(beg);
+		m_tiles[pos * (long long)size_x+1] = std::move(beg);
 	}
-	//crée les points intermédiaires
+	//crée les points intermédiaires et les relies
 
 	int nrange = ceil(log2(difficulty));
 	float dx = (size_x - 4 - nrange) / (float)(nrange + 1);
@@ -64,7 +65,7 @@ Terrain::Terrain(int size_x, int size_y, int difficulty) : m_tiles((long long)si
 	int y;
 	for (int i = 0; i < nrange; i++)
 	{
-		npoint = ceil((float)npoint / difficulty);
+		npoint = ceil((float)npoint / 2.f);
 		x += dx;
 
 		for (int j = 0; j < npoint; j++)
@@ -75,13 +76,14 @@ Terrain::Terrain(int size_x, int size_y, int difficulty) : m_tiles((long long)si
 				j--;
 				continue;
 			}
-			for(int X=x_+1;X<x;X++)
+			for(int X=x+1;X<x+dx;X++)
 				m_tiles[X + y * size_x] = std::make_unique<Path>(X, y);
-			min = min < y ? min : y;
-			max = max > y ? max : y;
+			min = (min < y) ? min : y;
+			max = (max > y) ? max : y;
 		}
+		std::cout << min << " " << max << std::endl;
 		for (int Y = min; Y <= max; Y++)
-			m_tiles[x + Y * size_x] = std::make_unique<Path>(x, Y);
+			m_tiles[x + dx + Y * size_x] = std::make_unique<Path>(x + dx, Y);
 
 		max_ = max;
 		min_ = min;
@@ -118,7 +120,9 @@ void Terrain::draw(const context& ctx)
 {
 	for (const auto& i : m_tiles)
 	{
+
 		i->draw(ctx);
+
 	}
 }
 
