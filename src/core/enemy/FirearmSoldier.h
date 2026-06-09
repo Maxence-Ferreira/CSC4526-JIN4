@@ -5,6 +5,5 @@ class FirearmSoldier : public Enemy {
  public:
   FirearmSoldier(Path* beginPath);
   ~FirearmSoldier() = default;
-  void attacking(Tile* targetTile) override;
   void draw(const context& ctx) override;
 };

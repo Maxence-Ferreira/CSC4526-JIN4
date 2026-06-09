@@ -4,7 +4,7 @@
 class Attack {
  private:
   double damage;
-  double speed;
+  double speed = 0.05; // tile/ms
   double range;
   double x;
   double y;
@@ -12,7 +12,7 @@ class Attack {
   // visuel a mettre texture ?
 
  public:
-  Attack(double damage, double speed, double range, double x, double y, Tile* targetTile);
+  Attack(double damage, double range, double x, double y, Tile* targetTile);
   virtual ~Attack() = default;
   
 };

@@ -2,13 +2,6 @@
 
 Dog::Dog(Path* beginPath) : Enemy(75.0, 3.0, 20, 1.0, 0.5, 15, beginPath) {};
 
-void Dog::attacking(Tile* targetTile) {
-    if (currentCooldown <= 0) {
-        // attaque à implémenter 
-        currentCooldown = attackCooldown; 
-    }
-}
-
 void Dog::draw(const context& ctx) {
   static sf::Texture t("../../../resources/SpriteSheets/Dog_Sprite.png");
   sf::Sprite sp(t);

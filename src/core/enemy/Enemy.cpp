@@ -48,4 +48,16 @@ void Enemy::move(const int dt) {
     isFrameTwo = !isFrameTwo;
     animationTimer -= timePerFrame;
     }
+
+    if (currentCooldown > 0) {
+      currentCooldown -= ctx.dt;
+    }
   }
+
+  Attack* Enemy::attacking(Tile* targetTile) {
+  if (currentCooldown <= 0) {
+    currentCooldown = attackCooldown;
+    return new Attack(attackDamage, attackRange,x,y, targetTile);
+  }
+  return nullptr;
+}

@@ -5,6 +5,5 @@ class Dog : public Enemy {
  public:
   Dog (Path* beginPath);
   ~Dog() = default;
-  virtual void attacking(Tile * targetTile) override;
   void draw(const context& ctx) override;
 };
