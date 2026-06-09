@@ -30,7 +30,7 @@ class Enemy : public Drawable {
   virtual ~Enemy() = default;
 
   void move(const int dt);
-  virtual Attack* attacking(Tile* targetTile) = 0;
+  virtual Attack* attacking(Tile* targetTile);
   void takeDamage(double damage);
   bool isAlive() const { return !isDead; };
   int getBounty() const { return bounty; };

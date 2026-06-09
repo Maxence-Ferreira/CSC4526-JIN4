@@ -2,7 +2,7 @@
 
 Kamikaze::Kamikaze(Path* beginPath) : Enemy(80.0, 1.5, 50, 1, 0, 20, beginPath) {};
 
-void Kamikaze::attacking(Tile* targetTile) {
+Attack* Kamikaze::attacking(Tile* targetTile) {
     // attaque à implémenter : quand le kamikaze rejoins sa cible il explose et inflige dees degats à la cible.
 }
 

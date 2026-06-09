@@ -5,6 +5,6 @@ class Kamikaze : public Enemy {
  public:
   Kamikaze(Path* beginPath);
   ~Kamikaze() = default;
-  virtual void attacking(Tile * targetTile) override;
+  virtual Attack* attacking(Tile * targetTile) override;
   void draw(const context& ctx) override;
 };
