@@ -1,32 +1,32 @@
 #pragma once
 #include <vector>
 
-#include "../map/Tile.h"
-#include "../map/Path.h"
-#include "Attack.h"
 #include "../Drawable.h"
+#include "../map/Path.h"
+#include "../map/Tile.h"
+#include "Attack.h"
 
-
-class Enemy : public Drawable{
+class Enemy : public Drawable {
  protected:
   double maxHealth;
   double currentHealth;
-  double movementSpeed; //Tile/ms
+  double movementSpeed;  // Tile/ms
   int attackDamage;
   double attackRange;
   double attackCooldown;
   double x;
   double y;
-  Path* currentPath; 
+  Path* currentPath;
   bool isDead;
   int bounty;              // pièces gagnées à la mort de l'ennemi
   double currentCooldown;  // temps restant avant de pouvoir attaquer à nouveau
   bool isFrameTwo = false;
+  float animationTimer = 0.f;
+  float timePerFrame = 250.0f; //4fps
 
  public:
   Enemy(double maxHealth, double movementSpeed, int attackDamage,
-        double attackRange, double attackCooldown,
-        int bounty, Path* beginPath);
+        double attackRange, double attackCooldown, int bounty, Path* beginPath);
   virtual ~Enemy() = default;
 
   void move(const int dt);

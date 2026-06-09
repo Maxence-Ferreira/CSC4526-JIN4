@@ -14,8 +14,7 @@ void Cyrano::attacking(Tile* targetTile) {
 }
 
 void Cyrano::draw(const context& ctx) {
-  static sf::Texture t;
-  static bool isLoaded = t.loadFromFile("resources/Cyrano_Sprite.png");
+  static sf::Texture t("../../../resources/SpriteSheets/Cyrano_Sprite.png");
   sf::Sprite sp(t);
   sp.setTexture(t);
 
@@ -26,6 +25,7 @@ void Cyrano::draw(const context& ctx) {
                 // pixels de décalage), sinon la première (0 pixels de décalage)
   sp.setTextureRect(sf::IntRect({frameX, 0}, {16, 16}));
   sp.setOrigin({8.0f, 8.0f});
+  sp.setScale({2.0f, 2.0f});
   sp.setPosition({(float)(this->x * TILE_SIZE), (float)(this->y * TILE_SIZE)});
   ctx.window->draw(sp);
 }

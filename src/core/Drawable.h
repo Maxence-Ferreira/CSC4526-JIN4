@@ -6,8 +6,6 @@ struct context
 	unsigned int dt;
 	double offsetX, offsetY;
 	sf::RenderWindow* window;
-	float animationTimer=0.f;
-	float timePerFrame = 250.0f;
 };
 
 class Drawable

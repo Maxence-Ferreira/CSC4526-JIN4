@@ -8,6 +8,7 @@
 #include "enemy/Cyrano.h"
 
 
+
 using namespace std;
 int myMain() {
 	cout << "HW" << endl;
@@ -21,6 +22,7 @@ int myMain() {
 	Terrain terter(SCREEN_WIDTH / TILE_SIZE, SCREEN_HEIGHT / TILE_SIZE);
 	//test cyrano
 	Cyrano cyrano(terter.getEntry()[0]);
+	sf::Clock clock;
 
 	while (win.isOpen())
 	{
@@ -33,8 +35,8 @@ int myMain() {
 				win.setView(sf::View(sf::Vector2f(win.getView().getCenter()), sf::Vector2f(resized->size)));
 			}
 		}
-		c.animationTimer += c.dt;
-		c.animationTimer -= c.timePerFrame;
+		c.dt = clock.restart().asMilliseconds();
+		cyrano.update(c);
 		win.clear(sf::Color::White);
 		terter.draw(c);
 		cyrano.draw(c);
