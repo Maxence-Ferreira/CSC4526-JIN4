@@ -20,8 +20,8 @@ class Enemy : public Drawable{
   Path* currentPath; 
   bool isDead;
   int bounty;              // pièces gagnées à la mort de l'ennemi
-  // visuel a mettre texture ?
   double currentCooldown;  // temps restant avant de pouvoir attaquer à nouveau
+  bool isFrameTwo = false;
 
  public:
   Enemy(double maxHealth, double movementSpeed, int attackDamage,
@@ -36,4 +36,5 @@ class Enemy : public Drawable{
   int getBounty() const { return bounty; };
   double getX() const { return x; };
   double getY() const { return y; };
+  void update(const context& ctx) override;
 };
