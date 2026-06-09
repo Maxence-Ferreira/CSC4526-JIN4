@@ -8,9 +8,11 @@
 #include <map>
 #include <random>
 #include <iostream>
+#define calc_x(i) (1+(size_x-4)/(nrange+1)*(i))
 
 Terrain::Terrain(int size_x, int size_y, int difficulty) : m_tiles((long long)size_x* (long long)size_y),m_width(size_x),m_height(size_y),m_end(0),m_inputs{}
 {
+	int nrange = ceil(log2(difficulty));
 	std::vector<Path*> paths;
 	for (int j = 0; j < size_y; j++)
 		for (int i = 0; i < size_x; i++)
@@ -24,12 +26,23 @@ Terrain::Terrain(int size_x, int size_y, int difficulty) : m_tiles((long long)si
 	//crée les entrées
 	std::random_device rd;
 	std::mt19937 gen(rd());
-	std::uniform_int_distribution<> heightRD(0, size_y-1);
+	std::uniform_int_distribution<> heightRD(2, size_y-3);
 	int pos;
 	bool find;
-	int min_ = size_y;
-	int max_ = 0;
-	for (int i = 0; i < difficulty; i++)
+	int min_ = 1;
+	int max_ = size_y-2;
+
+	std::unique_ptr<BeginPath> tmp(std::make_unique<BeginPath>(1, 1));
+	for (int X = 2; X < calc_x(1); X++)
+		m_tiles[X + 1 * size_x] = std::make_unique<Path>(X, 1);
+	m_inputs.push_back(tmp.get());
+	m_tiles[1 * (long long)size_x + 1] = std::move(tmp);
+	tmp=(std::make_unique<BeginPath>(1, size_y-2));
+	for (int X = 2; X < calc_x(1); X++)
+		m_tiles[X + (size_y - 2) * size_x] = std::make_unique<Path>(X, (size_y - 2));
+	m_inputs.push_back(tmp.get());
+	m_tiles[(size_y - 2) * (long long)size_x + 1] = std::move(tmp);
+	for (int i = 0; i < difficulty-2; i++)
 	{
 		pos = heightRD(gen);
 		find = false;
@@ -46,15 +59,15 @@ Terrain::Terrain(int size_x, int size_y, int difficulty) : m_tiles((long long)si
 			i--;
 			continue;
 		}
-		min_ = min_ < pos ? min_ : pos;
-		max_ = max_ > pos ? max_ : pos;
 		std::unique_ptr<BeginPath> beg(std::make_unique<BeginPath>(1, pos));
+		for (int X = 2; X < calc_x(1); X++)
+			m_tiles[X + pos * size_x] = std::make_unique<Path>(X, pos);
 		m_inputs.push_back(beg.get());
 		m_tiles[pos * (long long)size_x+1] = std::move(beg);
 	}
 	//crée les points intermédiaires et les relies
 
-	int nrange = ceil(log2(difficulty));
+	std::cout << nrange << std::endl;
 	float dx = (size_x - 4 - nrange) / (float)(nrange + 1);
 
 	int npoint = difficulty;
@@ -62,11 +75,11 @@ Terrain::Terrain(int size_x, int size_y, int difficulty) : m_tiles((long long)si
 	int max = 0;
 	int x_ = 1;
 	int x = 1;
-	int y;
-	for (int i = 0; i < nrange; i++)
+	int y=0;
+	for (int i = 1; i <= nrange; i++)
 	{
 		npoint = ceil((float)npoint / 2.f);
-		x += dx;
+		x = calc_x(i);
 
 		for (int j = 0; j < npoint; j++)
 		{
@@ -76,25 +89,26 @@ Terrain::Terrain(int size_x, int size_y, int difficulty) : m_tiles((long long)si
 				j--;
 				continue;
 			}
-			for(int X=x+1;X<x+dx;X++)
+			for(int X=x+1;X< calc_x(i+1);X++)
 				m_tiles[X + y * size_x] = std::make_unique<Path>(X, y);
 			min = (min < y) ? min : y;
 			max = (max > y) ? max : y;
 		}
-		std::cout << min << " " << max << std::endl;
-		for (int Y = min; Y <= max; Y++)
-			m_tiles[x + dx + Y * size_x] = std::make_unique<Path>(x + dx, Y);
+		for (int Y = min_; Y <= max_; Y++)
+			m_tiles[x + Y * size_x] = std::make_unique<Path>(x, Y);
 
 		max_ = max;
 		min_ = min;
+		heightRD= std::uniform_int_distribution<>(min_, max_);
 		min = size_y;
 		max = 0;
 		x_ = x;
 	}
-
-	for (int X = x_ + 1; X < size_x-2; X++)
-		m_tiles[X + m_end->getY() * size_x] = std::make_unique<Path>(X, m_end->getY());
-
+	for (int Y = ((y < size_y / 2) ? y : (size_y / 2)); Y <= ((y > size_y / 2) ? y : (size_y / 2)); Y++)
+	{
+		std::cout << "pb en x:"<< size_x - 3 <<" y:"<<Y << std::endl;
+		m_tiles[size_x - 3 + Y * size_x] = std::make_unique<Path>(size_x - 3, Y);
+	}
 	//link paths
 	for (auto it = paths.begin(); it != paths.end(); it++)
 		for (auto it2 = it+1; it2 != paths.end(); it2++)

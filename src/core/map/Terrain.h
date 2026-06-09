@@ -9,7 +9,7 @@
 class Terrain
 {
 public:
-	Terrain(int size_x, int size_y, int difficulty = 2);
+	Terrain(int size_x, int size_y, int difficulty = 5);
 public:
 	Tile* getTile(int x, int y) const;
 	int getWidth() const;
