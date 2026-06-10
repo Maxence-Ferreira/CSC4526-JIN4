@@ -4,7 +4,7 @@
 #include <unordered_set>
 #include "enemy/Enemy.h"
 
-Path::Path(int x, int y):Tile(x,y), m_neighbors{},m_distance{(unsigned int)(-1)},m_next(0),m_enemies{},angle(sf::degrees(90*(rand()%4)))
+Path::Path(int x, int y) :Tile(x, y), m_neighbors{}, m_distance{ (unsigned int)(-1) }, m_next(0), m_enemies{}, angle(sf::degrees(90 * (rand() % 4))),m_nearest_building(0)
 {
 }
 

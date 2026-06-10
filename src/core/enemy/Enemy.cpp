@@ -67,7 +67,6 @@ void Enemy::update(const context& ctx) {
     currentCooldown -= ctx.dt;
   }
 
-  return;
   //ciblage
   if (currentTarget != nullptr) {
     int distance = currentTarget->distanceTo(currentPath);
@@ -92,6 +91,7 @@ void Enemy::update(const context& ctx) {
 
 Building* Enemy::setTarget() {
     Building* nearest = currentPath->getNearestBuilding();
+    if (!nearest)return 0;
     if (attackRange >=
         nearest->distanceTo(currentPath)) {
         return nearest;
