@@ -3,8 +3,8 @@
 #include <cmath>
 
 Enemy::Enemy(double maxHealth, double movementSpeed, int attackDamage,
-             double attackRange, double attackCooldown,
-             int bounty, Path* beginPath)
+             double attackRange, double attackCooldown, int bounty,
+             Path* beginPath)
     : maxHealth(maxHealth),
       currentHealth(maxHealth),
       movementSpeed(movementSpeed),
@@ -34,30 +34,64 @@ void Enemy::move(const int dt) {
   };
 }
 
-  void Enemy::takeDamage(double damage) {
-    currentHealth -= damage;
-    if (currentHealth <= 0) {
-      isDead = true;
-    }
+void Enemy::takeDamage(int damage) {
+  currentHealth -= damage;
+  if (currentHealth <= 0) {
+    isDead = true;
   }
+}
 
-  void Enemy::update(const context& ctx) {
-    //this->move(ctx.dt);
-    animationTimer += ctx.dt;
-    if (animationTimer >= timePerFrame) {
+void Enemy::update(const context& ctx) {
+  //mouvement
+  // this->move(ctx.dt);
+
+  //animation
+  animationTimer += ctx.dt;
+  if (animationTimer >= timePerFrame) {
     isFrameTwo = !isFrameTwo;
     animationTimer -= timePerFrame;
-    }
+  }
 
-    if (currentCooldown > 0) {
-      currentCooldown -= ctx.dt;
+  //recharge de l'attaque
+  if (currentCooldown > 0) {
+    currentCooldown -= ctx.dt;
+  }
+
+  //ciblage
+  if (currentTarget != nullptr) {
+    int distance = currentTarget->distanceTo(currentPath);
+    if (distance>attackRange){
+      currentTarget = nullptr;
+    }
+    if(!currentTarget->isAlive()){
+      currentTarget = nullptr;
     }
   }
 
-  Attack* Enemy::attacking(Tile* targetTile) {
+  if (currentTarget == nullptr) {
+    currentTarget = setTarget();
+  }
+
+  //attaque
+  if (currentTarget != nullptr && currentCooldown <= 0) {
+    Attack* newAttack = attacking(currentTarget);
+    //
+
+}
+
+Attack* Enemy::attacking(Building* targetBuilding) {
   if (currentCooldown <= 0) {
     currentCooldown = attackCooldown;
-    return new Attack(attackDamage, attackRange,x,y, targetTile);
+    return new Attack(attackDamage, attackRange, x, y, targetBuilding);
+  }
+  return nullptr;
+}
+
+Building* Enemy::setTarget() {
+  Building* nearest = currentPath->getNearestBuilding();
+  if (attackRange >=
+      nearest->distanceTo(currentPath)) {
+    return nearest;
   }
   return nullptr;
 }
