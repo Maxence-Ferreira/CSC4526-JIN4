@@ -5,6 +5,7 @@
 #include "Tile.h"
 #include <vector>
 #include <memory>
+#include "building/Building.h"
 
 class Terrain :public Drawable
 {
@@ -18,6 +19,7 @@ public:
 	void draw(const context& ctx);
 	virtual void update(const context& ctx)override;
 	std::vector<Tile*> pathfind(int from_x, int from_y) const;
+	//void addBuilding(std::unique_ptr<Building>ptr) const;
 private:
 protected:
 	std::vector<std::unique_ptr<Tile>> m_tiles;

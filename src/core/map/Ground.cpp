@@ -3,7 +3,7 @@
 #include "common.h"
 #include <random>
 
-Ground::Ground(int x, int y):Tile(x,y),angle(sf::degrees((rand()%4)*90))
+Ground::Ground(int x, int y):Tile(x,y),angle(sf::degrees((rand()%4)*90)),m_building()
 {
 }
 
@@ -12,6 +12,12 @@ void Ground::draw(const context& ctx)
 	sf::Transform t;
 	t.translate({ TILE_SIZE * (m_x+.5f), TILE_SIZE * (m_y+.5f) }).rotate(angle);
 	ctx.window->draw(*g_sprite,t);
+	if(m_building)m_building->draw(ctx);
+}
+
+void Ground::setBuilding(std::unique_ptr<Building> b)
+{
+	m_building = std::move(b);
 }
 
 std::unique_ptr<sf::RectangleShape> Ground::g_sprite = Ground::createSprite();

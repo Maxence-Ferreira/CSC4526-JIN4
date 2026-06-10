@@ -6,6 +6,9 @@
 #include "../map/Tile.h"
 #include "Attack.h"
 
+class Path;
+class Building;
+
 class Enemy : public Drawable {
  protected:
   double maxHealth;

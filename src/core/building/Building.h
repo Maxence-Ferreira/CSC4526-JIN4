@@ -1,7 +1,10 @@
 #pragma once
 #include "Drawable.h"
-#include "map/Ground.h"
-#include "enemy/Enemy.h"
+#include "./map/Ground.h"
+#include "./enemy/Enemy.h"
+
+class Ground;
+class Enemy;
 
 class Building : public Drawable{
 public:
@@ -14,8 +17,10 @@ public:
 		int price);
 	int getX() const;
 	int getY() const;
+	void takeDamage(int damage);
 	bool isAlive() const;
 	int distanceTo(Tile*) const;
+	virtual~Building() = default;
 protected:
 private:
 	Ground* m_tile;

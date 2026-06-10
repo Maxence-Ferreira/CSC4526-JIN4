@@ -15,6 +15,11 @@ int Building::getY() const
 	return m_tile->getY();
 }
 
+void Building::takeDamage(int damage)
+{
+	if (m_pv -= damage <= 0)m_dead = true;
+}
+
 bool Building::isAlive() const
 {
 	return !m_dead;

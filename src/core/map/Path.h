@@ -5,6 +5,7 @@
 #include <map>
 
 class Enemy;
+class Building;
 
 class Path : public Tile
 {

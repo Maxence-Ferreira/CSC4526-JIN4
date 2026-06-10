@@ -6,6 +6,7 @@
 #include "map/Terrain.h"
 #include "common.h"
 #include "enemy/Cyrano.h"
+#include "building/Archer.h"
 
 
 
@@ -24,6 +25,8 @@ int myMain() {
 	Cyrano cyrano(terter.getEntry()[0]);
 	sf::Clock clock;
 
+	Archer a(static_cast<Ground*>(terter.getTile((SCREEN_WIDTH / TILE_SIZE) - 1, (SCREEN_HEIGHT / TILE_SIZE) / 2)), 0);
+
 	while (win.isOpen())
 	{
 		while (const std::optional event = win.pollEvent())
@@ -37,6 +40,7 @@ int myMain() {
 		}
 		c.dt = clock.restart().asMilliseconds();
 		cyrano.update(c);
+		a.update(c);
 		win.clear(sf::Color::White);
 		terter.draw(c);
 		cyrano.draw(c);
