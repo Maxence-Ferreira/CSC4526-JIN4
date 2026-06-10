@@ -105,8 +105,8 @@ Terrain::Terrain(int size_x, int size_y, int difficulty) : m_tiles((long long)si
 		x_ = x;
 	}
 	for (
-		int Y = ((y < size_y / 2) ? y : (size_y / 2)); 
-		Y <= ((y > size_y / 2) ? y : (size_y / 2)); 
+		int Y = ((y < size_y / 2) ? y : (size_y / 2));	// min entre la fin du chemin et le dernier tile placé
+		Y <= ((y > size_y / 2) ? y : (size_y / 2));		// max entre ...
 		Y++)
 		m_tiles[size_x - 3 + Y * size_x] = std::make_unique<Path>(size_x - 3, Y);
 	//link paths
