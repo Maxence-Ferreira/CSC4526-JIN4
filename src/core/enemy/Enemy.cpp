@@ -85,7 +85,8 @@ void Enemy::update(const context& ctx) {
   //attaque
   if (currentTarget != nullptr && currentCooldown <= 0) {
       Attack* newAttack = attacking(currentTarget);
-      //
+      newAttack->update(ctx);
+      newAttack->draw(ctx);
   }
 }
 
