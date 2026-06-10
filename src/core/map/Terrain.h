@@ -16,7 +16,7 @@ public:
 	int getWidth() const;
 	int getHeight() const;
 	const std::vector<BeginPath*>& getEntry() const;
-	void draw(const context& ctx);
+	void draw(const context& ctx)override;
 	virtual void update(const context& ctx)override;
 	std::vector<Tile*> pathfind(int from_x, int from_y) const;
 	//void addBuilding(std::unique_ptr<Building>ptr) const;

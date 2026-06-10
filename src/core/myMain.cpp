@@ -25,7 +25,7 @@ int myMain() {
 	Cyrano cyrano(terter.getEntry()[0]);
 	sf::Clock clock;
 
-	Archer a(static_cast<Ground*>(terter.getTile((SCREEN_WIDTH / TILE_SIZE) - 1, (SCREEN_HEIGHT / TILE_SIZE) / 2)), 0);
+	//Archer a(static_cast<Ground*>(terter.getTile((SCREEN_WIDTH / TILE_SIZE) - 1, (SCREEN_HEIGHT / TILE_SIZE) / 2)), 0);
 
 	while (win.isOpen())
 	{
@@ -39,8 +39,8 @@ int myMain() {
 			}
 		}
 		c.dt = clock.restart().asMilliseconds();
-		cyrano.update(c);
-		a.update(c);
+		//cyrano.update(c);
+		//a.update(c);
 		win.clear(sf::Color::White);
 		terter.draw(c);
 		cyrano.draw(c);
