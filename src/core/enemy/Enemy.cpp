@@ -34,6 +34,16 @@ void Enemy::move(const int dt) {
   };
 }
 
+Attack* Enemy::attacking(Building* targetBuilding)
+{
+    if (currentCooldown <= 0) {
+        currentCooldown = attackCooldown;
+        return new Attack(attackDamage, attackRange, x, y, targetBuilding);
+    }
+    return nullptr;
+
+}
+
 void Enemy::takeDamage(int damage) {
   currentHealth -= damage;
   if (currentHealth <= 0) {
@@ -74,24 +84,16 @@ void Enemy::update(const context& ctx) {
 
   //attaque
   if (currentTarget != nullptr && currentCooldown <= 0) {
-    Attack* newAttack = attacking(currentTarget);
-    //
-
-}
-
-Attack* Enemy::attacking(Building* targetBuilding) {
-  if (currentCooldown <= 0) {
-    currentCooldown = attackCooldown;
-    return new Attack(attackDamage, attackRange, x, y, targetBuilding);
+      Attack* newAttack = attacking(currentTarget);
+      //
   }
-  return nullptr;
 }
 
 Building* Enemy::setTarget() {
-  Building* nearest = currentPath->getNearestBuilding();
-  if (attackRange >=
-      nearest->distanceTo(currentPath)) {
-    return nearest;
-  }
-  return nullptr;
+    Building* nearest = currentPath->getNearestBuilding();
+    if (attackRange >=
+        nearest->distanceTo(currentPath)) {
+        return nearest;
+    }
+    return nullptr;
 }
