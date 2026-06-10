@@ -25,8 +25,10 @@ int myMain() {
 	Cyrano cyrano(terter.getEntry()[0]);
 	sf::Clock clock;
 
-	Archer a(static_cast<Ground*>(terter.getTile(2, 0)), 0);
+	//
+	Archer a(static_cast<Ground*>(terter.getTile(3, 0)), 0);
 	terter.addBuilding(&a);
+	//
 
 	while (win.isOpen())
 	{

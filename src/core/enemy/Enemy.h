@@ -29,6 +29,7 @@ class Enemy : public Drawable {
   float animationTimer = 0.f;
   float timePerFrame = 250.0f; //4fps
   Building* currentTarget = nullptr;
+  std::vector<std::unique_ptr<Attack>> attacks;
 
  public:
   Enemy(double maxHealth, double movementSpeed, int attackDamage,
@@ -42,6 +43,8 @@ class Enemy : public Drawable {
   int getBounty() const { return bounty; };
   double getX() const { return x; };
   double getY() const { return y; };
-  void update(const context& ctx) override;
+  virtual void update(const context& ctx) override;
+  void drawAttacks(const context& ctx);
+  virtual void resetCooldown()=0;
   Building* setTarget();
 };
