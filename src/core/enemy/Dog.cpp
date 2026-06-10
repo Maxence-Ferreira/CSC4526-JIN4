@@ -14,5 +14,9 @@ void Dog::draw(const context& ctx) {
   sp.setTextureRect(sf::IntRect({frameX, 0}, {16, 16}));
   sp.setOrigin({ TEX_IN_TILE, TEX_IN_TILE});
   sp.setPosition({(float)(this->x * TILE_SIZE), (float)(this->y * TILE_SIZE)});
-  ctx.window->draw(sp);
+  this->drawAttacks(ctx);
+}
+
+void Dog::resetCooldown(){
+    attackCooldown = 0.5;
 }

@@ -6,4 +6,5 @@ class Cyrano : public Enemy {
   Cyrano(Path* beginPath);
   ~Cyrano() = default;
   void draw(const context& ctx) override;
+  void resetCooldown() override;
 };

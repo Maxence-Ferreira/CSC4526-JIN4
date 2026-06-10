@@ -21,5 +21,10 @@ void Cyrano::draw(const context& ctx) {
   sp.setScale({TEX_IN_TILE, TEX_IN_TILE });
   sp.setPosition({(float)(this->x * TILE_SIZE), (float)(this->y * TILE_SIZE)});
   ctx.window->draw(sp);
+  this->drawAttacks(ctx);
+}
+
+void Cyrano::resetCooldown(){
+    attackCooldown = 1.0;
 }
 

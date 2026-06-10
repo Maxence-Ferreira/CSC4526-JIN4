@@ -15,4 +15,9 @@ void HorseSoldier::draw(const context& ctx) {
   sp.setOrigin({ TEX_IN_TILE, TEX_IN_TILE });
   sp.setPosition({(float)(this->x * TILE_SIZE), (float)(this->y * TILE_SIZE)});
   ctx.window->draw(sp);
+  this->drawAttacks(ctx);
+}
+
+void HorseSoldier::resetCooldown(){
+    attackCooldown = 2.0;
 }
