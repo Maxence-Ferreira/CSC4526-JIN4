@@ -5,6 +5,7 @@
 #include "../map/Path.h"
 #include "../map/Tile.h"
 #include "Attack.h"
+#include "../building/Building.h"
 
 class Path;
 class Building;
@@ -26,6 +27,7 @@ class Enemy : public Drawable {
   bool isFrameTwo = false;
   float animationTimer = 0.f;
   float timePerFrame = 250.0f; //4fps
+  Building* currentTarget = nullptr;
 
  public:
   Enemy(double maxHealth, double movementSpeed, int attackDamage,
@@ -33,11 +35,12 @@ class Enemy : public Drawable {
   virtual ~Enemy() = default;
 
   void move(const int dt);
-  virtual Attack* attacking(Tile* targetTile);
-  void takeDamage(double damage);
+  virtual Attack* attacking(Building* targetBuilding);
+  void takeDamage(int damage);
   bool isAlive() const { return !isDead; };
   int getBounty() const { return bounty; };
   double getX() const { return x; };
   double getY() const { return y; };
   void update(const context& ctx) override;
+  Building* setTarget();
 };

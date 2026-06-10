@@ -1,18 +1,23 @@
 #pragma once
 #include "../map/Tile.h"
+#include "../building/Building.h"
+#include "../Drawable.h"
 
-class Attack {
+class Attack : public Drawable {
  private:
-  double damage;
-  double speed = 0.05; // tile/ms
+  int damage;
+  double speed = 0.005; // tile/ms
   double range;
   double x;
   double y;
-  Tile* targetTile;
-  // visuel a mettre texture ?
+  Building* targetBuilding;
+  bool active = true;
 
  public:
-  Attack(double damage, double range, double x, double y, Tile* targetTile);
+  Attack(int damage, double range, double x, double y, Building* targetBuilding);
   virtual ~Attack() = default;
-  
+  void update(const context& ctx);
+  void draw(const context& ctx);
+
+  bool isActive() const { return active; };
 };
