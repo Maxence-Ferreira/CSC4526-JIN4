@@ -67,6 +67,7 @@ void Enemy::update(const context& ctx) {
     currentCooldown -= ctx.dt;
   }
 
+  return;
   //ciblage
   if (currentTarget != nullptr) {
     int distance = currentTarget->distanceTo(currentPath);

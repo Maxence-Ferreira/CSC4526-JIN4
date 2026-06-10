@@ -39,7 +39,7 @@ int myMain() {
 			}
 		}
 		c.dt = clock.restart().asMilliseconds();
-		//cyrano.update(c);
+		cyrano.update(c);
 		//a.update(c);
 		win.clear(sf::Color::White);
 		terter.draw(c);
