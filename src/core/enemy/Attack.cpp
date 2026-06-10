@@ -38,8 +38,13 @@ void Attack::update(const context& ctx) {
 }
 
 void Attack::draw(const context& ctx) {
-  if (!isActive) {return;}
+  if (!isActive()) {return;}
 
   //création d'une balle
-  return;
+  sf::CircleShape projectile(0.15f*TILE_SIZE);
+  projectile.setFillColor(sf::Color::Red);
+  projectile.setOrigin({projectile.getRadius(), projectile.getRadius()});
+  projectile.setPosition({(float)(x*TILE_SIZE), (float)(y*TILE_SIZE)});
+
+  ctx.window->draw(projectile);
 }
