@@ -26,6 +26,7 @@ int myMain() {
 	sf::Clock clock;
 
 	Archer a(static_cast<Ground*>(terter.getTile(2, 0)), 0);
+	terter.addBuilding(&a);
 
 	while (win.isOpen())
 	{

@@ -19,11 +19,12 @@ public:
 	void draw(const context& ctx)override;
 	virtual void update(const context& ctx)override;
 	std::vector<Tile*> pathfind(int from_x, int from_y) const;
-	//void addBuilding(std::unique_ptr<Building>ptr) const;
+	void addBuilding(Building*ptr) const;
 private:
 protected:
 	std::vector<std::unique_ptr<Tile>> m_tiles;
 	EndPath* m_end;
 	std::vector<BeginPath*> m_inputs;
+	std::vector<Path*> m_paths;
 	const int m_width, m_height;
 };

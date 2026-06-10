@@ -8,12 +8,12 @@ Building::Building(Ground* tile, int pv_max, int dammage, int range, int cooldow
 
 int Building::getX() const
 {
-	return m_tile->getX();
+	return m_tile?m_tile->getX():0;
 }
 
 int Building::getY() const
 {
-	return m_tile->getY();
+	return m_tile? m_tile->getY():0;
 }
 
 void Building::takeDamage(int damage)
