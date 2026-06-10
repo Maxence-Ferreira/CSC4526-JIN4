@@ -18,6 +18,17 @@ void Path::addNeighbor(Path* nei)
 	nei->m_neighbors.push_back(this);
 }
 
+void Path::addDistanceFrom(Building* nei)
+{
+	if (m_nearest_building->distanceTo(this) < nei->distanceTo(this))return;
+	m_nearest_building = nei;
+}
+
+Building* Path::getNearestBuilding()
+{
+	return m_nearest_building;
+}
+
 Path* Path::next() const
 {
 	return m_next;

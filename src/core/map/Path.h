@@ -1,6 +1,6 @@
 #pragma once
 #include "Tile.h"
-
+#include "building/Building.h"
 #include <vector>
 #include <map>
 
@@ -12,6 +12,8 @@ public:
 	Path(int x, int y);
 public:
 	void addNeighbor(Path* nei);
+	void addDistanceFrom(Building* nei);
+	Building* getNearestBuilding();
 	Path* next()const;
 	virtual void update(const context& ctx)override;
 	virtual void draw(const context & ctx)override;
@@ -30,4 +32,5 @@ protected:
 	std::vector<Enemy*> m_enemies;
 	unsigned int m_distance;
 	Path* m_next;
+	Building* m_nearest_building;
 };
