@@ -3,7 +3,7 @@
 #include "common.h"
 #include <random>
 
-Ground::Ground(int x, int y):Tile(x,y),angle(sf::degrees((rand()%4)*90)),m_building()
+Ground::Ground(int x, int y):Tile(x,y),angle(sf::degrees((rand()%4)*90))//,m_building()
 {
 }
 

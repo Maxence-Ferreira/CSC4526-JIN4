@@ -14,6 +14,6 @@ private:
 	static std::unique_ptr<sf::RectangleShape> createSprite();
 	static std::unique_ptr<sf::RectangleShape> g_sprite;
 	sf::Angle angle;
-	std::unique_ptr<Building> m_building;
+	//std::unique_ptr<Building> m_building;
 protected:
 };
