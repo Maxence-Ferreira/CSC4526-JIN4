@@ -9,6 +9,7 @@
 
 class Path;
 class Building;
+class Attack;
 
 class Enemy : public Drawable {
  protected:

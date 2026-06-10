@@ -38,7 +38,7 @@ void Attack::update(const context& ctx) {
 }
 
 void Attack::draw(const context& ctx) {
-  if (!isActive) {return;}
+  if (!isActive()) {return;}
 
   //création d'une balle
   return;
