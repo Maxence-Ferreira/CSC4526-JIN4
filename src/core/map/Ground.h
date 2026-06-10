@@ -9,11 +9,11 @@ class Ground : public Tile {
 public:
 	Ground(int x, int y);
 	virtual void draw(const context& ctx) override;
-	void setBuilding(std::unique_ptr<Building>b);
+	void setBuilding(Building*b);
 private:
 	static std::unique_ptr<sf::RectangleShape> createSprite();
 	static std::unique_ptr<sf::RectangleShape> g_sprite;
 	sf::Angle angle;
-	//std::unique_ptr<Building> m_building;
+	Building* m_building;
 protected:
 };
