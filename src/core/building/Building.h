@@ -1,12 +1,12 @@
 #pragma once
-#include "Drawable.h"
+#include "Entity.h"
 #include "./map/Ground.h"
 #include "./enemy/Enemy.h"
 
 class Ground;
 class Enemy;
 
-class Building : public Drawable{
+class Building : public Entity{
 public:
 	Building(
 		Ground* tile,
@@ -17,10 +17,11 @@ public:
 		int price);
 	int getX() const;
 	int getY() const;
-	void takeDamage(int damage);
-	bool isAlive() const;
+	void takeDamage(int damage) override;
+	bool isAlive() const override;
 	int distanceTo(Tile*) const;
 	virtual~Building() = default;
+	Ground* getTile() const;
 protected:
 private:
 	Ground* m_tile;

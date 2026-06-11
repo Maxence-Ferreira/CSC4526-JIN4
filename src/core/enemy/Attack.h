@@ -10,11 +10,11 @@ class Attack : public Drawable {
   double range;
   double x;
   double y;
-  Building* targetBuilding;
+  Tile* targetTile;
   bool active = true;
 
  public:
-  Attack(int damage, double range, double x, double y, Building* targetBuilding);
+  Attack(int damage, double range, double x, double y, Tile* targetTile);
   virtual ~Attack();
   void update(const context& ctx);
   void draw(const context& ctx);

@@ -19,7 +19,9 @@ Enemy::Enemy(double maxHealth, double movementSpeed, int attackDamage,
       bounty(bounty),
       currentCooldown(0),
       currentPath(beginPath),
-      attacks{} {};
+      attacks{} {
+        beginPath->setEntity(this);
+      };
 
 void Enemy::move(const int dt) {
   // verif fin de chemin
@@ -50,7 +52,7 @@ Attack* Enemy::attacking(Building* targetBuilding) {
   if (currentCooldown <= 0) {
     currentCooldown = attackCooldown;
     attacks.push_back(std::make_unique<Attack>(attackDamage, attackRange, x, y,
-                                               targetBuilding));
+                                               targetBuilding->getTile()));
     return attacks.back().get();
   }
   return nullptr;

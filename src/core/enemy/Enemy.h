@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 
-#include "../Drawable.h"
+#include "../Entity.h"
 #include "../map/Path.h"
 #include "../map/Tile.h"
 #include "Attack.h"
@@ -11,7 +11,7 @@ class Path;
 class Building;
 class Attack;
 
-class Enemy : public Drawable {
+class Enemy : public Entity {
  protected:
   double maxHealth;
   double currentHealth;
@@ -38,8 +38,8 @@ class Enemy : public Drawable {
 
   void move(const int dt);
   virtual Attack* attacking(Building* targetBuilding);
-  void takeDamage(int damage);
-  bool isAlive() const { return !isDead; };
+  void takeDamage(int damage) override;
+  bool isAlive() const override { return !isDead; };
   int getBounty() const { return bounty; };
   double getX() const { return x; };
   double getY() const { return y; };
