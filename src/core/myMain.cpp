@@ -9,12 +9,14 @@
 #include "building/Archer.h"
 #include "enemy/EnemyManager.h"
 #include "building/BuildingManager.h"
+#include "Graphics/ResourceManager.h"
 
 
 
 using namespace std;
 int myMain() {
 	cout << "HW" << endl;
+	ResourceManager rm;
 	sf::RenderWindow win(sf::VideoMode(sf::Vector2u(SCREEN_WIDTH, SCREEN_HEIGHT)),"CMIUC");
 	context c = {
 		.time = 0,

@@ -12,8 +12,9 @@ add_library(lib_core
   "enemy/Kamikaze.cpp" "enemy/Kamikaze.h"
   "enemy/Attack.h" "enemy/Attack.cpp" "common.h"
   "enemy/EnemyManager.cpp" "enemy/EnemyManager.h" "Drawable.h" "building/Building.h" "building/Building.cpp"
-   "building/Archer.h" "building/Archer.cpp"
-   "Entity.h" "building/Canon.h" "building/Canon.cpp" "building/BuildingManager.h" "building/BuildingManager.cpp")
+  "building/Archer.h" "building/Archer.cpp"
+  "Entity.h" "building/Canon.h" "building/Canon.cpp" "building/BuildingManager.h" "building/BuildingManager.cpp"
+  "Graphics/ResourceManager.h" "Graphics/ResourceManager.cpp")
 
 target_include_directories(lib_core PUBLIC ./)
 target_link_libraries(lib_core PUBLIC sfml-graphics)
