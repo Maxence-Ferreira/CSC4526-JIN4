@@ -7,6 +7,7 @@
 #include "common.h"
 #include "enemy/Cyrano.h"
 #include "building/Archer.h"
+#include "enemy/EnemyManager.h"
 
 
 
@@ -23,13 +24,19 @@ int myMain() {
 	};
 	Terrain terter(SCREEN_WIDTH / TILE_SIZE, SCREEN_HEIGHT / TILE_SIZE);
 	//test cyrano
-	Cyrano cyrano(terter.getEntry()[0]);
+	//Cyrano cyrano(terter.getEntry()[0]);
+
+	//test enemyManager
+	EnemyManager e_manager;
 	sf::Clock clock;
+	e_manager.newWave(&terter);
 
 	//
 	Archer a(static_cast<Ground*>(terter.getTile(3, 0)), 0);
 	terter.addBuilding(&a);
 	//
+
+
 	clock.restart();
 	while (win.isOpen())
 	{
@@ -43,11 +50,11 @@ int myMain() {
 			}
 		}
 		c.time+=( c.dt = clock.restart().asMilliseconds());
-		cyrano.update(c);
+		e_manager.updateEnemies(c);
 		a.update(c);
 		win.clear(sf::Color::White);
 		terter.draw(c);
-		cyrano.draw(c);
+		e_manager.draw(c);
 		win.display();
 	}
 	return 0;

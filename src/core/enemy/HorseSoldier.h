@@ -6,5 +6,4 @@ class HorseSoldier : public Enemy {
   HorseSoldier(Path* beginPath);
   ~HorseSoldier() = default;
   void draw(const context& ctx) override;
-  void resetCooldown() override;
 };

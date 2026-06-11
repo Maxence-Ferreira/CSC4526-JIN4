@@ -1,6 +1,6 @@
 #include "Kamikaze.h"
 
-Kamikaze::Kamikaze(Path* beginPath) : Enemy(80.0, 1.5, 50, 1, 0, 20, beginPath) {};
+Kamikaze::Kamikaze(Path* beginPath) : Enemy(80.0, 0.00055, 50, 1, 0, 20, beginPath) {};
 
 Attack* Kamikaze::attacking(Building* targetBuilding) {
     return nullptr;
@@ -18,11 +18,8 @@ void Kamikaze::draw(const context& ctx) {
                 // pixels de décalage), sinon la première (0 pixels de décalage)
   sp.setTextureRect(sf::IntRect({frameX, 0}, {16, 16}));
   sp.setOrigin({ TEX_IN_TILE, TEX_IN_TILE });
+  sp.setScale({TEX_IN_TILE*0.5, TEX_IN_TILE*0.5});
   sp.setPosition({(float)(this->x * TILE_SIZE), (float)(this->y * TILE_SIZE)});
   ctx.window->draw(sp);
   this->drawAttacks(ctx);
-}
-
-void Kamikaze::resetCooldown(){
-    attackCooldown = 0;
 }

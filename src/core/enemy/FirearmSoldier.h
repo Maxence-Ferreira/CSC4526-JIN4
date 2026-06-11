@@ -6,5 +6,4 @@ class FirearmSoldier : public Enemy {
   FirearmSoldier(Path* beginPath);
   ~FirearmSoldier() = default;
   void draw(const context& ctx) override;
-  void resetCooldown() override;
 };

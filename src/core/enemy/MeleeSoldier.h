@@ -6,5 +6,4 @@ class MeleeSoldier : public Enemy {
   MeleeSoldier(Path* beginPath);
   ~MeleeSoldier() = default;
   void draw(const context& ctx) override;
-  void resetCooldown() override;
 };

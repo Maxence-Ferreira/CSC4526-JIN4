@@ -7,5 +7,4 @@ class Kamikaze : public Enemy {
   ~Kamikaze() = default;
   virtual Attack* attacking(Building* targetBuilding) override;
   void draw(const context& ctx) override;
-  void resetCooldown() override;
 };

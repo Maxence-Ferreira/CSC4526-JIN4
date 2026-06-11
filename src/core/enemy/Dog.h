@@ -6,5 +6,4 @@ class Dog : public Enemy {
   Dog (Path* beginPath);
   ~Dog() = default;
   void draw(const context& ctx) override;
-  void resetCooldown() override;
 };

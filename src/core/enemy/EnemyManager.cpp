@@ -77,3 +77,15 @@ void EnemyManager::removeDeadEnemies(Enemy* targetEnemy) {
         }
     }
 }
+
+void EnemyManager::updateEnemies(const context& ctx){
+  for (const auto& enemy : enemies){
+    enemy->update(ctx);
+  }
+}
+
+void EnemyManager::draw(const context& ctx){
+  for (const auto& enemy : enemies){
+    enemy->draw(ctx);
+  }
+}

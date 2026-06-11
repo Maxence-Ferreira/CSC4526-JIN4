@@ -45,6 +45,5 @@ class Enemy : public Drawable {
   double getY() const { return y; };
   virtual void update(const context& ctx) override;
   void drawAttacks(const context& ctx);
-  virtual void resetCooldown()=0;
   Building* setTarget();
 };

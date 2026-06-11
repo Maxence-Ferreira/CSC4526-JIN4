@@ -24,7 +24,4 @@ void Cyrano::draw(const context& ctx) {
   this->drawAttacks(ctx);
 }
 
-void Cyrano::resetCooldown(){
-    attackCooldown = 1000.0;
-}
 
