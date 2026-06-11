@@ -10,8 +10,12 @@ void Archer::draw(const context& ctx)
 	sf::Transform t;
 	t.translate(sf::Vector2f( TILE_SIZE * (getX() + .5),TILE_SIZE * (getY() + .5) ));
 	ctx.window->draw(g_sprite, t);
+<<<<<<< HEAD
 	this->drawAttacks(ctx);
 	Building::update(ctx);
+=======
+	drawAttacks(ctx);
+>>>>>>> 28f992553ef4e966652f970826c4278bf9f5d35e
 }
 
 void Archer::update(const context& ctx)
