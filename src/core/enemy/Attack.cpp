@@ -44,6 +44,8 @@ void Attack::update(const context& ctx) {
 void Attack::draw(const context& ctx) {
   if (!isActive()) {return;}
 
+  ctx.rm->draw({ sf::Vector2f(TILE_SIZE * (x - .5), TILE_SIZE * (y - .5)),{30, 30} }, (color=="red")?"arrow":"canonball");
+  return;
   //création d'une balle
   sf::CircleShape projectile(0.15f*TILE_SIZE);
   if (color=="red"){projectile.setFillColor(sf::Color::Red);}

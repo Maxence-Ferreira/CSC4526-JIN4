@@ -9,5 +9,4 @@ public:
 	virtual void draw(const context& ctx) override;
 	virtual void update(const context& ctx) override;
 private:
-	static sf::RectangleShape g_sprite;
 };

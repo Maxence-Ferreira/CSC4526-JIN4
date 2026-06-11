@@ -17,6 +17,7 @@ using namespace std;
 
 int myMain() {
 	const char* names[] = {
+		"post",
 		"archer",
 		"canon",
 		"ground1",
@@ -42,7 +43,7 @@ int myMain() {
 		"cannonball",
 		"arrow"};
 	cout << "HW" << endl;
-	sf::RenderWindow win(sf::VideoMode(sf::Vector2u(SCREEN_WIDTH, SCREEN_HEIGHT)),"CMIUC");
+	sf::RenderWindow win(sf::VideoMode(sf::Vector2u(SCREEN_WIDTH, SCREEN_HEIGHT)),"Post Me If You Can");
 	sf::Font f("resources/ARIAL.TTF");
 	sf::Text t(f);
 	context c = {
@@ -97,7 +98,6 @@ int myMain() {
 		b_manager.updateBuildings(c);
 		win.clear(sf::Color::White);
 		terter.draw(c);
-		c.rm->render(&win);
 		e_manager.draw(c);
 		b_manager.draw(c);
 		fps_[fps_i = (fps_i + 1) % 100]= 1000. / c.dt;
@@ -110,6 +110,7 @@ int myMain() {
 		std::ostringstream oss("");
 		oss << "fps : " << fps;
 		t.setString(oss.str());
+		c.rm->render(&win);
 		win.draw(t);
 		win.display();
 	}

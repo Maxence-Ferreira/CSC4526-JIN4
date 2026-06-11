@@ -8,19 +8,7 @@ Cyrano::Cyrano(Path* beginPath)
 
 
 void Cyrano::draw(const context& ctx) {
-  static sf::Texture t("resources/Cyrano_Sprite.png");
-  sf::Sprite sp(t);
-
-  int frameX =
-      isFrameTwo
-          ? 16
-          : 0;  // si isFrameTwo est vrai, on utilise la deuxième frame (16
-                // pixels de décalage), sinon la première (0 pixels de décalage)
-  sp.setTextureRect(sf::IntRect({frameX, 0}, {16, 16}));
-  sp.setOrigin({8.0f, 8.0f});
-  sp.setScale({TEX_IN_TILE, TEX_IN_TILE });
-  sp.setPosition({(float)(this->x * TILE_SIZE), (float)(this->y * TILE_SIZE)});
-  ctx.window->draw(sp);
+  ctx.rm->draw({ sf::Vector2f( TILE_SIZE * (x-.5), TILE_SIZE * (y - .5)),{TILE_SIZE, TILE_SIZE}}, std::string("cyrano") + char('1' + isFrameTwo));
   this->drawAttacks(ctx);
 }
 

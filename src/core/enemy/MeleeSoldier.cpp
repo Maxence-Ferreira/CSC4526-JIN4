@@ -17,6 +17,7 @@ void MeleeSoldier::draw(const context& ctx) {
   sp.setScale({TEX_IN_TILE*0.5, TEX_IN_TILE*0.5});
   sp.setPosition({(float)(this->x * TILE_SIZE), (float)(this->y * TILE_SIZE)});
   ctx.window->draw(sp);
+  ctx.rm->draw({ sf::Vector2f(TILE_SIZE * (x - .5), TILE_SIZE * (y - .5)),{TILE_SIZE/2, TILE_SIZE/2} }, std::string("melee") + char('1' + isFrameTwo));
   this->drawAttacks(ctx);
 }
 
