@@ -6,7 +6,7 @@
 class Attack : public Drawable {
  private:
   int damage;
-  double speed = 0.0005; // tile/ms
+  double speed = 0.001; // tile/ms
   double range;
   double x;
   double y;

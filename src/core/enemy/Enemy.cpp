@@ -1,6 +1,7 @@
 #include "Enemy.h"
 
 #include <cmath>
+
 #include "Attack.h"
 
 Enemy::Enemy(double maxHealth, double movementSpeed, int attackDamage,
@@ -17,35 +18,42 @@ Enemy::Enemy(double maxHealth, double movementSpeed, int attackDamage,
       isDead(false),
       bounty(bounty),
       currentCooldown(0),
-      currentPath(beginPath) ,
-    attacks{}
-{};
+      currentPath(beginPath),
+      attacks{} {};
 
 void Enemy::move(const int dt) {
+  // verif fin de chemin
+  if (currentPath->next() == nullptr) {
+    return;
+  }
+
   double targetX = currentPath->next()->getX() + 0.5;
   double targetY = currentPath->next()->getY() + 0.5;
 
   double moveDistance = movementSpeed * dt;
   double distanceToTarget = sqrt(pow(targetX - x, 2) + pow(targetY - y, 2));
 
-  double ratio = moveDistance / distanceToTarget;
-  x += (targetX - x) * ratio;
-  y += (targetY - y) * ratio;
-
-  if ((int)x == targetX && (int)y == targetY) {
+  if (moveDistance >= distanceToTarget) {
+    x = targetX;
+    y = targetY;
     currentPath = currentPath->next();
-  };
+  }
+
+  else {
+    double ratio = moveDistance / distanceToTarget;
+    x += (targetX - x) * ratio;
+    y += (targetY - y) * ratio;
+  }
 }
 
-Attack* Enemy::attacking(Building* targetBuilding)
-{
-    if (currentCooldown <= 0) {
-        currentCooldown = attackCooldown;
-        attacks.push_back(std::make_unique<Attack>(attackDamage, attackRange, x, y, targetBuilding));
-        return attacks.back().get();
-    }
-    return nullptr;
-
+Attack* Enemy::attacking(Building* targetBuilding) {
+  if (currentCooldown <= 0) {
+    currentCooldown = attackCooldown;
+    attacks.push_back(std::make_unique<Attack>(attackDamage, attackRange, x, y,
+                                               targetBuilding));
+    return attacks.back().get();
+  }
+  return nullptr;
 }
 
 void Enemy::takeDamage(int damage) {
@@ -55,25 +63,25 @@ void Enemy::takeDamage(int damage) {
   }
 }
 void Enemy::update(const context& ctx) {
-  //mouvement
-  // this->move(ctx.dt);
+  // mouvement
+  this->move(ctx.dt);
 
-  //animation
+  // animation
   animationTimer += ctx.dt;
   if (animationTimer >= timePerFrame) {
     isFrameTwo = !isFrameTwo;
     animationTimer -= timePerFrame;
   }
 
-  //recharge de l'attaque
+  // recharge de l'attaque
   if (currentCooldown > 0) {
     currentCooldown -= ctx.dt;
   }
 
-  //ciblage
+  // ciblage
   if (currentTarget != nullptr) {
     int distance = currentTarget->distanceTo(currentPath);
-    if (distance>attackRange || !currentTarget->isAlive()){
+    if (distance > attackRange || !currentTarget->isAlive()) {
       currentTarget = nullptr;
     }
   }
@@ -82,32 +90,31 @@ void Enemy::update(const context& ctx) {
     currentTarget = setTarget();
   }
 
-  //attaque
+  // attaque
   if (currentTarget != nullptr && currentCooldown <= 0) {
-      Attack* newAttack = attacking(currentTarget);
+    Attack* newAttack = attacking(currentTarget);
   }
-  for (auto it = attacks.begin();it!=attacks.end();)
-  {
-      const auto& cur = (*it);
-      cur->update(ctx);
-      if (!cur->isActive())it = attacks.erase(it);
-      else it++;
+  for (auto it = attacks.begin(); it != attacks.end();) {
+    const auto& cur = (*it);
+    cur->update(ctx);
+    if (!cur->isActive())
+      it = attacks.erase(it);
+    else
+      it++;
   }
 }
 
-void Enemy::drawAttacks(const context& ctx)
-{
-    for (const auto& att : attacks)att->draw(ctx);
+void Enemy::drawAttacks(const context& ctx) {
+  for (const auto& att : attacks) att->draw(ctx);
 }
 
 Building* Enemy::setTarget() {
-    Building* nearest = currentPath->getNearestBuilding();
-    if (!nearest)return 0;
-    if (attackRange >=
-        nearest->distanceTo(currentPath)) {
-        return nearest;
-    }
-    return nullptr;
+  Building* nearest = currentPath->getNearestBuilding();
+  if (!nearest) return 0;
+  if (attackRange >= nearest->distanceTo(currentPath)) {
+    return nearest;
+  }
+  return nullptr;
 }
 
 Enemy::~Enemy() = default;
