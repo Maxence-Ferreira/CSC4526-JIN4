@@ -14,7 +14,33 @@
 
 
 using namespace std;
+
 int myMain() {
+	const char* names[] = {
+		"archer",
+		"canon",
+		"ground1",
+		"ground2",
+		"ground3",
+		"ground4",
+		"path1",
+		"path2",
+		"path3",
+		"path4",
+		"cyrano1",
+		"cyrano2",
+		"dog1",
+		"dog2",
+		"firearm1",
+		"firearm2",
+		"horse1",
+		"horse2",
+		"kamikaze1",
+		"kamikaze2",
+		"melee1",
+		"melee2",
+		"cannonball",
+		"arrow"};
 	cout << "HW" << endl;
 	sf::RenderWindow win(sf::VideoMode(sf::Vector2u(SCREEN_WIDTH, SCREEN_HEIGHT)),"CMIUC");
 	sf::Font f("resources/ARIAL.TTF");
@@ -25,25 +51,12 @@ int myMain() {
 		.offsetX = 0,
 		.offsetY = 0,
 		.window = &win,
-		.rm = std::make_unique<ResourceManager>("resources/tileset.png", std::unordered_map<std::string,sf::IntRect>{
-			{"archer",sf::IntRect{{0,0},{16,16}}},
-			{"canon",sf::IntRect{{16,0},{16,16}}},
-			{"ground",sf::IntRect{{32,0},{16,16}}},
-			{"path",sf::IntRect{{48,0},{16,16}}},
-			{"cyrano1",sf::IntRect{{64,0},{16,16}}},
-			{"cyrano2",sf::IntRect{{80,0},{16,16}}},
-			{"dog1",sf::IntRect{{96,0},{16,16}}},
-			{"dog2",sf::IntRect{{112,0},{16,16}}},
-			{"firearm1",sf::IntRect{{128,0},{16,16}}},
-			{"firearm2",sf::IntRect{{144,0},{16,16}}},
-			{"horse1",sf::IntRect{{160,0},{16,16}}},
-			{"horse2",sf::IntRect{{176,0},{16,16}}},
-			{"kamikaze1",sf::IntRect{{192,0},{16,16}}},
-			{"kamikaze2",sf::IntRect{{208,0},{16,16}}},
-			{"melee1",sf::IntRect{{224,0},{16,16}}},
-			{"melee2",sf::IntRect{{240,0},{16,16}}},
-			}),
+		.rm = std::make_unique<ResourceManager>("resources/tileset.png"),
 	};
+	for (int i = 0; i < sizeof(names) / sizeof(const char*); i++)
+	{
+		c.rm->setTileCoordinate(names[i], { {16 * i,0},{16,16} });
+	}
 	Terrain terter(SCREEN_WIDTH / TILE_SIZE, SCREEN_HEIGHT / TILE_SIZE);
 	//test cyrano
 	//Cyrano cyrano(terter.getEntry()[0]);

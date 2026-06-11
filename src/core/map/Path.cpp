@@ -4,8 +4,9 @@
 #include <unordered_set>
 #include "enemy/Enemy.h"
 
-Path::Path(int x, int y) :Tile(x, y), m_neighbors{}, m_distance{ (unsigned int)(-1) }, m_next(0), m_enemies{}, angle(sf::degrees(90 * (rand() % 4))),m_nearest_building(0)
+Path::Path(int x, int y) :Tile(x, y), m_neighbors{}, m_distance{ (unsigned int)(-1) }, m_next(0), m_enemies{}, m_tex("path"), m_nearest_building(0)
 {
+	m_tex += '1' + rand() % 4;
 }
 
 void Path::addNeighbor(Path* nei)
@@ -55,22 +56,12 @@ void Path::update(const context& ctx)
 
 void Path::draw(const context& ctx)
 {
-	ctx.rm->draw({ {TILE_SIZE * (m_x), TILE_SIZE * (m_y)},{TILE_SIZE, TILE_SIZE } }, "path");
+	ctx.rm->draw({ {TILE_SIZE * (m_x), TILE_SIZE * (m_y)},{TILE_SIZE, TILE_SIZE } }, m_tex);
 }
 
 std::vector<Entity*> Path::getEntity() const
 {
 	return std::vector<Entity*>(m_enemies.begin(), m_enemies.end());
-}
-
-std::unique_ptr<sf::RectangleShape> Path::g_sprite = Path::createSprite();
-std::unique_ptr<sf::RectangleShape> Path::createSprite()
-{
-	static sf::Texture t("resources/path.png");
-	sf::RectangleShape sp({ TILE_SIZE,TILE_SIZE });
-	sp.setPosition({ -TILE_SIZE / 2, -TILE_SIZE / 2 });
-	sp.setTexture(&t);
-	return std::make_unique<sf::RectangleShape>(sp);
 }
 
 unsigned int Path::cost() const

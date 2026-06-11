@@ -12,7 +12,7 @@ void ResourceManager::setTileCoordinate(std::string alias, const sf::IntRect& rc
 	m_coord[alias] = rc;
 }
 
-void ResourceManager::draw(sf::FloatRect pos, std::string texture)
+void ResourceManager::draw(const sf::FloatRect& pos, const std::string& texture)
 {
     sf::IntRect texuv = m_coord[texture];
     auto megatex = m_full_tileset.getSize();

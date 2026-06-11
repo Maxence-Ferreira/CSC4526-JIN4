@@ -23,9 +23,7 @@ public:
 	virtual std::vector<Entity*> getEntity()const override;
 	virtual bool hasEntity() const override;
 private:
-	static std::unique_ptr<sf::RectangleShape> createSprite();
-	sf::Angle angle;
-	static std::unique_ptr<sf::RectangleShape> g_sprite;
+	std::string m_tex;
 protected:
 	//TODO
 	unsigned int cost()const;

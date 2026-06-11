@@ -14,9 +14,7 @@ public:
 	virtual std::vector<Entity*> getEntity() const override;
 	virtual bool hasEntity() const override;
 private:
-	static std::unique_ptr<sf::RectangleShape> createSprite();
-	static std::unique_ptr<sf::RectangleShape> g_sprite;
-	sf::Angle angle;
+	std::string m_tex;
 	Building* m_building;
 protected:
 };
