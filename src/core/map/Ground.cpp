@@ -34,3 +34,8 @@ std::unique_ptr<sf::RectangleShape> Ground::createSprite()
 	sp.setTexture(&t);
 	return std::make_unique<sf::RectangleShape>(sp);
 }
+
+bool Ground::hasEntity() const{
+	if (m_building==nullptr){return false;}
+	else {return true;}
+}

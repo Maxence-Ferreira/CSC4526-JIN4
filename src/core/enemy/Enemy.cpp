@@ -66,6 +66,7 @@ void Enemy::takeDamage(int damage) {
     isDead = true;
   }
 }
+
 void Enemy::update(const context& ctx) {
   // mouvement
   this->move(ctx.dt);

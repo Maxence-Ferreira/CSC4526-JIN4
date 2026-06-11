@@ -2,6 +2,7 @@
 #include "Tile.h"
 #include <memory>
 #include "building/Building.h"
+#include "Path.h"
 
 class Building;
 
@@ -11,6 +12,7 @@ public:
 	virtual void draw(const context& ctx) override;
 	void setBuilding(Building*b);
 	virtual std::vector<Entity*> getEntity() const override;
+	virtual bool hasEntity() const override;
 private:
 	static std::unique_ptr<sf::RectangleShape> createSprite();
 	static std::unique_ptr<sf::RectangleShape> g_sprite;

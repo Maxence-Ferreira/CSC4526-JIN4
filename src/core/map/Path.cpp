@@ -20,7 +20,7 @@ void Path::addNeighbor(Path* nei)
 
 void Path::addDistanceFrom(Building* nei)
 {
-	if (m_nearest_building&& m_nearest_building->distanceTo(this) < nei->distanceTo(this))return;
+	if (m_nearest_building&& m_nearest_building->distanceTo(this) <= nei->distanceTo(this))return;
 	m_nearest_building = nei;
 }
 
@@ -81,7 +81,7 @@ unsigned int Path::cost() const
 
 void Path::repath()
 {
-	//liste trié
+	//liste triï¿½
 	std::priority_queue<std::pair<unsigned int,Path*>,std::vector<std::pair<unsigned int, Path*>>,std::greater<>>totreat;
 	totreat.push({ 0,this });
 	m_distance = 0;
@@ -102,4 +102,8 @@ void Path::repath()
 			}
 		}
 	}
+}
+
+bool Path::hasEntity() const{
+	return !m_enemies.empty();
 }

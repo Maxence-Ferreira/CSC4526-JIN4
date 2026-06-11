@@ -11,7 +11,7 @@ public:
 	Building(
 		Ground* tile,
 		int pv_max,
-		int dammage,
+		int damage,
 		int range,
 		int cooldown,
 		int price);
@@ -22,17 +22,23 @@ public:
 	int distanceTo(Tile*) const;
 	virtual~Building() = default;
 	Ground* getTile() const;
+	virtual Attack* attacking(Tile* targetTile);
+	virtual void update(const context& ctx) override;
+  	void drawAttacks(const context& ctx);
+ 	Tile* setTarget();
+	void addDistance(Path* path);
 protected:
 private:
 	Ground* m_tile;
-	Enemy* m_target;
+	Tile* m_curr_target;
 	int m_pv_max;
 	int m_pv;
-	int m_dammage;
+	int m_damage;
 	int m_range;
 	int m_cooldown;
 	bool m_dead;
-	int m_cur_cooldown;
+	int m_cur_cooldown = 0;
 	int m_level;
 	int m_price;
+	std::vector<std::unique_ptr<Attack>> attacks;
 };
