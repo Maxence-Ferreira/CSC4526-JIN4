@@ -54,7 +54,7 @@ Attack* Enemy::attacking(Building* targetBuilding) {
   if (currentCooldown <= 0) {
     currentCooldown = attackCooldown;
     attacks.push_back(std::make_unique<Attack>(attackDamage, attackRange, x, y,
-                                               targetBuilding->getTile()));
+                                               targetBuilding->getTile(), "red"));
     return attacks.back().get();
   }
   return nullptr;

@@ -1,6 +1,7 @@
 #include "Archer.h"
+#include "SFML/Graphics.hpp"
 
-Archer::Archer(Ground* g, int price):Building(g,1000,5,0,10, price)
+Archer::Archer(Ground* g, int price):Building(g,1000,5,1000,1000, price)
 {
 }
 

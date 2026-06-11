@@ -5,8 +5,8 @@
 #include "Enemy.h"
 
 Attack::Attack(int damage, double range, double x, double y,
-               Tile* targetTile)
-    : damage(damage), range(range), x(x), y(y), targetTile(targetTile) {
+               Tile* targetTile, std::string color)
+    : damage(damage), range(range), x(x), y(y), targetTile(targetTile), color(color) {
       };
 
 void Attack::update(const context& ctx) {
@@ -46,7 +46,8 @@ void Attack::draw(const context& ctx) {
 
   //création d'une balle
   sf::CircleShape projectile(0.15f*TILE_SIZE);
-  projectile.setFillColor(sf::Color::Red);
+  if (color=="red"){projectile.setFillColor(sf::Color::Red);}
+  if (color=="blue"){projectile.setFillColor(sf::Color::Blue);}
   projectile.setOrigin({projectile.getRadius(), projectile.getRadius()});
   projectile.setPosition({(float)(x*TILE_SIZE), (float)(y*TILE_SIZE)});
 
