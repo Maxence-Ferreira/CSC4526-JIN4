@@ -10,7 +10,7 @@ Path::Path(int x, int y) :Tile(x, y), m_neighbors{}, m_distance{ (unsigned int)(
 
 void Path::addNeighbor(Path* nei)
 {
-	if (!nei||std::find(m_neighbors.begin(), m_neighbors.end(),nei)!= m_neighbors.end())return;
+	if (!nei||std::find(m_neighbors.begin(), m_neighbors.end(),nei)!= m_neighbors.end() && nei != this)return;
 	int dx = nei->m_x - m_x;
 	int dy = nei->m_y - m_y;
 	if (dx * dx + dy * dy != 1)return;

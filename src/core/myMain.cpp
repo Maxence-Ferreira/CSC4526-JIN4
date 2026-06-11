@@ -30,7 +30,7 @@ int myMain() {
 	Archer a(static_cast<Ground*>(terter.getTile(3, 0)), 0);
 	terter.addBuilding(&a);
 	//
-
+	clock.restart();
 	while (win.isOpen())
 	{
 		while (const std::optional event = win.pollEvent())

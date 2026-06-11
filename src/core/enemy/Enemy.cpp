@@ -54,7 +54,6 @@ void Enemy::takeDamage(int damage) {
     isDead = true;
   }
 }
-
 void Enemy::update(const context& ctx) {
   //mouvement
   // this->move(ctx.dt);
@@ -86,7 +85,6 @@ void Enemy::update(const context& ctx) {
   //attaque
   if (currentTarget != nullptr && currentCooldown <= 0) {
       Attack* newAttack = attacking(currentTarget);
-      resetCooldown();
   }
   for (auto it = attacks.begin();it!=attacks.end();)
   {
