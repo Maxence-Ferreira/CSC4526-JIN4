@@ -62,10 +62,9 @@ Terrain::Terrain(int size_x, int size_y, int difficulty) : m_tiles((long long)si
 			find = false;
 			for (const auto& beg : m_inputs)
 			{
-				if (beg->getY() - 1 >= pos && beg->getY() - 1 <= pos)
+				if (beg->getY() - 1 <= pos && beg->getY() + 1 >= pos)
 				{
 					find = true;
-					std::cout << "already load" << std::endl;
 					break;
 				}
 			}
@@ -97,7 +96,7 @@ Terrain::Terrain(int size_x, int size_y, int difficulty) : m_tiles((long long)si
 		for (int j = 0; j < npoint; j++)
 		{
 			y= heightRD(gen);
-			while (dynamic_cast<Path*>(getTile(x, y)) || dynamic_cast<Path*>(getTile(x, y-1)) || dynamic_cast<Path*>(getTile(x, y + 1)))
+			while (dynamic_cast<Path*>(getTile(x+1, y)) || dynamic_cast<Path*>(getTile(x+1, y-1)) || dynamic_cast<Path*>(getTile(x+1, y + 1)))
 			{
 				y = heightRD(gen);
 			}
