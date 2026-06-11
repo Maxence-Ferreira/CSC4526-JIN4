@@ -11,7 +11,7 @@ public:
 	int getY()const;
 	virtual std::vector<Entity*> getEntity() const = 0;
 	virtual~Tile() = default;
-	virtual bool hasEntity() const;
+	virtual bool hasEntity() const = 0;
 public:
 	/// <summary>
 	/// effectue la logique de dessin du tile

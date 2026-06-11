@@ -22,6 +22,7 @@ void Path::addDistanceFrom(Building* nei)
 {
 	if (m_nearest_building&& m_nearest_building->distanceTo(this) <= nei->distanceTo(this))return;
 	m_nearest_building = nei;
+	nei->addDistanceFrom(this);
 }
 
 Building* Path::getNearestBuilding()

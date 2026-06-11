@@ -1,8 +1,10 @@
 #include "Building.h"
+#include "./map/Path.h"
+#include "./enemy/Attack.h"
 #include <iostream>
 
 Building::Building(Ground* tile, int pv_max, int damage, int range, int cooldown, int price)
-	:m_tile(tile), m_pv_max(pv_max), m_pv(pv_max), m_damage(damage), m_range(range), m_cooldown(cooldown),m_price(price),m_level(0),m_dead(0),m_cur_cooldown(0),m_curr_target(nullptr), attacks{}
+	:m_tile(tile), m_pv_max(pv_max), m_pv(pv_max), m_damage(damage), m_range(range), m_cooldown(cooldown),m_price(price),m_level(0),m_dead(0),m_cur_cooldown(0),m_curr_target(nullptr), attacks{},m_nearest_path(0)
 {
 	tile->setBuilding(this);
 }
@@ -84,6 +86,11 @@ void Building::drawAttacks(const context& ctx) {
   for (const auto& att : attacks) att->draw(ctx);
 }
 
+Tile* Building::setTarget()
+{
+    return nullptr;
+}
+
 /*
 Tile* Building::setTarget() {
   Building* nearest = currentPath->getNearestBuilding();
@@ -95,5 +102,9 @@ Tile* Building::setTarget() {
 }
 */
 
-void Building::addDistance(Path* path){
+void Building::addDistanceFrom(Path* path){
+    if (m_nearest_path && distanceTo(m_nearest_path) <= distanceTo(path))return;
+    m_nearest_path = path;
+    path->addDistanceFrom(this);
 }
+Building::~Building() = default;
