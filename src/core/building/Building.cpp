@@ -5,7 +5,6 @@ Building::Building(Ground* tile, int pv_max, int dammage, int range, int cooldow
 	:m_tile(tile), m_pv_max(pv_max), m_pv(pv_max), m_dammage(dammage), m_range(range), m_cooldown(cooldown),m_price(price),m_level(0),m_dead(0),m_cur_cooldown(0),m_target(0)
 {
 	tile->setBuilding(this);
-	tile->setEntity(this);
 }
 
 int Building::getX() const

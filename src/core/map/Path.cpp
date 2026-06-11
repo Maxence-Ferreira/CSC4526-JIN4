@@ -34,11 +34,21 @@ Path* Path::next() const
 	return m_next;
 }
 
+void Path::addEnemy(Enemy* enemy)
+{
+	m_enemies.push_back(enemy);
+}
+
+void Path::removeEnemy(Enemy* enemy)
+{
+	m_enemies.erase(std::find(m_enemies.begin(),m_enemies.end(), enemy));
+}
+
 void Path::update(const context& ctx)
 {
-	for (Enemy* e : m_enemies)
+	for (Entity* e : m_enemies)
 	{
-		e->move(ctx.dt);
+		((Enemy*)e)->move(ctx.dt);
 	}
 }
 
@@ -47,6 +57,11 @@ void Path::draw(const context& ctx)
 	sf::Transform t;
 	t.translate({ TILE_SIZE * (m_x+.5f), TILE_SIZE * (m_y + .5f) }).rotate(angle);
 	ctx.window->draw(*g_sprite, t);
+}
+
+std::vector<Entity*> Path::getEntity() const
+{
+	return std::vector<Entity*>(m_enemies.begin(), m_enemies.end());
 }
 
 std::unique_ptr<sf::RectangleShape> Path::g_sprite = Path::createSprite();

@@ -14,12 +14,3 @@ int Tile::getY() const
 {
 	return m_y;
 }
-
-Entity* Tile::getEntity() const
-{
-	return entity;
-}
-
-void Tile::setEntity(Entity* e){
-	this->entity=e;
-}

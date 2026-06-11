@@ -9,8 +9,7 @@ public:
 	Tile(int x, int y);
 	int getX()const;
 	int getY()const;
-	Entity* getEntity() const;
-	void setEntity(Entity* e);
+	virtual std::vector<Entity*> getEntity() const = 0;
 	virtual~Tile() = default;
 public:
 	/// <summary>
@@ -20,5 +19,4 @@ public:
 	virtual void draw(const context& ctx) = 0;
 protected:
 	int m_x, m_y;
-	Entity* entity = nullptr;
 };

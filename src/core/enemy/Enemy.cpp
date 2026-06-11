@@ -20,7 +20,7 @@ Enemy::Enemy(double maxHealth, double movementSpeed, int attackDamage,
       currentCooldown(0),
       currentPath(beginPath),
       attacks{} {
-        beginPath->setEntity(this);
+        beginPath->addEnemy(this);
       };
 
 void Enemy::move(const int dt) {
@@ -38,7 +38,9 @@ void Enemy::move(const int dt) {
   if (moveDistance >= distanceToTarget) {
     x = targetX;
     y = targetY;
+    currentPath->removeEnemy(this);
     currentPath = currentPath->next();
+    currentPath->addEnemy(this);
   }
 
   else {

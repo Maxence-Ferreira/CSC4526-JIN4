@@ -10,6 +10,7 @@ public:
 	Ground(int x, int y);
 	virtual void draw(const context& ctx) override;
 	void setBuilding(Building*b);
+	virtual std::vector<Entity*> getEntity() const override;
 private:
 	static std::unique_ptr<sf::RectangleShape> createSprite();
 	static std::unique_ptr<sf::RectangleShape> g_sprite;

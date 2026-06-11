@@ -16,8 +16,11 @@ public:
 	void addDistanceFrom(Building* nei);
 	Building* getNearestBuilding();
 	Path* next()const;
+	void addEnemy(Enemy* enemy);
+	void removeEnemy(Enemy* enemy);
 	virtual void update(const context& ctx)override;
 	virtual void draw(const context & ctx)override;
+	virtual std::vector<Entity*> getEntity()const override;
 private:
 	static std::unique_ptr<sf::RectangleShape> createSprite();
 	sf::Angle angle;

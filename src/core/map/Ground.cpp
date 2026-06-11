@@ -12,12 +12,17 @@ void Ground::draw(const context& ctx)
 	sf::Transform t;
 	t.translate({ TILE_SIZE * (m_x+.5f), TILE_SIZE * (m_y+.5f) }).rotate(angle);
 	ctx.window->draw(*g_sprite,t);
-	if(m_building)m_building->draw(ctx);
+	//if(m_building)m_building->draw(ctx);
 }
 
 void Ground::setBuilding(Building* b)
 {
 	m_building = b;
+}
+
+std::vector<Entity*> Ground::getEntity() const
+{
+	return {m_building};
 }
 
 std::unique_ptr<sf::RectangleShape> Ground::g_sprite = Ground::createSprite();
