@@ -55,9 +55,7 @@ void Path::update(const context& ctx)
 
 void Path::draw(const context& ctx)
 {
-	sf::Transform t;
-	t.translate({ TILE_SIZE * (m_x+.5f), TILE_SIZE * (m_y + .5f) }).rotate(angle);
-	ctx.window->draw(*g_sprite, t);
+	ctx.rm->draw({ {TILE_SIZE * (m_x), TILE_SIZE * (m_y)},{TILE_SIZE, TILE_SIZE } }, "path");
 }
 
 std::vector<Entity*> Path::getEntity() const

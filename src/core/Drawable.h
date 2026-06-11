@@ -8,7 +8,7 @@ struct context
 	unsigned int dt;
 	double offsetX, offsetY;
 	sf::RenderWindow* window;
-	ResourceManager rm;
+	std::unique_ptr<ResourceManager> rm;
 };
 
 class Drawable

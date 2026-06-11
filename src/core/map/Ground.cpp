@@ -9,9 +9,12 @@ Ground::Ground(int x, int y):Tile(x,y),angle(sf::degrees((rand()%4)*90)),m_build
 
 void Ground::draw(const context& ctx)
 {
+	/*
 	sf::Transform t;
 	t.translate({ TILE_SIZE * (m_x+.5f), TILE_SIZE * (m_y+.5f) }).rotate(angle);
 	ctx.window->draw(*g_sprite,t);
+	*/
+	ctx.rm->draw({ {TILE_SIZE * (m_x), TILE_SIZE * (m_y)},{TILE_SIZE, TILE_SIZE } }, "ground");
 	//if(m_building)m_building->draw(ctx);
 }
 
