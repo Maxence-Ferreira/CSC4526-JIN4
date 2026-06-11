@@ -12,9 +12,10 @@ class Attack : public Drawable {
   double y;
   Tile* targetTile;
   bool active = true;
+  std::string color;
 
  public:
-  Attack(int damage, double range, double x, double y, Tile* targetTile);
+  Attack(int damage, double range, double x, double y, Tile* targetTile, std::string color);
   virtual ~Attack();
   void update(const context& ctx);
   void draw(const context& ctx);

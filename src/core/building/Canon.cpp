@@ -1,6 +1,6 @@
 #include "Canon.h"
 
-Canon::Canon(Ground* g, int price):Building(g,1000,5,0,10, price)
+Canon::Canon(Ground* g, int price):Building(g,1000,5,1000,1000, price)
 {
 }
 

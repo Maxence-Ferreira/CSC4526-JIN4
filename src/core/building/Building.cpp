@@ -43,7 +43,7 @@ Attack* Building::attacking(Tile* targetTile) {
   if (m_cur_cooldown <= 0) {
     m_cur_cooldown = m_cooldown;
     attacks.push_back(std::make_unique<Attack>(m_damage, m_range, m_tile->getX(), m_tile->getY(),
-                                               targetTile));
+                                               targetTile, "blue"));
     return attacks.back().get();
   }
   return nullptr;
@@ -57,7 +57,7 @@ void Building::update(const context& ctx) {
   }
 
   // ciblage
-  if (m_curr_target==nullptr) {
+  if (m_curr_target!=nullptr) {
     int distance = this->distanceTo(m_curr_target);
     if (distance > m_range || !m_curr_target->hasEntity()) {
       m_curr_target = nullptr;
@@ -86,21 +86,15 @@ void Building::drawAttacks(const context& ctx) {
   for (const auto& att : attacks) att->draw(ctx);
 }
 
-Tile* Building::setTarget()
-{
-    return nullptr;
-}
 
-/*
 Tile* Building::setTarget() {
-  Building* nearest = currentPath->getNearestBuilding();
-  if (!nearest) return 0;
-  if (attackRange >= nearest->distanceTo(currentPath)) {
-    return nearest;
+  if (!m_nearest_path) return 0;
+  if (m_range >= this->distanceTo(m_nearest_path)) {
+    return m_nearest_path;
   }
   return nullptr;
 }
-*/
+
 
 void Building::addDistanceFrom(Path* path){
     if (m_nearest_path && distanceTo(m_nearest_path) <= distanceTo(path))return;

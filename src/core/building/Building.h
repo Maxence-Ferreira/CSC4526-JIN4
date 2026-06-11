@@ -29,9 +29,9 @@ public:
 	virtual Attack* attacking(Tile* targetTile);
 	virtual void update(const context& ctx) override;
   	void drawAttacks(const context& ctx);
- 	Tile* setTarget();
 	void addDistanceFrom(Path* path);
 protected:
+	Tile* setTarget();
 private:
 	Ground* m_tile;
 	Tile* m_curr_target;
