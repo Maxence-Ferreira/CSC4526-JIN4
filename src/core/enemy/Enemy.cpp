@@ -88,9 +88,12 @@ void Enemy::update(const context& ctx) {
       Attack* newAttack = attacking(currentTarget);
       resetCooldown();
   }
-  for (const auto& att : attacks)
+  for (auto it = attacks.begin();it!=attacks.end();)
   {
-      att->update(ctx);
+      const auto& cur = (*it);
+      cur->update(ctx);
+      if (!cur->isActive())it = attacks.erase(it);
+      else it++;
   }
 }
 

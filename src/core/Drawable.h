@@ -3,6 +3,7 @@
 
 struct context
 {
+	unsigned int time;
 	unsigned int dt;
 	double offsetX, offsetY;
 	sf::RenderWindow* window;

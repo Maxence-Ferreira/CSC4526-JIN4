@@ -15,6 +15,7 @@ int myMain() {
 	cout << "HW" << endl;
 	sf::RenderWindow win(sf::VideoMode(sf::Vector2u(SCREEN_WIDTH, SCREEN_HEIGHT)),"CMIUC");
 	context c = {
+		.time = 0,
 		.dt=0,
 		.offsetX=0,
 		.offsetY=0,
@@ -41,7 +42,7 @@ int myMain() {
 				win.setView(sf::View(sf::Vector2f(win.getView().getCenter()), sf::Vector2f(resized->size)));
 			}
 		}
-		c.dt = clock.restart().asMilliseconds();
+		c.time+=( c.dt = clock.restart().asMilliseconds());
 		cyrano.update(c);
 		a.update(c);
 		win.clear(sf::Color::White);

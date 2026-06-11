@@ -2,6 +2,6 @@
 
 #include <string>
 
-TEST(PACK, Nom) {
+TEST(TERRAIN, Nom) {
 
 }
