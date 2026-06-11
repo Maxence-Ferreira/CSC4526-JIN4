@@ -13,7 +13,7 @@ add_library(lib_core
   "enemy/Attack.h" "enemy/Attack.cpp" "common.h"
   "enemy/EnemyManager.cpp" "enemy/EnemyManager.h" "Drawable.h" "building/Building.h" "building/Building.cpp"
    "building/Archer.h" "building/Archer.cpp"
-   "Entity.h")
+   "Entity.h" "building/Canon.h" "building/Canon.cpp" "building/BuildingManager.h" "building/BuildingManager.cpp")
 
 target_include_directories(lib_core PUBLIC ./)
 target_link_libraries(lib_core PUBLIC sfml-graphics)
