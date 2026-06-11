@@ -68,7 +68,7 @@ void EnemyManager::removeDeadEnemies(Enemy* targetEnemy) {
         return;
     }
 
-    money += targetEnemy->getBounty();
+    //money += targetEnemy->getBounty();
     
     for (auto it = enemies.begin(); it != enemies.end(); ++it) {
         if (it->get() == targetEnemy) {

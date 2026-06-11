@@ -9,7 +9,6 @@ class EnemyManager : public Drawable{
  private:
   std::vector<std::unique_ptr<Enemy>> enemies;
   int waveNumber;
-  int money;
 
  public:
   EnemyManager() { waveNumber = 0; };

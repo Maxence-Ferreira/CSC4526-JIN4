@@ -8,6 +8,7 @@
 #include "enemy/Cyrano.h"
 #include "building/Archer.h"
 #include "enemy/EnemyManager.h"
+#include "building/BuildingManager.h"
 
 
 
@@ -32,10 +33,14 @@ int myMain() {
 	e_manager.newWave(&terter);
 
 	//
-	Archer a(static_cast<Ground*>(terter.getTile(3, 0)), 0);
-	terter.addBuilding(&a);
+	//Archer a(static_cast<Ground*>(terter.getTile(3, 0)), 0);
+	//terter.addBuilding(&a);
 	//
 
+	//test BuildingManager
+	BuildingManager b_manager(&terter);
+	b_manager.addBuilding("Archer",static_cast<Ground*>(terter.getTile(3, 0)));
+	b_manager.addBuilding("Canon",static_cast<Ground*>(terter.getTile(6, 0)));
 
 	clock.restart();
 	while (win.isOpen())
@@ -51,10 +56,11 @@ int myMain() {
 		}
 		c.time+=( c.dt = clock.restart().asMilliseconds());
 		e_manager.updateEnemies(c);
-		a.update(c);
+		b_manager.updateBuildings(c);
 		win.clear(sf::Color::White);
 		terter.draw(c);
 		e_manager.draw(c);
+		b_manager.draw(c);
 		win.display();
 	}
 	return 0;
