@@ -10,10 +10,13 @@ void Archer::draw(const context& ctx)
 	sf::Transform t;
 	t.translate(sf::Vector2f( TILE_SIZE * (getX() + .5),TILE_SIZE * (getY() + .5) ));
 	ctx.window->draw(g_sprite, t);
+	this->drawAttacks(ctx);
+	Building::update(ctx);
 }
 
 void Archer::update(const context& ctx)
 {
+	Building::update(ctx);
 }
 static sf::RectangleShape create()
 {
