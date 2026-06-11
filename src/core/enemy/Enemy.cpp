@@ -1,6 +1,7 @@
 #include "Enemy.h"
 
 #include <cmath>
+#include "Attack.h"
 
 Enemy::Enemy(double maxHealth, double movementSpeed, int attackDamage,
              double attackRange, double attackCooldown, int bounty,
@@ -107,3 +108,5 @@ Building* Enemy::setTarget() {
     }
     return nullptr;
 }
+
+Enemy::~Enemy() = default;

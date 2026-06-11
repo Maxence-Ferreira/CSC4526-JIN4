@@ -15,7 +15,7 @@ class Attack : public Drawable {
 
  public:
   Attack(int damage, double range, double x, double y, Building* targetBuilding);
-  virtual ~Attack() = default;
+  virtual ~Attack();
   void update(const context& ctx);
   void draw(const context& ctx);
 

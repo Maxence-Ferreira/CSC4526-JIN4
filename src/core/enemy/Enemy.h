@@ -34,7 +34,7 @@ class Enemy : public Drawable {
  public:
   Enemy(double maxHealth, double movementSpeed, int attackDamage,
         double attackRange, double attackCooldown, int bounty, Path* beginPath);
-  virtual ~Enemy() = default;
+  virtual ~Enemy();
 
   void move(const int dt);
   virtual Attack* attacking(Building* targetBuilding);

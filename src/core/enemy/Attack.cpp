@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <cmath>
+#include "Enemy.h"
 
 Attack::Attack(int damage, double range, double x, double y,
                Building* targetBuilding)
@@ -48,3 +49,5 @@ void Attack::draw(const context& ctx) {
 
   ctx.window->draw(projectile);
 }
+
+Attack::~Attack() = default;
