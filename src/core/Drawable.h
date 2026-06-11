@@ -1,5 +1,6 @@
 #pragma once
 #include "SFML/Graphics.hpp"
+#include "Graphics/ResourceManager.h"
 
 struct context
 {
@@ -7,6 +8,7 @@ struct context
 	unsigned int dt;
 	double offsetX, offsetY;
 	sf::RenderWindow* window;
+	ResourceManager rm;
 };
 
 class Drawable

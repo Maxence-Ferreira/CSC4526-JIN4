@@ -16,14 +16,14 @@
 using namespace std;
 int myMain() {
 	cout << "HW" << endl;
-	ResourceManager rm;
 	sf::RenderWindow win(sf::VideoMode(sf::Vector2u(SCREEN_WIDTH, SCREEN_HEIGHT)),"CMIUC");
 	context c = {
 		.time = 0,
 		.dt=0,
 		.offsetX=0,
 		.offsetY=0,
-		.window=&win
+		.window=&win,
+		.rm=ResourceManager(),
 	};
 	Terrain terter(SCREEN_WIDTH / TILE_SIZE, SCREEN_HEIGHT / TILE_SIZE);
 	//test cyrano
