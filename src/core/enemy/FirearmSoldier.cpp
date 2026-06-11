@@ -1,6 +1,6 @@
 #include "FirearmSoldier.h"
 
-FirearmSoldier::FirearmSoldier(Path* beginPath) : Enemy(100.0, 1.0, 20, 5.0, 2.0, 10, beginPath) {};
+FirearmSoldier::FirearmSoldier(Path* beginPath) : Enemy(100.0, 1.0, 20, 5.0, 2000.0, 10, beginPath) {};
 
 
 void FirearmSoldier::draw(const context& ctx) {
@@ -20,5 +20,5 @@ void FirearmSoldier::draw(const context& ctx) {
 }
 
 void FirearmSoldier::resetCooldown(){
-    attackCooldown = 2.0;
+    attackCooldown = 2000.0;
 }

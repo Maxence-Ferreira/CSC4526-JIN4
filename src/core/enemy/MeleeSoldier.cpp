@@ -1,6 +1,6 @@
 #include "MeleeSoldier.h"
 
-MeleeSoldier::MeleeSoldier(Path* beginPath) : Enemy(100.0, 1.0, 20, 1.0, 1.0, 10, beginPath) {};
+MeleeSoldier::MeleeSoldier(Path* beginPath) : Enemy(100.0, 1.0, 20, 1.0, 1000.0, 10, beginPath) {};
 
 
 void MeleeSoldier::draw(const context& ctx) {
@@ -20,5 +20,5 @@ void MeleeSoldier::draw(const context& ctx) {
 }
 
 void MeleeSoldier::resetCooldown(){
-    attackCooldown = 1.0;
+    attackCooldown = 1000.0;
 }

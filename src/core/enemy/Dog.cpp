@@ -1,6 +1,6 @@
 #include "Dog.h"
 
-Dog::Dog(Path* beginPath) : Enemy(75.0, 3.0, 20, 1.0, 0.5, 15, beginPath) {};
+Dog::Dog(Path* beginPath) : Enemy(75.0, 3.0, 20, 1.0, 500, 15, beginPath) {};
 
 void Dog::draw(const context& ctx) {
   static sf::Texture t("resources/Dog_Sprite.png");
@@ -18,5 +18,5 @@ void Dog::draw(const context& ctx) {
 }
 
 void Dog::resetCooldown(){
-    attackCooldown = 0.5;
+    attackCooldown = 500;
 }

@@ -1,6 +1,6 @@
 #include "HorseSoldier.h"
 
-HorseSoldier::HorseSoldier(Path* beginPath) : Enemy(150.0, 2.0, 20, 5.0, 2, 30, beginPath) {};
+HorseSoldier::HorseSoldier(Path* beginPath) : Enemy(150.0, 2.0, 20, 5.0, 2000, 30, beginPath) {};
 
 void HorseSoldier::draw(const context& ctx) {
   static sf::Texture t("resources/HorseSoldier_Sprite.png");
@@ -19,5 +19,5 @@ void HorseSoldier::draw(const context& ctx) {
 }
 
 void HorseSoldier::resetCooldown(){
-    attackCooldown = 2.0;
+    attackCooldown = 2000.0;
 }
