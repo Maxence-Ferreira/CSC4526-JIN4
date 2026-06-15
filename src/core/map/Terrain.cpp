@@ -16,13 +16,14 @@ Terrain::Terrain(int size_x, int size_y, int difficulty, std::mt19937& gen) : m_
 		for (int i = 0; i < size_x; i++)
 			m_tiles[j* (long long)size_x+i]=std::make_unique<Ground>(i,j);
 
-	//crée la sortie
+	//crï¿½e la sortie
 	std::unique_ptr<EndPath> endp(std::make_unique<EndPath>(size_x-2, size_y/2));
 	m_end = endp.get();
 	m_paths.push_back(endp.get());
-	m_tiles[size_x - 2 + size_x * size_y / 2] = std::move(endp);
+	//ajout des parantheses pour size_y/2
+	m_tiles[(size_x - 2) + (size_y / 2)*size_x] = std::move(endp);
 
-	//crée les entrées
+	//crï¿½e les entrï¿½es
 	std::uniform_int_distribution<> heightRD(3, size_y-4);
 	int pos;
 	bool find;
@@ -77,7 +78,7 @@ Terrain::Terrain(int size_x, int size_y, int difficulty, std::mt19937& gen) : m_
 		m_paths.push_back(beg.get());
 		m_tiles[pos * (long long)size_x+1] = std::move(beg);
 	}
-	//crée les points intermédiaires et les relies
+	//crï¿½e les points intermï¿½diaires et les relies
 
 	int npoint = difficulty;
 	int min = size_y-2;
@@ -97,7 +98,11 @@ Terrain::Terrain(int size_x, int size_y, int difficulty, std::mt19937& gen) : m_
 			{
 				y = heightRD(gen);
 			}
-			for (int X = x + 1; X < calc_x(i + 1); X++)
+
+			//modif de la borne de la boucle Ã  limit_x
+			int limit_x=(i==nrange) ? (size_x -3):calc_x(i+1);
+
+			for (int X = x + 1; X < limit_x; X++)
 			{
 				p = std::make_unique<Path>(X, y);
 				m_paths.push_back(p.get());
@@ -121,7 +126,7 @@ Terrain::Terrain(int size_x, int size_y, int difficulty, std::mt19937& gen) : m_
 		x_ = x;
 	}
 	for (
-		int Y = ((y < size_y / 2) ? y : (size_y / 2));	// min entre la fin du chemin et le dernier tile placé
+		int Y = ((y < size_y / 2) ? y : (size_y / 2));	// min entre la fin du chemin et le dernier tile placï¿½
 		Y <= ((y > size_y / 2) ? y : (size_y / 2));		// max entre ...
 		Y++)
 	{
