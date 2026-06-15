@@ -38,7 +38,7 @@ int myMain() {
 		"kamikaze2",
 		"melee1",
 		"melee2",
-		"cannonball",
+		"canonball",
 		"arrow"};
 	sf::RenderWindow win(sf::VideoMode(sf::Vector2u(SCREEN_WIDTH, SCREEN_HEIGHT)),"Post Me If You Can");
 	sf::Font f("resources/Cyrano.ttf");
