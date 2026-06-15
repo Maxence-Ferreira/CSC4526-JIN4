@@ -21,7 +21,11 @@ public:
 	std::vector<Tile*> pathfind(int from_x, int from_y) const;
 	void addBuilding(Building*ptr) const;
 private:
+#ifdef TESTING
+public:
+#else
 protected:
+#endif
 	std::vector<std::unique_ptr<Tile>> m_tiles;
 	EndPath* m_end;
 	std::vector<BeginPath*> m_inputs;

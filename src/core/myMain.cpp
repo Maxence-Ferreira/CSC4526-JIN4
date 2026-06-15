@@ -11,8 +11,6 @@
 #include "building/BuildingManager.h"
 #include "Graphics/ResourceManager.h"
 
-
-
 using namespace std;
 
 int myMain() {
@@ -44,7 +42,7 @@ int myMain() {
 		"arrow"};
 	cout << "HW" << endl;
 	sf::RenderWindow win(sf::VideoMode(sf::Vector2u(SCREEN_WIDTH, SCREEN_HEIGHT)),"Post Me If You Can");
-	sf::Font f("resources/ARIAL.TTF");
+	sf::Font f("resources/Cyrano.ttf");
 	sf::Text t(f);
 	context c = {
 		.time = 0,
@@ -53,6 +51,7 @@ int myMain() {
 		.offsetY = 0,
 		.window = &win,
 		.rm = std::make_unique<ResourceManager>("resources/tileset.png"),
+		.rand=std::mt19937(std::random_device()()),
 	};
 	for (int i = 0; i < sizeof(names) / sizeof(const char*); i++)
 	{
@@ -108,7 +107,7 @@ int myMain() {
 			fps /= 100.f;
 		}
 		std::ostringstream oss("");
-		oss << "fps : " << fps;
+		oss << "fps : " << (int)fps;
 		t.setString(oss.str());
 		c.rm->render(&win);
 		win.draw(t);

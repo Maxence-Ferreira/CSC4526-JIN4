@@ -6,6 +6,7 @@
 #include "map/BeginPath.h"
 #include "map/EndPath.h"
 
-TEST(TERRAIN, Path) {
-
+TEST(TERRAIN, PathOK) {
+	Terrain terter(50,50);
+	terter.m_paths;
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "SFML/Graphics.hpp"
 #include "Graphics/ResourceManager.h"
+#include <random>
 
 struct context
 {
@@ -9,6 +10,7 @@ struct context
 	double offsetX, offsetY;
 	sf::RenderWindow* window;
 	std::unique_ptr<ResourceManager> rm;
+	std::mt19937 rand;
 };
 
 class Drawable

@@ -9,6 +9,8 @@ add_executable(unitTests
 )
 target_link_libraries(unitTests GTest::gtest_main lib_core sfml-graphics)
 
+target_compile_definitions(unitTests PRIVATE TESTING)
+
 # The next two lines enable CMake’s test runner to discover the tests included in the binary,
 # using the GoogleTest CMake module.
 include(GoogleTest)
