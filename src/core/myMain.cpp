@@ -10,6 +10,7 @@
 #include "enemy/EnemyManager.h"
 #include "building/BuildingManager.h"
 #include "Graphics/ResourceManager.h"
+#include <sstream>
 
 using namespace std;
 
