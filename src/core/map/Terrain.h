@@ -21,6 +21,7 @@ public:
 	virtual void update(const context& ctx)override;
 	std::vector<Tile*> pathfind(int from_x, int from_y) const;
 	void addBuilding(Building*ptr) const;
+	std::vector<Path*> getPaths() {return m_paths;};
 private:
 #ifdef TESTING
 public:
