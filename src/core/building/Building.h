@@ -4,6 +4,7 @@
 #include "./map/Path.h"
 #include "./enemy/Attack.h"
 #include "./enemy/Enemy.h"
+#include <map>
 
 class Ground;
 class Enemy;
@@ -19,17 +20,18 @@ public:
 		int range,
 		int cooldown,
 		int price);
+	virtual~Building();
 	int getX() const;
 	int getY() const;
 	void takeDamage(int damage) override;
 	bool isAlive() const override;
 	int distanceTo(Tile*) const;
-	virtual~Building();
 	Ground* getTile() const;
 	virtual Attack* attacking(Tile* targetTile);
 	virtual void update(const context& ctx) override;
   	void drawAttacks(const context& ctx);
 	void addDistanceFrom(Path* path);
+	void changeRange(int range);
 protected:
 	Tile* setTarget();
 private:
@@ -45,5 +47,7 @@ private:
 	int m_level;
 	int m_price;
 	Path* m_nearest_path;
+	std::vector<Path*> m_tracked_path;
+	std::map<int,std::vector<Path*>> m_path_at_range;
 	std::vector<std::unique_ptr<Attack>> attacks;
 };

@@ -19,6 +19,11 @@ void Path::addNeighbor(Path* nei)
 	nei->m_neighbors.push_back(this);
 }
 
+const std::vector<Path*>& Path::getNeighbors()
+{
+	return m_neighbors;
+}
+
 void Path::addDistanceFrom(Building* nei)
 {
 	if (m_nearest_building&& m_nearest_building->distanceTo(this) <= nei->distanceTo(this))return;

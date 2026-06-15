@@ -13,6 +13,7 @@ public:
 	Path(int x, int y);
 public:
 	void addNeighbor(Path* nei);
+	const std::vector<Path*>& getNeighbors();
 	void addDistanceFrom(Building* nei);
 	Building* getNearestBuilding();
 	Path* next()const;
