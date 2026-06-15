@@ -69,7 +69,7 @@ void Building::update(const context& ctx) {
   }
 
   // attaque
-  if (m_curr_target != nullptr && m_cooldown <= 0) {
+  if (m_curr_target != nullptr && m_cur_cooldown <= 0) {
     Attack* newAttack = attacking(m_curr_target);
   }
   for (auto it = attacks.begin(); it != attacks.end();) {
@@ -89,7 +89,7 @@ void Building::drawAttacks(const context& ctx) {
 
 Tile* Building::setTarget() {
   if (!m_nearest_path) return 0;
-  if (m_range >= this->distanceTo(m_nearest_path)) {
+  if (m_range >= this->distanceTo(m_nearest_path)&&m_nearest_path->hasEntity()) {
     return m_nearest_path;
   }
   return nullptr;
