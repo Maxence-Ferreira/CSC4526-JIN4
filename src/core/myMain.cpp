@@ -40,7 +40,6 @@ int myMain() {
 		"melee2",
 		"cannonball",
 		"arrow"};
-	cout << "HW" << endl;
 	sf::RenderWindow win(sf::VideoMode(sf::Vector2u(SCREEN_WIDTH, SCREEN_HEIGHT)),"Post Me If You Can");
 	sf::Font f("resources/Cyrano.ttf");
 	sf::Text t(f);
@@ -51,13 +50,13 @@ int myMain() {
 		.offsetY = 0,
 		.window = &win,
 		.rm = std::make_unique<ResourceManager>("resources/tileset.png"),
-		.rand=std::mt19937(std::random_device()()),
+		.rand=std::mt19937(42),//std::random_device()()
 	};
 	for (int i = 0; i < sizeof(names) / sizeof(const char*); i++)
 	{
 		c.rm->setTileCoordinate(names[i], { {16 * i,0},{16,16} });
 	}
-	Terrain terter(SCREEN_WIDTH / TILE_SIZE, SCREEN_HEIGHT / TILE_SIZE);
+	Terrain terter(SCREEN_WIDTH / TILE_SIZE, SCREEN_HEIGHT / TILE_SIZE, 5, c.rand);
 	//test cyrano
 	//Cyrano cyrano(terter.getEntry()[0]);
 

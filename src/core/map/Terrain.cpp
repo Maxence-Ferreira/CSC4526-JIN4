@@ -6,11 +6,10 @@
 #include "Ground.h"
 
 #include <map>
-#include <random>
 #include <iostream>
 #define calc_x(i) (1+(size_x-4)/(nrange+1)*(i))
 
-Terrain::Terrain(int size_x, int size_y, int difficulty) : m_tiles((long long)size_x* (long long)size_y),m_width(size_x),m_height(size_y),m_end(0),m_inputs{}
+Terrain::Terrain(int size_x, int size_y, int difficulty, std::mt19937& gen) : m_tiles((long long)size_x* (long long)size_y),m_width(size_x),m_height(size_y),m_end(0),m_inputs{}
 {
 	int nrange = ceil(log2(difficulty));
 	for (int j = 0; j < size_y; j++)
@@ -24,8 +23,6 @@ Terrain::Terrain(int size_x, int size_y, int difficulty) : m_tiles((long long)si
 	m_tiles[size_x - 2 + size_x * size_y / 2] = std::move(endp);
 
 	//crée les entrées
-	std::random_device rd;
-	std::mt19937 gen(rd());
 	std::uniform_int_distribution<> heightRD(3, size_y-4);
 	int pos;
 	bool find;
@@ -132,7 +129,6 @@ Terrain::Terrain(int size_x, int size_y, int difficulty) : m_tiles((long long)si
 		m_paths.push_back(p.get());
 		m_tiles[size_x - 3 + Y * size_x] = std::move(p);
 	}
-	std::cout << "num path: " << m_paths.size() << std::endl;
 	//link paths
 	for (auto it = m_paths.begin(); it != m_paths.end(); it++)
 		for (auto it2 = it+1; it2 != m_paths.end(); it2++)

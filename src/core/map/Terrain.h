@@ -5,12 +5,13 @@
 #include "Tile.h"
 #include <vector>
 #include <memory>
+#include <random>
 #include "building/Building.h"
 
 class Terrain :public Drawable
 {
 public:
-	Terrain(int size_x, int size_y, int difficulty = 5);
+	Terrain(int size_x, int size_y, int difficulty, std::mt19937& rand);
 public:
 	Tile* getTile(int x, int y) const;
 	int getWidth() const;
