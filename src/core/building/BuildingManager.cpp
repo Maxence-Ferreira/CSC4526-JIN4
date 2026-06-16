@@ -4,6 +4,7 @@
 
 #include "Archer.h"
 #include "Canon.h"
+#include "Post.h"
 
 
 void BuildingManager::removeDeadBuildings(Building* targetBuilding) {
@@ -38,10 +39,14 @@ void BuildingManager::addBuilding(std::string s, Ground* ground){
         buildings.push_back(std::move(a));
         prices["Archer"]*=1.2;
     }
-    if(s=="Canon"){
-        auto c=std::make_unique<Canon>(ground, prices["Canon"]);
+    if (s == "Canon") {
+        auto c = std::make_unique<Canon>(ground, prices["Canon"]);
         terter->addBuilding(c.get());
         buildings.push_back(std::move(c));
-        prices["Canon"]*=1.2;
+        prices["Canon"] *= 1.2;
+    }
+    if (s == "Post") {
+        auto p = std::make_unique<Post>(ground, 3);
+        buildings.push_back(std::move(p));
     }
 }

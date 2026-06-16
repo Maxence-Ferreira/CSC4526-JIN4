@@ -11,3 +11,13 @@ void Archer::draw(const context& ctx) {
 }
 
 void Archer::update(const context& ctx) { Building::update(ctx); }
+
+Tile* Archer::setTarget(std::mt19937& rand)
+{
+    std::vector<Path*> nonempty = {};
+    for (Path* p : m_tracked_path)if (p->hasEntity())nonempty.push_back(p);
+    if (nonempty.empty())return nullptr;
+    std::uniform_int_distribution<> path_i(0, nonempty.size()-1);
+    Path* choosen = nonempty[path_i(rand)];
+    return choosen;
+}

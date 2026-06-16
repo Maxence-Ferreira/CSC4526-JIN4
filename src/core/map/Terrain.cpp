@@ -186,7 +186,11 @@ std::vector<Tile*> Terrain::pathfind(int from_x, int from_y) const
 
 void Terrain::addBuilding(Building* ptr) const
 {
-	for (Path* p : m_paths)p->addDistanceFrom(ptr);
+	for (Path* p : m_paths)
+	{
+		p->addDistanceFrom(ptr);
+		ptr->addDistanceFrom(p);
+	}
 }
 
 Tile* Terrain::getTile(int x, int y) const

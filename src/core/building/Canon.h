@@ -8,5 +8,6 @@ public:
 	// H�rit� via Building
 	virtual void draw(const context& ctx) override;
 	virtual void update(const context& ctx) override;
+	virtual Tile* setTarget(std::mt19937& rand) override;
 private:
 };

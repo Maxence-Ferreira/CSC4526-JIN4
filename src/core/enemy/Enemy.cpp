@@ -53,7 +53,7 @@ void Enemy::move(const int dt) {
 Attack* Enemy::attacking(Building* targetBuilding) {
   if (currentCooldown <= 0) {
     currentCooldown = attackCooldown;
-    attacks.push_back(std::make_unique<Attack>(attackDamage, attackRange, x, y,
+    attacks.push_back(std::make_unique<Attack>(attackDamage, attackRange, x + .5f, y + .5f,
                                                targetBuilding->getTile(), "red"));
     return attacks.back().get();
   }

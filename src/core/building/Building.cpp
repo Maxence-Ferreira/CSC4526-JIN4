@@ -44,7 +44,7 @@ Ground* Building::getTile() const
 Attack* Building::attacking(Tile* targetTile) {
   if (m_cur_cooldown <= 0) {
     m_cur_cooldown = m_cooldown;
-    attacks.push_back(std::make_unique<Attack>(m_damage, m_range, m_tile->getX(), m_tile->getY(),
+    attacks.push_back(std::make_unique<Attack>(m_damage, m_range, m_tile->getX()+.5f, m_tile->getY() + .5f,
                                                targetTile, "blue"));
     return attacks.back().get();
   }
@@ -67,12 +67,13 @@ void Building::update(const context& ctx) {
   }
 
   if (m_curr_target == nullptr) {
-    m_curr_target = setTarget();
+    m_curr_target = setTarget(*ctx.rand);
   }
 
   // attaque
   if (m_curr_target != nullptr && m_cur_cooldown <= 0) {
     Attack* newAttack = attacking(m_curr_target);
+    m_curr_target = nullptr;
   }
   for (auto it = attacks.begin(); it != attacks.end();) {
     const auto& cur = (*it);
@@ -89,44 +90,23 @@ void Building::drawAttacks(const context& ctx) {
 }
 
 //récuperer aléatoirement un path
-Tile* Building::setTarget() {
+Tile* Building::setTarget(std::mt19937& rand) {
+    /*
   if (!m_nearest_path) return 0;
   if (m_range >= this->distanceTo(m_nearest_path)&&m_nearest_path->hasEntity()) {
     return m_nearest_path;
   }
+  */
   return nullptr;
 }
 
 
 void Building::addDistanceFrom(Path* path){
-    if (m_nearest_path && distanceTo(m_nearest_path) <= distanceTo(path))return;
-    m_nearest_path = path;
-    path->addDistanceFrom(this);
-    /*
-    std::queue<Path*> totreat;
-    std::unordered_set<Path*> treated;
-    totreat.push(m_nearest_path);
-    Path* cur;
-    int dist;
-    while (!totreat.empty())
-    {
-        cur = totreat.front();
-        totreat.pop();
-        if (treated.contains(cur))continue;
-        dist = std::max(std::abs(cur->getX() - m_tile->getX()), std::abs(cur->getY() - m_tile->getY()));
-        treated.insert(cur);
-        m_path_at_range[dist].push_back(cur);
-        for (Path* p : cur->getNeighbors())
-        {
-            if (!treated.contains(p))
-            {
-                totreat.push(p);
-            }
-        }
-    }
-    */
+    if (m_nearest_path == path)return;
     m_path_at_range[std::max(std::abs(path->getX() - m_tile->getX()), std::abs(path->getY() - m_tile->getY()))].push_back(path);
     changeRange(m_range);
+    if (m_nearest_path && distanceTo(m_nearest_path) <= distanceTo(path))return;
+    m_nearest_path = path;
 }
 void Building::changeRange(int range)
 {
@@ -134,7 +114,8 @@ void Building::changeRange(int range)
     m_tracked_path = {};
     for (int i = 1; i <= range; i++)
     {
-        m_tracked_path.insert(m_tracked_path.end(),m_path_at_range[i].begin(), m_path_at_range[i].end());
+        m_tracked_path.insert(m_path_at_range[i].begin(), m_path_at_range[i].end());
     }
+
 }
 Building::~Building() = default;

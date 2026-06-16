@@ -5,6 +5,7 @@
 #include "./enemy/Attack.h"
 #include "./enemy/Enemy.h"
 #include <map>
+#include <unordered_set>
 
 class Ground;
 class Enemy;
@@ -20,7 +21,7 @@ public:
 		int range,
 		int cooldown,
 		int price);
-	virtual~Building();
+	virtual~Building()override;
 	int getX() const;
 	int getY() const;
 	void takeDamage(int damage) override;
@@ -32,9 +33,9 @@ public:
   	void drawAttacks(const context& ctx);
 	void addDistanceFrom(Path* path);
 	void changeRange(int range);
-protected:
-	Tile* setTarget();
 private:
+protected:
+	virtual Tile* setTarget(std::mt19937& rand);
 	Ground* m_tile;
 	Tile* m_curr_target;
 	int m_pv_max;
@@ -47,7 +48,7 @@ private:
 	int m_level;
 	int m_price;
 	Path* m_nearest_path;
-	std::vector<Path*> m_tracked_path;
+	std::unordered_set<Path*> m_tracked_path;
 	std::map<int,std::vector<Path*>> m_path_at_range;
 	std::vector<std::unique_ptr<Attack>> attacks;
 };

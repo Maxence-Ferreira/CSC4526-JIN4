@@ -92,7 +92,10 @@ Pause :
 - classe ulti :  soit grenade(plusieurs attaques) soit pigeon(ennemi) (strategie)
 - classe attaque : types d’attaque: degat, portee, vitesse, position de l’attaque, position de la cible
 
+# Implementation
+
+Actuellement les tours tire sur des tiles non vides, pour ce faire quand on ajoute un batiment a une map, on enregistre la distance a chaque path dans le batiment.
+<br>
+Ainsi le batiment peut choisir un tile dans son range
+
 ## TODO
-_Maxence_ :
-- Idee du context a revoir
-- renseigner sur les dessins

@@ -8,3 +8,22 @@ void Canon::draw(const context& ctx) {
 }
 
 void Canon::update(const context& ctx) { Building::update(ctx); }
+
+Tile* Canon::setTarget(std::mt19937& rand)
+{
+	//choisis le plus devant avec des ennemis dessus
+	Path* cur=0;
+	for (Path* it : m_tracked_path)if (it->hasEntity())
+	{
+		cur = it;
+		break;
+	}
+	if(!cur)return nullptr;
+	Path* ret = cur;
+	while (cur->next() && m_tracked_path.contains(cur->next()))
+	{
+		cur = cur->next();
+		if (cur->hasEntity())ret = cur;
+	}
+	return ret;
+}
