@@ -25,7 +25,7 @@ Enemy::Enemy(double maxHealth, double movementSpeed, int attackDamage,
 
 void Enemy::move(const int dt) {
   // verif fin de chemin
-  if (currentPath->next() == nullptr) {
+  if (!currentPath->next()) {
     return;
   }
 
@@ -42,7 +42,6 @@ void Enemy::move(const int dt) {
     currentPath = currentPath->next();
     currentPath->addEnemy(this);
   }
-
   else {
     double ratio = moveDistance / distanceToTarget;
     x += (targetX - x) * ratio;
@@ -68,9 +67,14 @@ void Enemy::takeDamage(int damage) {
   }
 }
 
+void Enemy::kill()
+{
+    isDead = true;
+}
+
 void Enemy::update(const context& ctx) {
   // mouvement
-  this->move(ctx.dt);
+  move(ctx.dt);
 
   // animation
   animationTimer += ctx.dt;

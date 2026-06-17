@@ -52,6 +52,6 @@ void BuildingManager::addBuilding(std::string s, Ground* ground){
         prices["Canon"] *= 1.2;
     }
     if (s == "Post") {
-        post = std::make_unique<Post>(ground, 3);
+        post = std::make_unique<Post>(ground);
     }
 }
