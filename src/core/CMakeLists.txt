@@ -14,7 +14,8 @@ add_library(lib_core
   "enemy/EnemyManager.cpp" "enemy/EnemyManager.h" "Drawable.h" "building/Building.h" "building/Building.cpp"
   "building/Archer.h" "building/Archer.cpp"
   "Entity.h" "building/Canon.h" "building/Canon.cpp" "building/BuildingManager.h" "building/BuildingManager.cpp"
-  "Graphics/ResourceManager.h" "Graphics/ResourceManager.cpp" "building/Post.h" "building/Post.cpp")
+  "Graphics/ResourceManager.h" "Graphics/ResourceManager.cpp" "building/Post.h" "building/Post.cpp" 
+  "Game/Game.h" "Game/Game.cpp")
 
 target_include_directories(lib_core PUBLIC ./)
 target_link_libraries(lib_core PUBLIC sfml-graphics)

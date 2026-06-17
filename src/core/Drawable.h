@@ -10,7 +10,7 @@ struct context
 	double offsetX, offsetY;
 	sf::RenderWindow* window;
 	std::unique_ptr<ResourceManager> rm;
-	std::mt19937* rand;
+	std::unique_ptr<std::mt19937> rand;
 };
 
 class Drawable
