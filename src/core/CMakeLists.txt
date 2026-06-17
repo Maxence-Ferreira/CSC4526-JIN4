@@ -15,7 +15,7 @@ add_library(lib_core
   "building/Archer.h" "building/Archer.cpp"
   "Entity.h" "building/Canon.h" "building/Canon.cpp" "building/BuildingManager.h" "building/BuildingManager.cpp"
   "Graphics/ResourceManager.h" "Graphics/ResourceManager.cpp" "building/Post.h" "building/Post.cpp" 
-  "Game/Game.h" "Game/Game.cpp")
+  "views/Game.h" "views/Game.cpp" "views/View.h" "views/View.cpp" "views/MainMenu.cpp" "views/MainMenu.h"  "views/ViewManger.h")
 
 target_include_directories(lib_core PUBLIC ./)
-target_link_libraries(lib_core PUBLIC sfml-graphics)
+target_link_libraries(lib_core PUBLIC sfml-graphics TGUI::TGUI)

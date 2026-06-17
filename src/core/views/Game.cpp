@@ -1,14 +1,7 @@
 #include "Game.h"
 
 Game::Game(sf::RenderWindow* rw, std::string tileset, int difficulty, unsigned int seed):
-	m_context{ 
-		.time = 0,
-		.dt = 0,
-		.offsetX = 0,
-		.offsetY = 0,
-		.window = rw,
-		.rm = std::make_unique<ResourceManager>("resources/tileset.png"),
-		.rand = std::make_unique<std::mt19937>(seed), },
+	View(rw,tileset,seed),
 	m_terrain(rw->getSize().x/TILE_SIZE, rw->getSize().y / TILE_SIZE, difficulty, *m_context.rand),
 	m_building_manager(&m_terrain),
 	m_enemy_manager(),

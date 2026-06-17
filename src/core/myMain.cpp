@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "SFML/Graphics.hpp"
-#include "Game/Game.h"
+#include "views/Game.h"
 #include <sstream>
 
 using namespace std;
@@ -19,9 +19,13 @@ int myMain() {
 		"archer",
 		"canon",
 		"ground1",
+		"groundflower1",
 		"ground2",
+		"groundflower2",
 		"ground3",
+		"groundflower3",
 		"ground4",
+		"groundflower4",
 		"path1",
 		"path2",
 		"path3",

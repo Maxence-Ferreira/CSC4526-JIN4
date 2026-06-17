@@ -1,19 +1,17 @@
 #pragma once
 
-#include "common.h"
 #include "building/BuildingManager.h"
 #include "enemy/EnemyManager.h"
-#include "common.h"
+#include "View.h"
 
-class Game
+class Game:public View
 {
 public:
 	Game(sf::RenderWindow* rw, std::string tileset, int difficulty,unsigned int seed = 42);
 	void setTileNames(const std::vector<std::string>& names);
-	void update();
-	void draw();
+	virtual void update()override;
+	virtual void draw()override;
 private:
-	context m_context;
 	BuildingManager m_building_manager;
 	EnemyManager m_enemy_manager;
 	Terrain m_terrain;

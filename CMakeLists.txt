@@ -22,6 +22,13 @@ option(SFML_BUILD_AUDIO "Build audio" OFF)
 option(SFML_BUILD_NETWORK "Build network" OFF)
 FetchContent_MakeAvailable(sfml)
 
+FetchContent_Declare(
+        TGUI
+        URL https://github.com/texus/TGUI/archive/refs/tags/v1.12.1.tar.gz
+)
+set(TGUI_BACKEND "SFML_GRAPHICS" CACHE STRING "TGUI backend" FORCE)
+FetchContent_MakeAvailable(TGUI)
+
 add_subdirectory(src/core)
 add_subdirectory(src/main)
 
