@@ -54,7 +54,7 @@ Attack* Enemy::attacking(Building* targetBuilding) {
   if (currentCooldown <= 0) {
     currentCooldown = attackCooldown;
     attacks.push_back(std::make_unique<Attack>(attackDamage, attackRange, x + .5f, y + .5f,
-                                               targetBuilding->getTile(), "red"));
+                                               targetBuilding->getTile(), "arrow"));
     return attacks.back().get();
   }
   return nullptr;
@@ -64,6 +64,7 @@ void Enemy::takeDamage(int damage) {
   currentHealth -= damage;
   if (currentHealth <= 0) {
     isDead = true;
+    currentPath->removeEnemy(this);
   }
 }
 
@@ -82,8 +83,9 @@ void Enemy::update(const context& ctx) {
   if (currentCooldown > 0) {
     currentCooldown -= ctx.dt;
   }
-
+  Building* currentTarget = (Building*)setTarget(*ctx.rand);
   // ciblage
+  /*
   if (currentTarget != nullptr) {
     int distance = currentTarget->distanceTo(currentPath);
     if (distance > attackRange || !currentTarget->isAlive()) {
@@ -92,8 +94,8 @@ void Enemy::update(const context& ctx) {
   }
 
   if (currentTarget == nullptr) {
-    currentTarget = setTarget();
-  }
+    currentTarget = (Building*)setTarget();
+  }*/
 
   // attaque
   if (currentTarget != nullptr && currentCooldown <= 0) {
@@ -113,7 +115,7 @@ void Enemy::drawAttacks(const context& ctx) {
   for (const auto& att : attacks) att->draw(ctx);
 }
 
-Building* Enemy::setTarget() {
+Building* Enemy::setTarget(std::mt19937& rand) {
   Building* nearest = currentPath->getNearestBuilding();
   if (!nearest) return 0;
   if (attackRange >= nearest->distanceTo(currentPath)) {

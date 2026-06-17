@@ -5,8 +5,8 @@
 #include "Enemy.h"
 
 Attack::Attack(int damage, double range, double x, double y,
-               Tile* targetTile, std::string color)
-    : damage(damage), range(range), x(x), y(y), targetTile(targetTile), color(color) {
+               Tile* targetTile, std::string sprite)
+    : damage(damage), range(range), x(x), y(y), targetTile(targetTile), sprite(sprite) {
       };
 
 void Attack::update(const context& ctx) {
@@ -44,8 +44,9 @@ void Attack::update(const context& ctx) {
 void Attack::draw(const context& ctx) {
   if (!isActive()) {return;}
 
-  ctx.rm->draw({ sf::Vector2f(TILE_SIZE * (x - .5), TILE_SIZE * (y - .5)),{30, 30} }, (color=="red")?"arrow":"canonball");
+  ctx.rm->draw({ sf::Vector2f(TILE_SIZE * (x - .5), TILE_SIZE * (y - .5)),{30, 30} }, sprite);
   return;
+  /*
   //création d'une balle
   sf::CircleShape projectile(0.15f*TILE_SIZE);
   if (color=="red"){projectile.setFillColor(sf::Color::Red);}
@@ -53,7 +54,7 @@ void Attack::draw(const context& ctx) {
   projectile.setOrigin({projectile.getRadius(), projectile.getRadius()});
   projectile.setPosition({(float)(x*TILE_SIZE), (float)(y*TILE_SIZE)});
 
-  ctx.window->draw(projectile);
+  ctx.window->draw(projectile);*/
 }
 
 Attack::~Attack() = default;

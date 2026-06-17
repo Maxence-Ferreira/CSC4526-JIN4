@@ -5,9 +5,6 @@
 class Entity : public Drawable {
  public:
   virtual ~Entity() = default;
-  virtual void draw(const context& ctx) = 0;
-  virtual void update(const context& ctx) {};
-  virtual bool isAlive() const {return false;};
-  virtual void takeDamage(int damage) {};
-
+  virtual bool isAlive() const = 0;
+  virtual void takeDamage(int damage)=0;
 };

@@ -28,7 +28,7 @@ class Enemy : public Entity {
   bool isFrameTwo = false;
   float animationTimer = 0.f;
   float timePerFrame = 250.0f; //4fps
-  Building* currentTarget = nullptr;
+  //Building* currentTarget = nullptr;
   std::vector<std::unique_ptr<Attack>> attacks;
 
  public:
@@ -45,5 +45,5 @@ class Enemy : public Entity {
   double getY() const { return y; };
   virtual void update(const context& ctx) override;
   void drawAttacks(const context& ctx);
-  Building* setTarget();
+  virtual Building* setTarget(std::mt19937& rand);
 };

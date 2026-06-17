@@ -16,6 +16,7 @@ public:
 	const std::vector<Path*>& getNeighbors();
 	void addDistanceFrom(Building* nei);
 	Building* getNearestBuilding();
+	void invalidNearestBuilding();
 	Path* next()const;
 	void addEnemy(Enemy* enemy);
 	void removeEnemy(Enemy* enemy);

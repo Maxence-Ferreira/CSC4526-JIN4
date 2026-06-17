@@ -5,21 +5,23 @@
 #include "Building.h"
 #include "../map/Terrain.h"
 #include "../Drawable.h"
+#include "Post.h"
 
 class BuildingManager : public Drawable{
  private:
   std::vector<std::unique_ptr<Building>> buildings;
+  std::unique_ptr<Post> post;
   std::map<std::string, int> prices ;
   Terrain* terter;
  
-  public:
-  BuildingManager(Terrain* terter) : terter(terter) { prices = {{"Archer", 100},{"Canon", 300}};};
+public:
+  BuildingManager(Terrain* terter);
   ~BuildingManager() = default;
 
 
-  void draw(const context& ctx);
-  void updateBuildings(const context& ctx);
-  void removeDeadBuildings(Building* targetBuilding);
+  virtual void draw(const context& ctx)override;
+  virtual void update(const context& ctx)override;
+  void removeDeadBuildings();
   void addBuilding(std::string s, Ground* ground);
 
 };

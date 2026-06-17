@@ -63,25 +63,15 @@ void EnemyManager::newWave(Terrain* terrain) {
 
 
 
-void EnemyManager::removeDeadEnemies(Enemy* targetEnemy) {
-    if (targetEnemy->isAlive()) {
-        return;
-    }
-
-    //money += targetEnemy->getBounty();
-    
-    for (auto it = enemies.begin(); it != enemies.end(); ++it) {
-        if (it->get() == targetEnemy) {
-            enemies.erase(it);
-            return;
-        }
-    }
+void EnemyManager::removeDeadEnemies() {
+    std::erase_if(enemies, [](std::unique_ptr<Enemy>& u) {return !u->isAlive(); });
 }
 
-void EnemyManager::updateEnemies(const context& ctx){
+void EnemyManager::update(const context& ctx){
   for (const auto& enemy : enemies){
     enemy->update(ctx);
   }
+  removeDeadEnemies();
 }
 
 void EnemyManager::draw(const context& ctx){

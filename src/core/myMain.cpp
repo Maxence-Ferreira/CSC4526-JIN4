@@ -97,8 +97,8 @@ int myMain() {
 			}
 		}
 		c.time+=( c.dt = clock.restart().asMilliseconds());
-		e_manager.updateEnemies(c);
-		b_manager.updateBuildings(c);
+		e_manager.update(c);
+		b_manager.update(c);
 		win.clear(sf::Color::White);
 		terter.draw(c);
 		e_manager.draw(c);

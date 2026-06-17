@@ -45,7 +45,7 @@ Attack* Building::attacking(Tile* targetTile) {
   if (m_cur_cooldown <= 0) {
     m_cur_cooldown = m_cooldown;
     attacks.push_back(std::make_unique<Attack>(m_damage, m_range, m_tile->getX()+.5f, m_tile->getY() + .5f,
-                                               targetTile, "blue"));
+                                               targetTile, "canonball"));
     return attacks.back().get();
   }
   return nullptr;

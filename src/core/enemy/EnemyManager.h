@@ -15,8 +15,8 @@ class EnemyManager : public Drawable{
   ~EnemyManager() = default;
 
   void newWave(Terrain* terrain);
-  void draw(const context& ctx);
-  void updateEnemies(const context& ctx);
-  void removeDeadEnemies(Enemy* targetEnemy);
+  virtual void draw(const context& ctx)override;
+  virtual void update(const context& ctx) override;
+  void removeDeadEnemies();
   int getWaveNumber() const { return waveNumber; };
 };

@@ -35,6 +35,11 @@ Building* Path::getNearestBuilding()
 	return m_nearest_building;
 }
 
+void Path::invalidNearestBuilding()
+{
+	m_nearest_building = 0;
+}
+
 Path* Path::next() const
 {
 	return m_next;

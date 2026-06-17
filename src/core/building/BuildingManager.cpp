@@ -6,30 +6,36 @@
 #include "Canon.h"
 #include "Post.h"
 
-
-void BuildingManager::removeDeadBuildings(Building* targetBuilding) {
-    if (targetBuilding->isAlive()) {
-        return;
-    }
-    
-    for (auto it = buildings.begin(); it != buildings.end(); ++it) {
-        if (it->get() == targetBuilding) {
-            buildings.erase(it);
-            return;
-        }
-    }
+BuildingManager::BuildingManager(Terrain* terter) : terter(terter),post(), prices{ {"Archer", 100},{"Canon", 300} } {
 }
 
-void BuildingManager::updateBuildings(const context& ctx){
-  for (const auto& b : buildings){
-    b->update(ctx);
-  }
+void BuildingManager::removeDeadBuildings() {
+    std::erase_if(buildings, [](std::unique_ptr<Building>& b) {return !b->isAlive(); });
+}
+
+void BuildingManager::update(const context& ctx){
+
+    for (const auto& b : buildings){
+        b->update(ctx);
+    }
+    int sz = buildings.size();
+    removeDeadBuildings();
+    if (buildings.size() != sz)
+    {
+        for (Path* p : terter->getPaths())
+        {
+            p->invalidNearestBuilding();
+            for (auto& b : buildings)
+                p->addDistanceFrom(b.get());
+        }
+    }
 }
 
 void BuildingManager::draw(const context& ctx){
   for (const auto& b : buildings){
     b->draw(ctx);
   }
+  post->draw(ctx);
 }
 
 void BuildingManager::addBuilding(std::string s, Ground* ground){
@@ -46,7 +52,6 @@ void BuildingManager::addBuilding(std::string s, Ground* ground){
         prices["Canon"] *= 1.2;
     }
     if (s == "Post") {
-        auto p = std::make_unique<Post>(ground, 3);
-        buildings.push_back(std::move(p));
+        post = std::make_unique<Post>(ground, 3);
     }
 }
