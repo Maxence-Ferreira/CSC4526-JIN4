@@ -13,17 +13,5 @@ View::View(sf::RenderWindow* rw, std::string tileset, unsigned int seed) :m_cont
 	//
 }
 
-bool View::isViewChange()
-{
-	if(m_next)return true;
-	return false;
-}
-
-std::unique_ptr<View> View::nextView()
-{
-	std::unique_ptr<View> t = std::move(m_next);
-
-	return t;
-}
 
 View::~View()=default;

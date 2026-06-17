@@ -18,4 +18,7 @@ private:
 	sf::Clock m_clock;
 	sf::Font m_font;
 	sf::Text m_text_displayer;
+
+	// Hérité via View
+	virtual void reset() override;
 };

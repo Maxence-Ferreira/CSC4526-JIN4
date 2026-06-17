@@ -3,7 +3,7 @@
 #include "common.h"
 #include <random>
 
-Ground::Ground(int x, int y):Tile(x,y), m_tex((rand() % 5) ? "ground" : "groundflower"), m_building(nullptr)
+Ground::Ground(int x, int y):Tile(x,y), m_tex((rand() % 10) ? "ground" : "groundflower"), m_building(nullptr)
 {
 	m_tex += '1' + rand() % 4;
 }

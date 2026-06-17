@@ -53,3 +53,7 @@ void Game::draw()
 	m_text_displayer.setString(oss.str());
 	m_context.window->draw(m_text_displayer);
 }
+
+void Game::reset()
+{
+}
