@@ -2,10 +2,10 @@
 #include "View.h"
 #include "Game.h"
 
-class GameMenu : public View
+class LoseMenu : public View
 {
 public:
-	GameMenu(Game* game,ViewManager* vm, sf::RenderWindow* rw, std::string tileset, unsigned int seed);
+	LoseMenu(Game* game, ViewManager* vm, sf::RenderWindow* rw, std::string tileset, unsigned int seed);
 	// Hérité via View
 	virtual void handle(const std::optional<sf::Event>& ev) override;
 	virtual void update() override;
@@ -13,4 +13,6 @@ public:
 	virtual void reset() override;
 protected:
 private:
+	sf::Font m_font;
+	sf::Text m_text;
 };

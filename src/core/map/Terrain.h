@@ -16,6 +16,7 @@ public:
 	Tile* getTile(int x, int y) const;
 	int getWidth() const;
 	int getHeight() const;
+	int countEnemyInPost() const;
 	const std::vector<BeginPath*>& getEntry() const;
 	void draw(const context& ctx)override;
 	virtual void update(const context& ctx)override;

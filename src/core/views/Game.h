@@ -18,9 +18,10 @@ public:
 	virtual void onEnter()override;
 	virtual void onExit()override;
 private:
-	BuildingManager m_building_manager;
-	EnemyManager m_enemy_manager;
-	Terrain m_terrain;
+	int m_difficulty;
+	std::unique_ptr<Terrain> m_terrain;
+	std::unique_ptr<BuildingManager> m_building_manager;
+	std::unique_ptr<EnemyManager> m_enemy_manager;
 	sf::Clock m_clock;
 	sf::Font m_font;
 	sf::Text m_text_displayer;

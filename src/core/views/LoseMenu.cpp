@@ -1,21 +1,22 @@
-#include "GameMenu.h"
+#include "LoseMenu.h"
 
-GameMenu::GameMenu(Game* game, ViewManager* vm, sf::RenderWindow* rw, std::string tileset, unsigned int seed)
-	:View(vm, rw, tileset, { "continue" },{ nullptr }, seed)
+LoseMenu::LoseMenu(Game* game, ViewManager* vm, sf::RenderWindow* rw, std::string tileset, unsigned int seed)
+	:View(vm, rw, tileset, { "continue" },{ nullptr }, seed),m_font("resources/Cyrano.ttf"),m_text(m_font,"T'as perdu, \nJamais Roxane ne posera les yeux sur toi, \nJamais elle ne t'aimera.\nBien a toi\n\tCyrano",50)
 {
+	m_text.setFillColor(sf::Color::Black);
 	m_context.rm->setTileCoordinate("background", { {117,0},{796,448} });
 }
 
-void GameMenu::handle(const std::optional<sf::Event>& ev)
+void LoseMenu::handle(const std::optional<sf::Event>& ev)
 {
 	View::handle(ev);
 }
 
-void GameMenu::update()
+void LoseMenu::update()
 {
 }
 
-void GameMenu::draw()
+void LoseMenu::draw()
 {
 	float height = 448.f / 796.f * m_context.window->getSize().x;
 	float width = 796.f / 448.f * m_context.window->getSize().y;
@@ -25,11 +26,12 @@ void GameMenu::draw()
 	const float y = (m_context.window->getSize().y - height) / 2.f;
 	m_context.rm->draw({ {x,y},{width,height} }, "background");
 	m_context.rm->render(m_context.window);
+	m_context.window->draw(m_text);
 	View::draw();
 }
 
 
-void GameMenu::reset()
+void LoseMenu::reset()
 {
 }
 

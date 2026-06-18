@@ -1,7 +1,7 @@
 #include "EndPath.h"
 #include <iostream>
 
-EndPath::EndPath(int x, int y):Path(x,y)
+EndPath::EndPath(int x, int y):Path(x,y),m_enemies_in(0)
 {
 }
 
@@ -14,6 +14,12 @@ void EndPath::update(const context& ctx)
 	for (Enemy* e : m_enemies)
 	{
 		e->kill();
+		m_enemies_in++;
 	}
 	m_enemies = {};
+}
+
+int EndPath::howManyEnemiesIn()
+{
+	return m_enemies_in;
 }

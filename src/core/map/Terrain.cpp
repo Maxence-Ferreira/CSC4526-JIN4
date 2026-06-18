@@ -9,7 +9,7 @@
 #include <iostream>
 #define calc_x(i) (1+(size_x-4)/(nrange+1)*(i))
 
-Terrain::Terrain(int size_x, int size_y, int difficulty, std::mt19937& gen) : m_tiles((long long)size_x* (long long)size_y),m_width(size_x),m_height(size_y),m_end(0),m_inputs{}
+Terrain::Terrain(int size_x, int size_y, int difficulty, std::mt19937& gen) : m_tiles((long long)size_x* (long long)size_y), m_width(size_x), m_height(size_y), m_end(0), m_inputs{}, m_paths{}
 {
 	int nrange = ceil(log2(difficulty));
 	for (int j = 0; j < size_y; j++)
@@ -149,6 +149,11 @@ int Terrain::getWidth() const
 int Terrain::getHeight() const
 {
 	return m_height;
+}
+
+int Terrain::countEnemyInPost() const
+{
+	return m_end->howManyEnemiesIn();
 }
 
 const std::vector<BeginPath*>& Terrain::getEntry() const

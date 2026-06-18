@@ -55,3 +55,8 @@ void BuildingManager::addBuilding(std::string s, Ground* ground){
         post = std::make_unique<Post>(ground);
     }
 }
+
+void BuildingManager::setTerrain(Terrain* t)
+{
+    terter = t;
+}

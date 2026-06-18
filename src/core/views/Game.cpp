@@ -1,23 +1,27 @@
 #include "Game.h"
 #include "GameMenu.h"
+#include "LoseMenu.h"
 
 Game::Game(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, int difficulty, unsigned int seed) :
 	View(vm, rw, tileset, {}, {}, seed),
-	m_terrain(rw->getSize().x / TILE_SIZE, rw->getSize().y / TILE_SIZE, difficulty, *m_context.rand),
-	m_building_manager(&m_terrain),
-	m_enemy_manager(),
+	m_terrain(std::make_unique<Terrain>(rw->getSize().x / TILE_SIZE, rw->getSize().y / TILE_SIZE, difficulty, *m_context.rand)),
+	m_building_manager(std::make_unique<BuildingManager>(nullptr)),
+	m_enemy_manager(std::make_unique<EnemyManager>()),
 	m_clock(),
 	m_font("resources/Cyrano.ttf"),
 	m_text_displayer(m_font),
-	m_song("resources/loop.ogg")
+	m_song("resources/loop.ogg"),
+	m_difficulty(difficulty)
 {
-	m_enemy_manager.newWave(&m_terrain);
-	m_building_manager.addBuilding("Archer", static_cast<Ground*>(m_terrain.getTile(3, 0)));
-	m_building_manager.addBuilding("Canon", static_cast<Ground*>(m_terrain.getTile(6, 0)));
-	m_building_manager.addBuilding("Post", static_cast<Ground*>(m_terrain.getTile(m_terrain.getWidth() - 1, m_terrain.getHeight() / 2)));
+	m_building_manager->setTerrain(m_terrain.get());
+	m_enemy_manager->newWave(m_terrain.get());
+	m_building_manager->addBuilding("Archer", static_cast<Ground*>(m_terrain->getTile(3, 0)));
+	m_building_manager->addBuilding("Canon", static_cast<Ground*>(m_terrain->getTile(6, 0)));
+	m_building_manager->addBuilding("Post", static_cast<Ground*>(m_terrain->getTile(m_terrain->getWidth() - 1, m_terrain->getHeight() / 2)));
 	m_clock.restart();
 
-	m_navigator["menu"] = std::make_shared<GameMenu>(vm, rw, "resources/mainmenu_tileset.png", seed);
+	m_navigator["menu"] = std::make_shared<GameMenu>(this, vm, rw, "resources/mainmenu_tileset.png", seed);
+	m_navigator["lose"] = std::make_shared<LoseMenu>(this, vm, rw, "resources/mainmenu_tileset.png", seed);
 
 	std::vector<std::string> names{
 		"post",
@@ -58,9 +62,14 @@ Game::Game(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, int diffi
 void Game::update()
 {
 	m_context.time += (m_context.dt = m_clock.restart().asMilliseconds());
-	m_terrain.update(m_context);
-	m_building_manager.update(m_context);
-	m_enemy_manager.update(m_context);
+	m_terrain->update(m_context);
+	m_building_manager->update(m_context);
+	m_enemy_manager->update(m_context);
+	if (m_terrain->countEnemyInPost() >= 10 - m_difficulty)
+	{
+		reset();
+		m_manager->changeView(m_navigator["lose"]);
+	}
 }
 
 void Game::draw()
@@ -69,9 +78,9 @@ void Game::draw()
 	static float fps = 120;
 	static int fps_i = 0;
 
-	m_terrain.draw(m_context);
-	m_building_manager.draw(m_context);
-	m_enemy_manager.draw(m_context);
+	m_terrain->draw(m_context);
+	m_building_manager->draw(m_context);
+	m_enemy_manager->draw(m_context);
 	m_context.rm->render(m_context.window);
 
 	fps_[fps_i = (fps_i + 1) % 100] = 1000. / m_context.dt;
@@ -99,6 +108,16 @@ void Game::onExit()
 
 void Game::reset()
 {
+	m_terrain = std::make_unique<Terrain>(m_context.window->getSize().x / TILE_SIZE, m_context.window->getSize().y / TILE_SIZE, m_difficulty, *m_context.rand);
+	m_enemy_manager = std::make_unique<EnemyManager>();
+	m_enemy_manager->newWave(m_terrain.get());
+	m_building_manager = std::make_unique < BuildingManager>(m_terrain.get());
+	m_building_manager->addBuilding("Archer", static_cast<Ground*>(m_terrain->getTile(3, 0)));
+	m_building_manager->addBuilding("Canon", static_cast<Ground*>(m_terrain->getTile(6, 0)));
+	m_building_manager->addBuilding("Post", static_cast<Ground*>(m_terrain->getTile(m_terrain->getWidth() - 1, m_terrain->getHeight() / 2)));
+	m_clock.restart();
+	
+	m_song.stop();
 }
 
 void Game::handle(const std::optional<sf::Event>& ev)

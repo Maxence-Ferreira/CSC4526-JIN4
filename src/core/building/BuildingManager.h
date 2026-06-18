@@ -23,5 +23,6 @@ public:
   virtual void update(const context& ctx)override;
   void removeDeadBuildings();
   void addBuilding(std::string s, Ground* ground);
+  void setTerrain(Terrain* t);
 
 };
