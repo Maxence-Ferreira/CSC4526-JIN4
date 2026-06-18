@@ -18,7 +18,9 @@ cmake_policy(SET CMP0135 NEW) # This cmake_policy avoids warning by cmake when w
 FetchContent_Declare( sfml
   URL https://github.com/SFML/SFML/archive/refs/tags/3.0.1.tar.gz
 )
-option(SFML_BUILD_AUDIO "Build audio" OFF)
+option(SFML_BUILD_AUDIO "Build audio" ON)
+set(SFML_BUILD_AUDIO ON CACHE BOOL "" FORCE)
+
 option(SFML_BUILD_NETWORK "Build network" OFF)
 FetchContent_MakeAvailable(sfml)
 

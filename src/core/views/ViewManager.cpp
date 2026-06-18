@@ -24,13 +24,17 @@ void ViewManager::draw()
 
 void ViewManager::changeView(std::shared_ptr<View> view)
 {
+	m_active_view->onExit();
 	m_active_view=view;
+	m_active_view->onEnter();
 	m_views.push_back(m_active_view);
 }
 
 void ViewManager::backView()
 {
 	if (m_views.size()<=1)return;
+	m_active_view->onExit();
 	m_views.pop_back();
 	m_active_view = m_views.back();
+	m_active_view->onEnter();
 }

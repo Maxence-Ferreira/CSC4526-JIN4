@@ -2,28 +2,27 @@
 #include "Game.h"
 
 DifficultyMenu::DifficultyMenu(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, unsigned int seed)
-	:View(vm, rw, tileset, {
-		{"noob",std::make_shared<Game>(vm,rw,"resources/tileset.png",2,seed)},
-		{"easy",std::make_shared<Game>(vm,rw,"resources/tileset.png",3,seed)},
-		{"normal",std::make_shared<Game>(vm,rw,"resources/tileset.png",4,seed)},
-		{"difficult",std::make_shared<Game>(vm,rw,"resources/tileset.png",5,seed)},
-		{"hell",std::make_shared<Game>(vm,rw,"resources/tileset.png",6,seed)},
-		}, seed)
+	:View(vm, rw, tileset,
+		{
+			"noob",
+			"easy",
+			"normal",
+			"difficult",
+			"hell"},
+		{ 
+			std::make_shared<Game>(vm,rw,"resources/tileset.png",2,seed) , 
+			std::make_shared<Game>(vm, rw, "resources/tileset.png", 3, seed), 
+			std::make_shared<Game>(vm, rw, "resources/tileset.png", 4, seed), 
+			std::make_shared<Game>(vm, rw, "resources/tileset.png", 5, seed), 
+			std::make_shared<Game>(vm, rw, "resources/tileset.png", 6, seed)
+		}, 
+		seed)
 {
 	m_context.rm->setTileCoordinate("background", { {117,0},{796,448} });
 }
 
 void DifficultyMenu::handle(const std::optional<sf::Event>& ev)
 {
-	if (const auto* resized = ev->getIf<sf::Event::Resized>())
-	{
-		int it = -m_gui_widget.size() / 2;
-		for (auto w : { "noob","easy","normal","difficult","hell" })
-		{
-			m_gui_widget[w]->setPosition(m_context.window->getSize().x / 2, m_context.window->getSize().y / 2 + 100 * it);
-			it++;
-		}
-	}
 	View::handle(ev);
 }
 

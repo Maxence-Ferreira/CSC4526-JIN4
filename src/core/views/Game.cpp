@@ -1,14 +1,15 @@
 #include "Game.h"
 #include "GameMenu.h"
 
-Game::Game(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, int difficulty, unsigned int seed):
-	View(vm, rw, tileset, {}, seed),
-	m_terrain(rw->getSize().x/TILE_SIZE, rw->getSize().y / TILE_SIZE, difficulty, *m_context.rand),
+Game::Game(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, int difficulty, unsigned int seed) :
+	View(vm, rw, tileset, {}, {}, seed),
+	m_terrain(rw->getSize().x / TILE_SIZE, rw->getSize().y / TILE_SIZE, difficulty, *m_context.rand),
 	m_building_manager(&m_terrain),
 	m_enemy_manager(),
 	m_clock(),
 	m_font("resources/Cyrano.ttf"),
-	m_text_displayer(m_font)
+	m_text_displayer(m_font),
+	m_song("resources/loop.ogg")
 {
 	m_enemy_manager.newWave(&m_terrain);
 	m_building_manager.addBuilding("Archer", static_cast<Ground*>(m_terrain.getTile(3, 0)));
@@ -84,6 +85,16 @@ void Game::draw()
 	oss << "fps : " << (int)fps;
 	m_text_displayer.setString(oss.str());
 	m_context.window->draw(m_text_displayer);
+}
+
+void Game::onEnter()
+{
+	m_song.play();
+}
+
+void Game::onExit()
+{
+	m_song.pause();
 }
 
 void Game::reset()

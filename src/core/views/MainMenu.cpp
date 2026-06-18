@@ -2,25 +2,13 @@
 
 #include "DifficultyMenu.h"
 MainMenu::MainMenu(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, unsigned int seed)
-	:View(vm, rw,tileset, {
-		{"continue",nullptr},
-		{"new",std::make_shared<DifficultyMenu>(vm,rw,tileset,seed)},
-		},seed)
+	:View(vm, rw,tileset, {"continue","new"},{ 0, std::make_shared<DifficultyMenu>(vm,rw,tileset,seed) },seed)
 {
 	m_context.rm->setTileCoordinate("background", { {117,0},{796,448} });
 }
 
 void MainMenu::handle(const std::optional<sf::Event>& ev)
 {
-	if (const auto* resized = ev->getIf<sf::Event::Resized>())
-	{
-		int it = -m_gui_widget.size()/2;
-		for (auto w : { "continue","new" })
-		{
-			m_gui_widget[w]->setPosition(m_context.window->getSize().x / 2, m_context.window->getSize().y / 2 + 100 * it);
-			it++;
-		}
-	}
 	View::handle(ev);
 }
 

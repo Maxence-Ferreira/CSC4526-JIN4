@@ -18,4 +18,4 @@ add_library(lib_core
   "views/Game.h" "views/Game.cpp" "views/View.h" "views/View.cpp" "views/MainMenu.cpp" "views/MainMenu.h"  "views/ViewManager.h" "views/ViewManager.cpp" "views/DifficultyMenu.h" "views/DifficultyMenu.cpp" "views/GameMenu.h" "views/GameMenu.cpp")
 
 target_include_directories(lib_core PUBLIC ./)
-target_link_libraries(lib_core PUBLIC sfml-graphics TGUI::TGUI)
+target_link_libraries(lib_core PUBLIC sfml-graphics sfml-audio TGUI::TGUI)

@@ -3,6 +3,7 @@
 #include "building/BuildingManager.h"
 #include "enemy/EnemyManager.h"
 #include "View.h"
+#include "SFML/Audio.hpp"
 
 class Game:public View
 {
@@ -14,6 +15,8 @@ public:
 	virtual void handle(const std::optional<sf::Event>& ev) override;
 	virtual void update()override;
 	virtual void draw()override;
+	virtual void onEnter()override;
+	virtual void onExit()override;
 private:
 	BuildingManager m_building_manager;
 	EnemyManager m_enemy_manager;
@@ -21,4 +24,5 @@ private:
 	sf::Clock m_clock;
 	sf::Font m_font;
 	sf::Text m_text_displayer;
+	sf::Music m_song;
 };
