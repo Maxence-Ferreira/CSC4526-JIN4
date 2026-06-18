@@ -12,7 +12,9 @@ int myMain() {
 	sf::RenderWindow win(sf::VideoMode(sf::Vector2u(SCREEN_WIDTH, SCREEN_HEIGHT)), "Post Me If You Can");
 	win.setFramerateLimit(120);
 	
-	Game game(&win, "resources/tileset.png",5,42);
+	ViewManager manager(&win);
+	/*
+	Game game(&manager, &win, "resources/tileset.png",5,42);
 
 	game.setTileNames({
 		"post",
@@ -44,7 +46,7 @@ int myMain() {
 		"melee2",
 		"canonball",
 		"arrow" });
-
+*/
 	while (win.isOpen())
 	{
 		while (const std::optional event = win.pollEvent())
@@ -53,12 +55,15 @@ int myMain() {
 				win.close();
 			if (const auto* resized = event->getIf<sf::Event::Resized>())
 			{
-				win.setView(sf::View(sf::Vector2f(win.getView().getCenter()), sf::Vector2f(resized->size)));
+				win.setView(sf::View(sf::Vector2f(resized->size.x/2.f, resized->size.y / 2.f), sf::Vector2f(resized->size)));
 			}
+			manager.handle(event);
 		}
-		game.update();
+		//game.update();
+		manager.update();
 		win.clear(sf::Color::White);
-		game.draw();
+		//game.draw();
+		manager.draw();
 		win.display();
 	}
 	return 0;

@@ -1,34 +1,30 @@
-#include "MainMenu.h"
+#include "GameMenu.h"
 
-#include "DifficultyMenu.h"
-MainMenu::MainMenu(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, unsigned int seed)
-	:View(vm, rw,tileset, {
-		{"continue",nullptr},
-		{"new",std::make_shared<DifficultyMenu>(vm,rw,tileset,seed)},
-		},seed)
+GameMenu::GameMenu(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, unsigned int seed)
+	:View(vm, rw, tileset, { {"continue",nullptr} }, seed)
 {
 	m_context.rm->setTileCoordinate("background", { {117,0},{796,448} });
 }
 
-void MainMenu::handle(const std::optional<sf::Event>& ev)
+void GameMenu::handle(const std::optional<sf::Event>& ev)
 {
 	if (const auto* resized = ev->getIf<sf::Event::Resized>())
 	{
-		int it = -m_gui_widget.size()/2;
-		for (auto w : { "continue","new" })
+		int it = -m_gui_widget.size() / 2;
+		for (auto& w : m_gui_widget)
 		{
-			m_gui_widget[w]->setPosition(m_context.window->getSize().x / 2, m_context.window->getSize().y / 2 + 100 * it);
+			w.second->setPosition(m_context.window->getSize().x / 2, m_context.window->getSize().y / 2 + 100 * it);
 			it++;
 		}
 	}
 	View::handle(ev);
 }
 
-void MainMenu::update()
+void GameMenu::update()
 {
 }
 
-void MainMenu::draw()
+void GameMenu::draw()
 {
 	float height = 448.f / 796.f * m_context.window->getSize().x;
 	float width = 796.f / 448.f * m_context.window->getSize().y;
@@ -42,7 +38,7 @@ void MainMenu::draw()
 }
 
 
-void MainMenu::reset()
+void GameMenu::reset()
 {
 }
 

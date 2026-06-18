@@ -7,8 +7,11 @@
 class Game:public View
 {
 public:
-	Game(sf::RenderWindow* rw, std::string tileset, int difficulty,unsigned int seed = 42);
-	void setTileNames(const std::vector<std::string>& names);
+	Game(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, int difficulty,unsigned int seed = 42);
+
+	// Hérité via View
+	virtual void reset() override;
+	virtual void handle(const std::optional<sf::Event>& ev) override;
 	virtual void update()override;
 	virtual void draw()override;
 private:
@@ -18,7 +21,4 @@ private:
 	sf::Clock m_clock;
 	sf::Font m_font;
 	sf::Text m_text_displayer;
-
-	// Hérité via View
-	virtual void reset() override;
 };

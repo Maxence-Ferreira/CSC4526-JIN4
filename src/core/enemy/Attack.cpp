@@ -11,7 +11,11 @@ Attack::Attack(int damage, double range, double x, double y,
 
 void Attack::update(const context& ctx) {
   const std::vector<Entity*>& enemies = targetTile->getEntity();
-  if (enemies.empty())return;
+  if (enemies.empty())
+  {
+      active = false;
+      return;
+  }
   Entity* target = enemies[0];
   // projectile a atteint sa cible
   if (!active || target == nullptr || !target->isAlive()) {
