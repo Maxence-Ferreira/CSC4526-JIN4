@@ -163,9 +163,9 @@ const std::vector<BeginPath*>& Terrain::getEntry() const
 
 void Terrain::draw(const context& ctx)
 {
-	int X = ctx.offsetX / TILE_SIZE;
+	int X = (ctx.offsetX+1- TILE_SIZE) / TILE_SIZE;
 	int X_ = (ctx.offsetX + ctx.window->getSize().x) / TILE_SIZE;
-	int Y = ctx.offsetY / TILE_SIZE;
+	int Y = (ctx.offsetY + 1 - TILE_SIZE) / TILE_SIZE;
 	int Y_ = (ctx.offsetY + ctx.window->getSize().y) / TILE_SIZE;
 	for (int x = X; x <= X_; x++)
 	{
