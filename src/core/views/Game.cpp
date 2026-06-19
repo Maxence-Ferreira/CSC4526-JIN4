@@ -110,6 +110,7 @@ void Game::draw()
 
 void Game::onEnter()
 {
+	m_song.setLooping(true);
 	m_song.play();
 	m_context.mouseX = sf::Mouse::getPosition().x;
 	m_context.mouseY = sf::Mouse::getPosition().y;

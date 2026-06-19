@@ -70,6 +70,7 @@ void Enemy::takeDamage(int damage) {
 void Enemy::kill()
 {
     isDead = true;
+    currentPath->removeEnemy(this);
 }
 
 void Enemy::update(const context& ctx) {

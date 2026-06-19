@@ -53,7 +53,8 @@ void Path::addEnemy(Enemy* enemy)
 
 void Path::removeEnemy(Enemy* enemy)
 {
-	m_enemies.erase(std::find(m_enemies.begin(),m_enemies.end(), enemy));
+	auto it = std::find(m_enemies.begin(), m_enemies.end(), enemy);
+	if(it!=m_enemies.end())m_enemies.erase(it);
 }
 
 void Path::update(const context& ctx)
