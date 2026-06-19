@@ -174,7 +174,11 @@ void Terrain::draw(const context& ctx)
 			if (x >= 0 && x < m_width && y >= 0 && y < m_height)
 				m_tiles[x + y * m_width]->draw(ctx);
 			else
-				ctx.rm->draw({ {x * TILE_SIZE,y * TILE_SIZE}, {TILE_SIZE,TILE_SIZE} }, "outmap");
+			{
+				std::string choosen_tile("outmap");
+				choosen_tile += '1' + ((x * y) % 4+4)%4;
+				ctx.rm->draw({ {x * TILE_SIZE,y * TILE_SIZE}, {TILE_SIZE,TILE_SIZE} }, choosen_tile);
+			}
 		}
 	}
 	return;
