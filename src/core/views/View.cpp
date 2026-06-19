@@ -5,6 +5,8 @@ View::View(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, const std
 	.dt = 0,
 	.offsetX = 0,
 	.offsetY = 0,
+	.mouseX = 0,
+	.mouseY = 0,
 	.window = rw,
 	.rm = std::make_unique<ResourceManager>(tileset),
 	.rand = std::make_unique<std::mt19937>(seed),

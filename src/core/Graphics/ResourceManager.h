@@ -10,7 +10,7 @@ public:
 	ResourceManager(std::string tileset = "resources/tileset.png", std::unordered_map<std::string, sf::IntRect>config = {});
 	void setTileCoordinate(std::string alias, const sf::IntRect& rc);
 	void draw(const sf::FloatRect& morpho, const std::string& texture);
-	void render(sf::RenderTarget* tgt);
+	void render(sf::RenderTarget* tgt, const sf::Vector2f& origin = {});
 protected:
 private:
 	std::unordered_map<std::string, sf::IntRect>m_coord;

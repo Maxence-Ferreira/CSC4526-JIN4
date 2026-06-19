@@ -7,7 +7,8 @@ struct context
 {
 	unsigned int time;
 	unsigned int dt;
-	double offsetX, offsetY;
+	float offsetX, offsetY;
+	float mouseX, mouseY;
 	sf::RenderWindow* window;
 	std::unique_ptr<ResourceManager> rm;
 	std::unique_ptr<std::mt19937> rand;

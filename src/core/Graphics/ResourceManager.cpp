@@ -28,10 +28,11 @@ void ResourceManager::draw(const sf::FloatRect& pos, const std::string& texture)
     m_giga_buffer.append({ .position = {pos.position.x,                  pos.position.y + pos.size.y},   .color = sf::Color::White, .texCoords = {uvleft,   uvbottom} });
 }
 
-void ResourceManager::render(sf::RenderTarget* tgt)
+void ResourceManager::render(sf::RenderTarget* tgt, const sf::Vector2f& origin)
 {
     sf::RenderStates states;
     states.texture = &m_full_tileset;
+    states.transform.translate(-origin);
 
     tgt->draw(m_giga_buffer, states);
     m_giga_buffer.clear();

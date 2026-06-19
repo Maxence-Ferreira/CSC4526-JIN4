@@ -82,7 +82,7 @@ void Game::draw()
 	m_terrain->draw(m_context);
 	m_building_manager->draw(m_context);
 	m_enemy_manager->draw(m_context);
-	m_context.rm->render(m_context.window);
+	m_context.rm->render(m_context.window, {m_context.offsetX, m_context.offsetY});
 
 	fps_[fps_i = (fps_i + 1) % 100] = 1000. / m_context.dt;
 	if (!fps_i)
@@ -100,6 +100,8 @@ void Game::draw()
 void Game::onEnter()
 {
 	m_song.play();
+	m_context.mouseX = sf::Mouse::getPosition().x;
+	m_context.mouseY = sf::Mouse::getPosition().y;
 }
 
 void Game::onExit()
@@ -124,5 +126,15 @@ void Game::reset()
 void Game::handle(const std::optional<sf::Event>& ev)
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))m_manager->changeView(m_navigator["menu"]);
+	else if (auto mev = ev->getIf< sf::Event::MouseMoved>())
+	{
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+			m_context.offsetX -= mev->position.x - m_context.mouseX;
+			m_context.offsetY -= mev->position.y - m_context.mouseY;
+		}
+		m_context.mouseX = mev->position.x;
+		m_context.mouseY = mev->position.y;
+	}
+		
 	View::handle(ev);
 }

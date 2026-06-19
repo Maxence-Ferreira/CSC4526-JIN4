@@ -163,11 +163,24 @@ const std::vector<BeginPath*>& Terrain::getEntry() const
 
 void Terrain::draw(const context& ctx)
 {
+	int X = ctx.offsetX / TILE_SIZE;
+	int X_ = (ctx.offsetX + ctx.window->getSize().x) / TILE_SIZE;
+	int Y = ctx.offsetY / TILE_SIZE;
+	int Y_ = (ctx.offsetY + ctx.window->getSize().y) / TILE_SIZE;
+	for (int x = X; x <= X_; x++)
+	{
+		for (int y = Y; y <= Y_; y++)
+		{
+			if (x >= 0 && x < m_width && y >= 0 && y < m_height)
+				m_tiles[x + y * m_width]->draw(ctx);
+			else
+				ctx.rm->draw({ {x * TILE_SIZE,y * TILE_SIZE}, {TILE_SIZE,TILE_SIZE} }, "outmap");
+		}
+	}
+	return;
 	for (const auto& i : m_tiles)
 	{
-
 		i->draw(ctx);
-
 	}
 }
 
