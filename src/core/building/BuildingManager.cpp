@@ -52,6 +52,17 @@ void BuildingManager::addBuilding(std::string s, Ground* ground){
     buildings.push_back(std::move(a));
 }
 
+void BuildingManager::addBuilding(std::unique_ptr<Building> b, Ground* ground)
+{
+    terter->addBuilding(b.get());
+    buildings.push_back(std::move(b));
+}
+
+std::unique_ptr<Building> BuildingManager::createBuilding(std::string s)
+{
+    return m_building_cast[s]->clone();
+}
+
 void BuildingManager::addBuildingCast(std::string s, std::unique_ptr<Building> cast)
 {
     m_building_cast[s] = std::move(cast);

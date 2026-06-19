@@ -12,4 +12,5 @@ protected:
 
 	// Hérité via Building
 	virtual std::unique_ptr<Building> clone(Ground* ground) override;
+	virtual std::unique_ptr<Building> clone() override;
 };

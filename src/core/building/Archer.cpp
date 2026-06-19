@@ -32,3 +32,8 @@ std::unique_ptr<Building> Archer::clone(Ground* ground)
     ptr->setOnTile(ground);
     return std::move(ptr);
 }
+
+std::unique_ptr<Building> Archer::clone()
+{
+    return std::make_unique<Archer>(*this);
+}

@@ -34,3 +34,8 @@ std::unique_ptr<Building> Canon::clone(Ground* ground)
 	ptr->setOnTile(ground);
 	return std::move(ptr);
 }
+
+std::unique_ptr<Building> Canon::clone()
+{
+	return std::make_unique<Canon>(*this);
+}

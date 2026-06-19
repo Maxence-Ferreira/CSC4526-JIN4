@@ -12,4 +12,7 @@ public:
 	virtual Tile* setTarget(std::mt19937& rand) override;
 	virtual std::unique_ptr<Building> clone(Ground* ground) override;
 private:
+
+	// Hérité via Building
+	virtual std::unique_ptr<Building> clone() override;
 };

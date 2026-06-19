@@ -24,6 +24,8 @@ public:
   virtual void update(const context& ctx)override;
   void removeDeadBuildings();
   void addBuilding(std::string s, Ground* ground);
+  void addBuilding(std::unique_ptr<Building> b, Ground* ground);
+  std::unique_ptr<Building> createBuilding(std::string s);
   void addBuildingCast(std::string s, std::unique_ptr<Building> cast);
   void setTerrain(Terrain* t);
 
