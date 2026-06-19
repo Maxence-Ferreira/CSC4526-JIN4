@@ -18,7 +18,7 @@ DifficultyMenu::DifficultyMenu(ViewManager* vm, sf::RenderWindow* rw, std::strin
 		}, 
 		seed)
 {
-	m_context.rm->setTileCoordinate("background", { {117,0},{796,448} });
+	m_context.rm->setTileCoordinate("background", { {0,0},{810,448} });
 }
 
 void DifficultyMenu::handle(const std::optional<sf::Event>& ev)

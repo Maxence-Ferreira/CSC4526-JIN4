@@ -12,13 +12,13 @@ class EnemyManager : public Drawable{
   int m_difficulty;
 
  public:
-  EnemyManager(int difficulty) { waveNumber = 0;};
-  ~EnemyManager() = default;
+	EnemyManager(int difficulty);
+	virtual ~EnemyManager() = default;
 
-  void newWave(Terrain* terrain);
-  virtual void draw(const context& ctx)override;
-  virtual void update(const context& ctx) override;
-  void removeDeadEnemies();
-  int getWaveNumber() const { return waveNumber; };
-  int getDifficulty() const {return m_difficulty; };
+	void newWave(Terrain* terrain);
+	virtual void draw(const context& ctx)override;
+	virtual void update(const context& ctx) override;
+	void removeDeadEnemies();
+	int getWaveNumber() const { return waveNumber; };
+	int getDifficulty() const {return m_difficulty; };
 };

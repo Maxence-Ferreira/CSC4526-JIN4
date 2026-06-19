@@ -4,7 +4,7 @@ LoseMenu::LoseMenu(Game* game, ViewManager* vm, sf::RenderWindow* rw, std::strin
 	:View(vm, rw, tileset, { "continue" },{ nullptr }, seed),m_font("resources/Cyrano.ttf"),m_text(m_font,"T'as perdu, \nJamais Roxane ne posera les yeux sur toi, \nJamais elle ne t'aimera.\nBien a toi\n\tCyrano",50)
 {
 	m_text.setFillColor(sf::Color::Black);
-	m_context.rm->setTileCoordinate("background", { {117,0},{796,448} });
+	m_context.rm->setTileCoordinate("background", { {0,0},{810,448} });
 }
 
 void LoseMenu::handle(const std::optional<sf::Event>& ev)

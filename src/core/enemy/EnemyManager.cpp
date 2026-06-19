@@ -12,7 +12,9 @@
 #include "MeleeSoldier.h"
 
 EnemyManager::EnemyManager(int difficulty)
-    : Drawable(), m_difficulty(difficulty), waveNumber(0) {};
+    : Drawable(), m_difficulty(difficulty), waveNumber(0) {
+
+}
 
 
 static BeginPath* getRandomPath(const std::vector<BeginPath*>& path) {

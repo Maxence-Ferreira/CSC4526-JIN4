@@ -27,6 +27,7 @@ Game::Game(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, int diffi
 		"post",
 		"archer",
 		"canon",
+		"outmap",
 		"ground1",
 		"groundflower1",
 		"ground2",
@@ -109,7 +110,7 @@ void Game::onExit()
 void Game::reset()
 {
 	m_terrain = std::make_unique<Terrain>(m_context.window->getSize().x / TILE_SIZE, m_context.window->getSize().y / TILE_SIZE, m_difficulty, *m_context.rand);
-	m_enemy_manager = std::make_unique<EnemyManager>();
+	m_enemy_manager = std::make_unique<EnemyManager>(m_difficulty);
 	m_enemy_manager->newWave(m_terrain.get());
 	m_building_manager = std::make_unique < BuildingManager>(m_terrain.get());
 	m_building_manager->addBuilding("Archer", static_cast<Ground*>(m_terrain->getTile(3, 0)));

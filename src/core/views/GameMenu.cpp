@@ -3,7 +3,7 @@
 GameMenu::GameMenu(Game* game, ViewManager* vm, sf::RenderWindow* rw, std::string tileset, unsigned int seed)
 	:View(vm, rw, tileset, { "continue" },{ nullptr }, seed)
 {
-	m_context.rm->setTileCoordinate("background", { {117,0},{796,448} });
+	m_context.rm->setTileCoordinate("background", { {0,0},{810,448} });
 }
 
 void GameMenu::handle(const std::optional<sf::Event>& ev)

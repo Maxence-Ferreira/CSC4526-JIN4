@@ -4,7 +4,7 @@
 MainMenu::MainMenu(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, unsigned int seed)
 	:View(vm, rw,tileset, {"continue","new"},{ 0, std::make_shared<DifficultyMenu>(vm,rw,tileset,seed) },seed)
 {
-	m_context.rm->setTileCoordinate("background", { {117,0},{796,448} });
+	m_context.rm->setTileCoordinate("background", { {0,0},{810,448} });
 }
 
 void MainMenu::handle(const std::optional<sf::Event>& ev)
