@@ -70,10 +70,15 @@ Attack* Building::attacking(Tile* targetTile) {
     m_cur_cooldown = m_cooldown;
     attacks.push_back(std::make_unique<Attack>(
         m_damage, m_range, m_tile->getX() + .5f, m_tile->getY() + .5f,
-        targetTile, "canonball"));
+        targetTile, projectileSkin()));
     return attacks.back().get();
   }
   return nullptr;
+}
+
+std::string Building::projectileSkin() const
+{
+    return "";
 }
 
 void Building::update(const context& ctx) {
