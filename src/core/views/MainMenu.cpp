@@ -34,3 +34,8 @@ void MainMenu::reset()
 {
 }
 
+bool MainMenu::behavior(const std::string& action_name)
+{
+	return false;
+}
+

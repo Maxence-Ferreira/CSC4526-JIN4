@@ -6,7 +6,10 @@
 #include "Canon.h"
 #include "Post.h"
 
-BuildingManager::BuildingManager(Terrain* terter) : terter(terter),post(), prices{ {"Archer", 100},{"Canon", 300} } {
+BuildingManager::BuildingManager(Terrain* terter) : terter(terter), post(),
+m_building_cast{  }, buildings{} {
+    m_building_cast["Archer"] = std::make_unique<Archer>(100); 
+    m_building_cast["Canon"] = std::make_unique<Canon>(200);
 }
 
 void BuildingManager::removeDeadBuildings() {
@@ -39,21 +42,19 @@ void BuildingManager::draw(const context& ctx){
 }
 
 void BuildingManager::addBuilding(std::string s, Ground* ground){
-    if(s=="Archer"){
-        auto a=std::make_unique<Archer>(ground, prices["Archer"]);
-        terter->addBuilding(a.get());
-        buildings.push_back(std::move(a));
-        prices["Archer"]*=1.2;
-    }
-    if (s == "Canon") {
-        auto c = std::make_unique<Canon>(ground, prices["Canon"]);
-        terter->addBuilding(c.get());
-        buildings.push_back(std::move(c));
-        prices["Canon"] *= 1.2;
-    }
     if (s == "Post") {
-        post = std::make_unique<Post>(ground);
+        post = std::make_unique<Post>();
+        post->setOnTile(ground);
+        return;
     }
+    auto a = m_building_cast[s]->clone(ground);
+    terter->addBuilding(a.get());
+    buildings.push_back(std::move(a));
+}
+
+void BuildingManager::addBuildingCast(std::string s, std::unique_ptr<Building> cast)
+{
+    m_building_cast[s] = std::move(cast);
 }
 
 void BuildingManager::setTerrain(Terrain* t)

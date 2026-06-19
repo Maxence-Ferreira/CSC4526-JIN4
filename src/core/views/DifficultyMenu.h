@@ -13,4 +13,5 @@ public:
 	virtual void reset() override;
 protected:
 private:
+	virtual bool behavior(const std::string& action_name) override;
 };

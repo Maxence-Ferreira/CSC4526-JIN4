@@ -18,6 +18,8 @@ public:
 	virtual void onEnter()override;
 	virtual void onExit()override;
 private:
+	virtual bool behavior(const std::string& action_name) override;
+private:
 	int m_difficulty;
 	std::unique_ptr<Terrain> m_terrain;
 	std::unique_ptr<BuildingManager> m_building_manager;

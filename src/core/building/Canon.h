@@ -4,7 +4,7 @@
 
 class Canon : public Building {
 public:
-	Canon(Ground* g,int price);
+	Canon(int price);
 	// H�rit� via Building
 	virtual void draw(const context& ctx) override;
 	virtual void update(const context& ctx) override;

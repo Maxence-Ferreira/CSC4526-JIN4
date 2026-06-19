@@ -7,24 +7,40 @@
 #include "./enemy/Attack.h"
 #include "./map/Path.h"
 
-Building::Building(Ground* tile, int pv_max, int damage, int range,
-                   int cooldown, int price)
-    : m_tile(tile),
-      m_pv_max(pv_max),
-      m_pv(pv_max),
-      m_damage(damage),
-      m_range(range),
-      m_cooldown(cooldown),
-      m_price(price),
-      m_level(0),
-      m_dead(0),
-      m_cur_cooldown(0),
-      m_curr_target(nullptr),
-      attacks{},
-      m_tracked_path(),
-      m_path_at_range(),
-      m_nearest_path(0) {
-  tile->setBuilding(this);
+Building::Building(int pv_max, int damage, int range,
+    int cooldown, int price)
+    : m_tile(0),
+    m_pv_max(pv_max),
+    m_pv(pv_max),
+    m_damage(damage),
+    m_range(range),
+    m_cooldown(cooldown),
+    m_price(price),
+    m_level(0),
+    m_dead(0),
+    m_cur_cooldown(0),
+    m_curr_target(nullptr),
+    attacks{},
+    m_tracked_path(),
+    m_path_at_range(),
+    m_nearest_path(0) {
+}
+Building::Building(const Building& b)
+    : m_tile(),
+    m_pv_max(b.m_pv_max),
+    m_pv(b.m_pv_max),
+    m_damage(b.m_damage),
+    m_range(b.m_range),
+    m_cooldown(b.m_cooldown),
+    m_price(b.m_price),
+    m_level(0),
+    m_dead(0),
+    m_cur_cooldown(0),
+    m_curr_target(nullptr),
+    attacks{},
+    m_tracked_path(),
+    m_path_at_range(),
+    m_nearest_path() {
 }
 
 int Building::getX() const { return m_tile ? m_tile->getX() : 0; }
@@ -42,6 +58,12 @@ int Building::distanceTo(Tile* nei) const {
 }
 
 Ground* Building::getTile() const { return m_tile; }
+
+void Building::setOnTile(Ground* tile)
+{
+    m_tile = tile;
+    m_tile->setBuilding(this);
+}
 
 Attack* Building::attacking(Tile* targetTile) {
   if (m_cur_cooldown <= 0) {
@@ -133,3 +155,6 @@ void Building::levelUp() {
 }
 
 Building::~Building() = default;
+
+int Building::getRange() { return m_range; };
+int Building::getPrice() { return m_price; };

@@ -3,7 +3,7 @@
 #include "LoseMenu.h"
 
 Game::Game(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, int difficulty, unsigned int seed) :
-	View(vm, rw, tileset, {}, {}, seed),
+	View(vm, rw, tileset, {"placeArcher","placeCanon","removeBuilding" }, {nullptr,nullptr ,nullptr }, seed),
 	m_terrain(std::make_unique<Terrain>(rw->getSize().x / TILE_SIZE, rw->getSize().y / TILE_SIZE, difficulty, *m_context.rand)),
 	m_building_manager(std::make_unique<BuildingManager>(nullptr)),
 	m_enemy_manager(std::make_unique<EnemyManager>(difficulty)),
@@ -22,6 +22,13 @@ Game::Game(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, int diffi
 
 	m_navigator["menu"] = std::make_shared<GameMenu>(this, vm, rw, "resources/mainmenu_tileset.png", seed);
 	m_navigator["lose"] = std::make_shared<LoseMenu>(this, vm, rw, "resources/mainmenu_tileset.png", seed);
+	for (const auto& name : m_ordered_id_views)
+	{
+		auto lay = m_gui_widget[name]->getPositionLayout();
+		lay.x = "100%";
+		m_gui_widget[name]->setPosition(lay);
+		m_gui_widget[name]->setOrigin(1,.5);
+	}
 
 	std::vector<std::string> names{
 		"post",
@@ -98,6 +105,7 @@ void Game::draw()
 	oss << "fps : " << (int)fps;
 	m_text_displayer.setString(oss.str());
 	m_context.window->draw(m_text_displayer);
+	View::draw();
 }
 
 void Game::onEnter()
@@ -110,6 +118,26 @@ void Game::onEnter()
 void Game::onExit()
 {
 	m_song.pause();
+}
+
+bool Game::behavior(const std::string& action_name)
+{
+	if (action_name == "placeArcher")
+	{
+		std::cout << "Le joueur veut placer un archer" << std::endl;
+		return true;
+	}
+	else if (action_name == "placeCanon")
+	{
+		std::cout << "Le joueur veut placer un canon" << std::endl;
+		return true;
+	}
+	else if (action_name == "removeBuilding")
+	{
+		std::cout << "Le joueur veut retirer un batiment" << std::endl;
+		return true;
+	}
+	return false;
 }
 
 void Game::reset()

@@ -23,6 +23,7 @@ public:
 	virtual void reset() = 0;
 	virtual ~View();
 private:
+	virtual bool behavior(const std::string& action) = 0;
 protected:
 	context m_context;
 	ViewManager* m_manager;

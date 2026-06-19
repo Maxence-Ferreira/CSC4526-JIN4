@@ -4,7 +4,8 @@
 
 class Archer : public Building {
 public:
-	Archer(Ground* g,int price);
+	Archer(int price);
+	Archer(const Archer& a);
 	// H�rit� via Building
 	virtual void draw(const context& ctx) override;
 	virtual void update(const context& ctx) override;

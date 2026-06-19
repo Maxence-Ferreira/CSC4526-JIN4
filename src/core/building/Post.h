@@ -4,9 +4,12 @@
 class Post : public Building
 {
 public:
-	Post(Ground* tile);
+	Post();
 	virtual void draw(const context& ctx) override;
 	virtual void update(const context& ctx) override;
 private:
 protected:
+
+	// Hérité via Building
+	virtual std::unique_ptr<Building> clone(Ground* ground) override;
 };

@@ -48,3 +48,8 @@ void DifficultyMenu::reset()
 {
 }
 
+bool DifficultyMenu::behavior(const std::string& action_name)
+{
+	return false;
+}
+

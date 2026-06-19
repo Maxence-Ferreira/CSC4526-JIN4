@@ -15,12 +15,13 @@ class Path;
 class Building : public Entity{
 public:
 	Building(
-		Ground* tile,
 		int pv_max,
 		int damage,
 		int range,
 		int cooldown,
 		int price);
+	Building(
+		const Building & b);
 	virtual~Building()override;
 	int getX() const;
 	int getY() const;
@@ -28,6 +29,7 @@ public:
 	bool isAlive() const override;
 	int distanceTo(Tile*) const;
 	Ground* getTile() const;
+	void setOnTile(Ground* tile);
 	virtual Attack* attacking(Tile* targetTile);
 	virtual void update(const context& ctx) override;
   	void drawAttacks(const context& ctx);
@@ -35,8 +37,8 @@ public:
 	void changeRange(int range);
 	void levelUp();
 	virtual std::unique_ptr<Building> clone(Ground* ground) = 0;
-	int getRange() {return m_range;};
-	int getPrice() {return m_price;};
+	int getRange();
+	int getPrice();
 
 private:
 protected:

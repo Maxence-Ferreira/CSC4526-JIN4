@@ -33,3 +33,8 @@ void GameMenu::reset()
 {
 }
 
+bool GameMenu::behavior(const std::string& action_name)
+{
+	return false;
+}
+
