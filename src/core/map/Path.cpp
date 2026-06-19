@@ -56,11 +56,12 @@ void Path::removeEnemy(Enemy* enemy)
 }
 
 void Path::update(const context& ctx)
-{
+{/*
 	for (Entity* e : m_enemies)
 	{
 		((Enemy*)e)->move(ctx.dt);
 	}
+*/
 }
 
 void Path::draw(const context& ctx)
