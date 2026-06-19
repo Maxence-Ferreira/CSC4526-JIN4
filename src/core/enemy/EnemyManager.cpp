@@ -2,14 +2,18 @@
 
 #include <random>
 
+#include "../map/BeginPath.h"
+#include "../map/Terrain.h"
 #include "Cyrano.h"
 #include "Dog.h"
 #include "FirearmSoldier.h"
 #include "HorseSoldier.h"
 #include "Kamikaze.h"
 #include "MeleeSoldier.h"
-#include "../map/Terrain.h"
-#include "../map/BeginPath.h"
+
+EnemyManager::EnemyManager(int difficulty)
+    : Drawable(), m_difficulty(difficulty), waveNumber(0) {};
+
 
 static BeginPath* getRandomPath(const std::vector<BeginPath*>& path) {
   static std::random_device rd;
@@ -18,10 +22,10 @@ static BeginPath* getRandomPath(const std::vector<BeginPath*>& path) {
   return path[dis(gen)];
 }
 
-//crée un ensemble d'ennemis a chaque vague 
+// crée un ensemble d'ennemis a chaque vague
 void EnemyManager::newWave(Terrain* terrain) {
   waveNumber++;
-  int totalEnemies = waveNumber * 5;
+  int totalEnemies = waveNumber * m_difficulty;
   std::vector<BeginPath*> entryPath = terrain->getEntry();
 
   enemies.push_back(std::make_unique<Cyrano>(getRandomPath(entryPath)));
@@ -32,9 +36,11 @@ void EnemyManager::newWave(Terrain* terrain) {
   std::uniform_int_distribution<> enemyTypeRoll(0, 1);  //
 
   int eliteProba = std::min(
-      30, (waveNumber - 1) * 3);  // elites commencent à 0% et augmentent de 3% par vague (plafond à 30%)
+      30, (waveNumber - 1) * 3);  // elites commencent à 0% et augmentent de 3%
+                                  // par vague (plafond à 30%)
   int mediumProba = std::min(
-      40, (waveNumber - 1) * 5);  // elites commencent à 0% et augmentent de 5% par vague (plafond à 40%)
+      40, (waveNumber - 1) * 5);  // elites commencent à 0% et augmentent de 5%
+                                  // par vague (plafond à 40%)
   int baseProba =
       100 - eliteProba - mediumProba;  // le reste des ennemis sont des basiques
 
@@ -61,21 +67,20 @@ void EnemyManager::newWave(Terrain* terrain) {
   }
 }
 
-
-
 void EnemyManager::removeDeadEnemies() {
-    std::erase_if(enemies, [](std::unique_ptr<Enemy>& u) {return !u->isAlive(); });
+  std::erase_if(enemies,
+                [](std::unique_ptr<Enemy>& u) { return !u->isAlive(); });
 }
 
-void EnemyManager::update(const context& ctx){
-  for (const auto& enemy : enemies){
+void EnemyManager::update(const context& ctx) {
+  for (const auto& enemy : enemies) {
     enemy->update(ctx);
   }
   removeDeadEnemies();
 }
 
-void EnemyManager::draw(const context& ctx){
-  for (const auto& enemy : enemies){
+void EnemyManager::draw(const context& ctx) {
+  for (const auto& enemy : enemies) {
     enemy->draw(ctx);
   }
 }

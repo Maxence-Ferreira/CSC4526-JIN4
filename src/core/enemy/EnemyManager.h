@@ -9,9 +9,10 @@ class EnemyManager : public Drawable{
  private:
   std::vector<std::unique_ptr<Enemy>> enemies;
   int waveNumber;
+  int m_difficulty;
 
  public:
-  EnemyManager() { waveNumber = 0; };
+  EnemyManager(int difficulty) { waveNumber = 0;};
   ~EnemyManager() = default;
 
   void newWave(Terrain* terrain);
@@ -19,4 +20,5 @@ class EnemyManager : public Drawable{
   virtual void update(const context& ctx) override;
   void removeDeadEnemies();
   int getWaveNumber() const { return waveNumber; };
+  int getDifficulty() const {return m_difficulty; };
 };

@@ -6,7 +6,7 @@ Game::Game(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, int diffi
 	View(vm, rw, tileset, {}, {}, seed),
 	m_terrain(std::make_unique<Terrain>(rw->getSize().x / TILE_SIZE, rw->getSize().y / TILE_SIZE, difficulty, *m_context.rand)),
 	m_building_manager(std::make_unique<BuildingManager>(nullptr)),
-	m_enemy_manager(std::make_unique<EnemyManager>()),
+	m_enemy_manager(std::make_unique<EnemyManager>(difficulty)),
 	m_clock(),
 	m_font("resources/Cyrano.ttf"),
 	m_text_displayer(m_font),
