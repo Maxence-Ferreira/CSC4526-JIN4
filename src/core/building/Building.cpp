@@ -1,65 +1,67 @@
 #include "Building.h"
-#include "./map/Path.h"
-#include "./enemy/Attack.h"
+
 #include <iostream>
 #include <queue>
 #include <unordered_set>
 
-Building::Building(Ground* tile, int pv_max, int damage, int range, int cooldown, int price)
-	:m_tile(tile), m_pv_max(pv_max), m_pv(pv_max), m_damage(damage), m_range(range), m_cooldown(cooldown),m_price(price),m_level(0),m_dead(0),m_cur_cooldown(0),m_curr_target(nullptr), attacks{},m_tracked_path(),m_path_at_range(), m_nearest_path(0)
-{
-	tile->setBuilding(this);
+#include "./enemy/Attack.h"
+#include "./map/Path.h"
+
+Building::Building(Ground* tile, int pv_max, int damage, int range,
+                   int cooldown, int price)
+    : m_tile(tile),
+      m_pv_max(pv_max),
+      m_pv(pv_max),
+      m_damage(damage),
+      m_range(range),
+      m_cooldown(cooldown),
+      m_price(price),
+      m_level(0),
+      m_dead(0),
+      m_cur_cooldown(0),
+      m_curr_target(nullptr),
+      attacks{},
+      m_tracked_path(),
+      m_path_at_range(),
+      m_nearest_path(0) {
+  tile->setBuilding(this);
 }
 
-int Building::getX() const
-{
-	return m_tile?m_tile->getX():0;
+int Building::getX() const { return m_tile ? m_tile->getX() : 0; }
+
+int Building::getY() const { return m_tile ? m_tile->getY() : 0; }
+
+void Building::takeDamage(int damage) {
+  if ((m_pv -= damage) <= 0) m_dead = true;
 }
 
-int Building::getY() const
-{
-	return m_tile? m_tile->getY():0;
+bool Building::isAlive() const { return !m_dead; }
+
+int Building::distanceTo(Tile* nei) const {
+  return abs(nei->getX() - getX()) + abs(nei->getY() - getY());
 }
 
-void Building::takeDamage(int damage)
-{
-	if ((m_pv -= damage) <= 0)m_dead = true;
-}
-
-bool Building::isAlive() const
-{
-	return !m_dead;
-}
-
-int Building::distanceTo(Tile* nei) const
-{
-	return abs(nei->getX() - getX()) + abs(nei->getY() - getY());
-}
-
-Ground* Building::getTile() const 
-{
-	return m_tile;
-}
+Ground* Building::getTile() const { return m_tile; }
 
 Attack* Building::attacking(Tile* targetTile) {
   if (m_cur_cooldown <= 0) {
     m_cur_cooldown = m_cooldown;
-    attacks.push_back(std::make_unique<Attack>(m_damage, m_range, m_tile->getX()+.5f, m_tile->getY() + .5f,
-                                               targetTile, "canonball"));
+    attacks.push_back(std::make_unique<Attack>(
+        m_damage, m_range, m_tile->getX() + .5f, m_tile->getY() + .5f,
+        targetTile, "canonball"));
     return attacks.back().get();
   }
   return nullptr;
 }
 
 void Building::update(const context& ctx) {
-
   // recharge de l'attaque
   if (m_cur_cooldown > 0) {
     m_cur_cooldown -= ctx.dt;
   }
 
   // ciblage
-  if (m_curr_target!=nullptr) {
+  if (m_curr_target != nullptr) {
     int distance = this->distanceTo(m_curr_target);
     if (distance > m_range || !m_curr_target->hasEntity()) {
       m_curr_target = nullptr;
@@ -89,44 +91,45 @@ void Building::drawAttacks(const context& ctx) {
   for (const auto& att : attacks) att->draw(ctx);
 }
 
-//r�cuperer al�atoirement un path
+// r�cuperer al�atoirement un path
 Tile* Building::setTarget(std::mt19937& rand) {
-    /*
-  if (!m_nearest_path) return 0;
-  if (m_range >= this->distanceTo(m_nearest_path)&&m_nearest_path->hasEntity()) {
-    return m_nearest_path;
-  }
-  */
+  /*
+if (!m_nearest_path) return 0;
+if (m_range >= this->distanceTo(m_nearest_path)&&m_nearest_path->hasEntity()) {
+  return m_nearest_path;
+}
+*/
   return nullptr;
 }
 
-
-void Building::addDistanceFrom(Path* path){
-    if (m_nearest_path == path)return;
-    m_path_at_range[std::max(std::abs(path->getX() - m_tile->getX()), std::abs(path->getY() - m_tile->getY()))].push_back(path);
-    changeRange(m_range);
-    if (m_nearest_path && distanceTo(m_nearest_path) <= distanceTo(path))return;
-    m_nearest_path = path;
+void Building::addDistanceFrom(Path* path) {
+  if (m_nearest_path == path) return;
+  m_path_at_range[std::max(std::abs(path->getX() - m_tile->getX()),
+                           std::abs(path->getY() - m_tile->getY()))]
+      .push_back(path);
+  changeRange(m_range);
+  if (m_nearest_path && distanceTo(m_nearest_path) <= distanceTo(path)) return;
+  m_nearest_path = path;
 }
-void Building::changeRange(int range)
-{
-    m_range = range;
-    m_tracked_path = {};
-    for (int i = 1; i <= range; i++)
-    {
-        m_tracked_path.insert(m_path_at_range[i].begin(), m_path_at_range[i].end());
-    }
-
-}
-
-void Building::levelUp(){
-  m_level+=1;
-  m_pv_max *=1.5;
-  m_pv=m_pv_max;
-  m_damage *=1.2;
-  if (m_level%2==m_level/2){
-    changeRange(m_range+1);
+void Building::changeRange(int range) {
+  m_range = range;
+  m_tracked_path = {};
+  for (int i = 1; i <= range; i++) {
+    m_tracked_path.insert(m_path_at_range[i].begin(), m_path_at_range[i].end());
   }
+}
+
+void Building::levelUp() {
+  if (m_level < 5) {
+    m_level += 1;
+    m_pv_max *= 1.5;
+    m_pv = m_pv_max;
+    m_damage *= 1.2;
+    if (m_level % 2 == m_level / 2) {
+      changeRange(m_range + 1);
+    }
+  }
+  else {return;}
 }
 
 Building::~Building() = default;

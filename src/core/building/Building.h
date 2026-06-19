@@ -34,6 +34,10 @@ public:
 	void addDistanceFrom(Path* path);
 	void changeRange(int range);
 	void levelUp();
+	virtual <std::unique_ptr<Building>> clone(Ground* ground) = 0;
+	int getRange() {return m_range;};
+	int getPrice() {return m_price;};
+
 private:
 protected:
 	virtual Tile* setTarget(std::mt19937& rand);

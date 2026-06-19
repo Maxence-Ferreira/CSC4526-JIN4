@@ -5,9 +5,10 @@
 class Archer : public Building {
 public:
 	Archer(Ground* g,int price);
-	// Hérité via Building
+	// Hï¿½ritï¿½ via Building
 	virtual void draw(const context& ctx) override;
 	virtual void update(const context& ctx) override;
 	virtual Tile* setTarget(std::mt19937& rand) override;
+	virtual <std::unique_ptr<Building>> clone(Ground* ground) override;
 private:
 };
