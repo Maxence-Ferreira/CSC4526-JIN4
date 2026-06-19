@@ -31,9 +31,6 @@ void EnemyManager::newWave(Terrain* terrain) {
   int totalEnemies = 5 + waveNumber * m_difficulty;
   std::vector<BeginPath*> entryPath = terrain->getEntry();
 
-  m_spawner.push(EnemyType::Cyrano);
-  //enemies.push_back(std::make_unique<Cyrano>(getRandomPath(entryPath)));
-
   static std::random_device rd;
   static std::mt19937 gen(rd());
   std::uniform_int_distribution<> hundredRoll(1, 100);
@@ -67,6 +64,8 @@ void EnemyManager::newWave(Terrain* terrain) {
       }
     }
   }
+
+  m_spawner.push(EnemyType::Cyrano);
 }
 
 void EnemyManager::spawnEnemy(EnemyType type) {
