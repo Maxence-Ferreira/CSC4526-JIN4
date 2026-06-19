@@ -39,3 +39,8 @@ std::unique_ptr<Building> Canon::clone()
 {
 	return std::make_unique<Canon>(*this);
 }
+
+std::string Canon::projectileSkin() const
+{
+	return "canonball";
+}

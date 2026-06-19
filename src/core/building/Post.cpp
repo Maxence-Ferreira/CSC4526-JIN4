@@ -20,6 +20,7 @@ std::unique_ptr<Building> Post::clone(Ground* ground)
     return std::move(ptr);
 }
 
+
 std::unique_ptr<Building> Post::clone()
 {
     return std::make_unique<Post>(*this);

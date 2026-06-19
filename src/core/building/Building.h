@@ -31,6 +31,7 @@ public:
 	Ground* getTile() const;
 	void setOnTile(Ground* tile);
 	virtual Attack* attacking(Tile* targetTile);
+	virtual std::string projectileSkin()const;
 	virtual void update(const context& ctx) override;
   	void drawAttacks(const context& ctx);
 	void addDistanceFrom(Path* path);

@@ -26,6 +26,11 @@ Tile* Archer::setTarget(std::mt19937& rand)
     return choosen;
 }
 
+std::string Archer::projectileSkin() const
+{
+    return "arrow";
+}
+
 std::unique_ptr<Building> Archer::clone(Ground* ground)
 {
     std::unique_ptr<Archer> ptr(std::make_unique<Archer>(*this));

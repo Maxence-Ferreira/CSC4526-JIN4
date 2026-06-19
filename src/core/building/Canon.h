@@ -11,5 +11,6 @@ public:
 	virtual Tile* setTarget(std::mt19937& rand) override;
 	virtual std::unique_ptr<Building> clone(Ground* ground) override;
 	virtual std::unique_ptr<Building> clone() override;
+	virtual std::string projectileSkin()const override;
 private:
 };
