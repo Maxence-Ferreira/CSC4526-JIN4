@@ -33,6 +33,7 @@ public:
   	void drawAttacks(const context& ctx);
 	void addDistanceFrom(Path* path);
 	void changeRange(int range);
+	void levelUp();
 private:
 protected:
 	virtual Tile* setTarget(std::mt19937& rand);

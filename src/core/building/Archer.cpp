@@ -3,7 +3,7 @@
 #include "SFML/Graphics.hpp"
 
 Archer::Archer(Ground* g, int price)
-    : Building(g, 1000, 40, 3, 1000, price) {}
+    : Building(g, 1000, 40, 1, 1000, price) {}
 
 void Archer::draw(const context& ctx) {
   ctx.rm->draw({ { TILE_SIZE * getX(), TILE_SIZE * getY()},{ TILE_SIZE, TILE_SIZE} }, "archer");

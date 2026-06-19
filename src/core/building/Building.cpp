@@ -89,7 +89,7 @@ void Building::drawAttacks(const context& ctx) {
   for (const auto& att : attacks) att->draw(ctx);
 }
 
-//récuperer aléatoirement un path
+//rï¿½cuperer alï¿½atoirement un path
 Tile* Building::setTarget(std::mt19937& rand) {
     /*
   if (!m_nearest_path) return 0;
@@ -118,4 +118,15 @@ void Building::changeRange(int range)
     }
 
 }
+
+void Building::levelUp(){
+  m_level+=1;
+  m_pv_max *=1.5;
+  m_pv=m_pv_max;
+  m_damage *=1.2;
+  if (m_level%2==m_level/2){
+    changeRange(m_range+1);
+  }
+}
+
 Building::~Building() = default;
