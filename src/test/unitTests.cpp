@@ -264,7 +264,8 @@ TEST(EnemyTest, AttackRespectsCooldown) {
   Cyrano e(&start);  // Cyrano a un cooldown de 1000.0 ms
 
   Ground targetTile(0, 1);
-  Archer dummyTarget(&targetTile, 100);  // Tour archer générique à 100 pièces
+  Archer dummyTarget(100);
+  dummyTarget.setOnTile(&targetTile);  // Tour archer générique à 100 pièces
 
   // 1ère tentative : Le tir doit partir (le cooldown est initialement à 0)
   Attack* firstAttack = e.attacking(&dummyTarget);
@@ -300,7 +301,8 @@ TEST(EnemyTest, AttackRespectsCooldown) {
  */
 TEST(BuildingTest, TakeDamageAndDie) {
   Ground g(0, 0);
-  Archer tower(&g, 100);  // Un archer a 1000 PV de base selon ton constructeur
+  Archer tower(100);
+  tower.setOnTile(&g);  // Un archer a 1000 PV de base selon ton constructeur
 
   // Vérification initiale
   EXPECT_TRUE(tower.isAlive()) << "La tour devrait etre en vie a sa creation.";
@@ -322,7 +324,8 @@ TEST(BuildingTest, TakeDamageAndDie) {
  */
 TEST(BuildingTest, RadarDetectsEnemyOnPath) {
     Ground g(0, 0);
-    Archer tower(&g, 100); // L'archer a une portée (range) de 3 cases
+    Archer tower(100); // L'archer a une portée (range) de 3 cases
+    tower.setOnTile(&g);
     
     Path farPath(0, 10);   // Case beaucoup trop loin (distance 10)
     Path closePath(0, 2);  // Case à portée (distance 2)
@@ -363,8 +366,8 @@ TEST(BuildingTest, RadarDetectsEnemyOnPath) {
  */
 TEST(BuildingTest, AttackRespectsCooldown) {
   Ground g(0, 0);
-  Archer tower(&g, 100);  // L'archer a un temps de recharge de 1000 ms
-
+  Archer tower(100);  // L'archer a un temps de recharge de 1000 ms
+  tower.setOnTile(&g);
   Path targetPath(0, 1);  // La case visée
 
   // 1ère tentative : Le tir doit partir (cooldown à 0 au départ)
@@ -462,7 +465,8 @@ TEST(EnemyTest, KamikazeExplosionSequence) {
     Ground groundTile(0, 1); // Juste à côté (Distance de 1)
     
     // On donne 100 PV à la tour (Le Kamikaze fait 500 de dégâts)
-    Archer tower(&groundTile, 100); 
+    Archer tower(100); 
+    tower.setOnTile(&groundTile);
     Kamikaze kami(&pathTile);       
     
     // Pour que le Kamikaze "voie" la tour au moment d'exploser
