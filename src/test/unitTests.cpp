@@ -5,6 +5,8 @@
 
 #include "building/Archer.h"
 #include "enemy/Cyrano.h"
+#include "enemy/Kamikaze.h"
+#include "enemy/Attack.h"
 #include "map/BeginPath.h"
 #include "map/EndPath.h"
 #include "map/Ground.h"
@@ -389,4 +391,112 @@ TEST(BuildingTest, AttackRespectsCooldown) {
   Attack* thirdAttack = tower.attacking(&targetPath);
   EXPECT_NE(thirdAttack, nullptr)
       << "Le cooldown est fini mais la tour ne tire toujours pas.";
+}
+
+/**
+ * @brief Test 1 : L'impact et les dégâts (Critique Gameplay)
+ * @details Vérifie que lorsque le projectile parcourt la distance jusqu'à sa cible,
+ * il inflige correctement les dégâts à l'entité présente sur la case, puis se
+ * désactive lui-même pour être détruit par le garbage collector de la tour.
+ */
+TEST(AttackTest, ProjectileDealsDamageOnImpact) {
+    BeginPath targetTile(2, 2);
+    Cyrano enemy(&targetTile); // Cyrano a 500 PV de base
+    
+    // On crée une attaque qui fait 500 dégâts (coup fatal)
+    // Elle part de la case (0,0) et vise la case (2,2)
+    Attack projectile(500, 10.0, 0.0, 0.0, &targetTile, "arrow");
+    
+    EXPECT_TRUE(enemy.isAlive());
+    EXPECT_TRUE(projectile.isActive());
+    
+    // On simule un dt énorme (10 secondes) pour s'assurer que 
+    // le projectile atteint sa cible instantanément en une seule frame.
+    context ctx{};
+    ctx.dt = 10000; 
+    
+    projectile.update(ctx);
+    
+    // VERIFICATIONS :
+    EXPECT_FALSE(enemy.isAlive()) << "L'ennemi n'a pas recu les degats a l'impact !";
+    EXPECT_FALSE(projectile.isActive()) << "Le projectile doit se desactiver apres l'impact !";
+}
+
+
+/**
+ * @brief Test 2 : La sécurité "Cible Fantôme" (Critique Anti-Crash)
+ * @details Si un ennemi meurt (ou avance à la case suivante) PENDANT que la 
+ * flèche est en l'air, le pointeur de la cible devient invalide ou mort. 
+ * L'attaque doit s'en rendre compte et s'annuler sans faire crasher le jeu.
+ */
+TEST(AttackTest, ProjectileDeactivatesIfTargetIsLost) {
+    BeginPath targetTile(5, 5);
+    context ctx{};
+    ctx.dt = 16; // Une frame normale
+    
+    // SCÉNARIO A : Le projectile vise une case qui est devenue vide
+    Attack projEmpty(100, 10.0, 0.0, 0.0, &targetTile, "arrow");
+    
+    projEmpty.update(ctx);
+    EXPECT_FALSE(projEmpty.isActive()) << "L'attaque doit s'annuler si la case visée est vide.";
+    
+    // SCÉNARIO B : Le projectile vise un ennemi, mais celui-ci meurt avant l'impact
+    Cyrano dyingEnemy(&targetTile);
+    Attack projDead(100, 10.0, 0.0, 0.0, &targetTile, "arrow");
+    
+    // Une autre tour achève l'ennemi pendant le vol du projectile
+    dyingEnemy.takeDamage(500); 
+    
+    projDead.update(ctx);
+    EXPECT_FALSE(projDead.isActive()) << "L'attaque doit s'annuler si sa cible est deja morte.";
+}
+
+/**
+ * @brief Test du Kamikaze : Séquence d'explosion
+ * @details Vérifie que le Kamikaze s'arrête, attend bien 2 secondes (2000ms),
+ * inflige ses dégâts de zone/ciblés, puis meurt de sa propre explosion.
+ */
+TEST(EnemyTest, KamikazeExplosionSequence) {
+    // 1. MISE EN PLACE DE LA SCÈNE
+    BeginPath pathTile(0, 0);
+    Ground groundTile(0, 1); // Juste à côté (Distance de 1)
+    
+    // On donne 100 PV à la tour (Le Kamikaze fait 500 de dégâts)
+    Archer tower(&groundTile, 100); 
+    Kamikaze kami(&pathTile);       
+    
+    // Pour que le Kamikaze "voie" la tour au moment d'exploser
+    pathTile.addDistanceFrom(&tower);
+    
+    // Contexte temporel artificiel
+    context fauxCtx{};
+    fauxCtx.rand = std::make_unique<std::mt19937>(42);
+
+    // On enlève 500 PV à la tour AVANT que le Kamikaze attaque 
+    // pour qu'il puisse la finir avec ses propres 500 de dégâts !
+    tower.takeDamage(500);
+
+    // 2. ACTIVATION DU DÉTONATEUR
+    // On force l'activation de l'attaque comme si le Kamikaze venait d'arriver à portée
+    kami.attacking(&tower);
+    
+    // Vérification de sécurité initiale : Personne n'est mort
+    EXPECT_TRUE(kami.isAlive());
+    EXPECT_TRUE(tower.isAlive());
+
+    // 3. ÉCOULEMENT DU TEMPS : 1000 ms (1 seconde)
+    fauxCtx.dt = 1000;
+    kami.update(fauxCtx);
+    
+    // VERIFICATION 1 : L'attente
+    EXPECT_TRUE(kami.isAlive()) << "Le Kamikaze a explose trop tot (avant les 2 secondes) !";
+    EXPECT_TRUE(tower.isAlive()) << "La tour a pris des degats avant la fin du chronometre !";
+
+    // 4. ÉCOULEMENT DU TEMPS : 1001 ms (Total = 2001 ms)
+    fauxCtx.dt = 1001;
+    kami.update(fauxCtx);
+    
+    // VERIFICATION 2 : L'explosion (BOUM !)
+    EXPECT_FALSE(kami.isAlive()) << "Le Kamikaze n'est pas mort dans sa propre explosion !";
+    EXPECT_FALSE(tower.isAlive()) << "La tour n'a pas ete detruite par l'explosion !";
 }

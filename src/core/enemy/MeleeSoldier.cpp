@@ -1,6 +1,6 @@
 #include "MeleeSoldier.h"
 
-MeleeSoldier::MeleeSoldier(Path* beginPath) : Enemy(100.0, 0.0005, 20, 1.0, 1000.0, 10, beginPath) {};
+MeleeSoldier::MeleeSoldier(Path* beginPath) : Enemy(100.0, 0.0005, 50, 1.0, 1000.0, 10, beginPath) {};
 
 
 void MeleeSoldier::draw(const context& ctx) {

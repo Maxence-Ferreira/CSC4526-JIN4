@@ -1,6 +1,6 @@
 #include "FirearmSoldier.h"
 
-FirearmSoldier::FirearmSoldier(Path* beginPath) : Enemy(100.0, 0.0005, 20, 5.0, 2000.0, 10, beginPath) {};
+FirearmSoldier::FirearmSoldier(Path* beginPath) : Enemy(100.0, 0.0005, 50, 5.0, 2000.0, 10, beginPath) {};
 
 
 void FirearmSoldier::draw(const context& ctx) {
