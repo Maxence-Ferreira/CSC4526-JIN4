@@ -29,7 +29,8 @@ View::View(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, const std
 		auto ypos = (std::to_string(50 + 10 * it) + "%");
 		m_gui_widget[i]->setPosition("50%", ypos.c_str());
 		m_gui_widget[i]->setVisible(true);
-		m_gui_widget[i]->setSize(117 * 2, 32 * 2);
+		sf::Vector2u v = m_gui_textures[i + "1"].getSize();
+		m_gui_widget[i]->setSize((float)v.x/v.y*64.f, 64);
 		m_gui_widget[i]->setOrigin(.5, .5);
 		m_gui_widget[i]->onClick([this,i , ev]
 			{
