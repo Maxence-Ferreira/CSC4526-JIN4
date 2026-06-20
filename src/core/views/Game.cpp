@@ -93,7 +93,8 @@ void Game::draw()
 	m_building_manager->draw(m_context);
 	m_enemy_manager->draw(m_context);
 	m_context.rm->render(m_context.window, {m_context.offsetX, m_context.offsetY});
-
+	m_enemy_manager->drawWave(m_context);
+	
 	fps_[fps_i = (fps_i + 1) % 100] = 1000. / m_context.dt;
 	if (!fps_i)
 	{

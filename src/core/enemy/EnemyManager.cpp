@@ -1,8 +1,7 @@
 #include "EnemyManager.h"
 
-#include <random>
 #include <queue>
-
+#include <random>
 
 #include "../map/BeginPath.h"
 #include "../map/Terrain.h"
@@ -14,7 +13,20 @@
 #include "MeleeSoldier.h"
 
 EnemyManager::EnemyManager(int difficulty)
-    : Drawable(), m_difficulty(difficulty), waveNumber(0), m_spawnerTimer(0.f), m_terrain(nullptr) {
+    : Drawable(),
+      m_difficulty(difficulty),
+      waveNumber(0),
+      m_spawnerTimer(0.f),
+      m_terrain(nullptr),
+      m_font(),
+      m_text_displayer(m_font) {
+  // pour eviter les crashs pendant les tests qui n'ont pas accès à ressource
+  try {
+    if (m_font.openFromFile("resources/Cyrano.ttf")) {
+      m_text_displayer.setFont(m_font);
+    }
+  } catch (...) {
+  }
 }
 
 static BeginPath* getRandomPath(const std::vector<BeginPath*>& path) {
@@ -26,7 +38,7 @@ static BeginPath* getRandomPath(const std::vector<BeginPath*>& path) {
 
 // crée un ensemble d'ennemis a chaque vague
 void EnemyManager::newWave(Terrain* terrain) {
-  m_terrain=terrain;
+  m_terrain = terrain;
   waveNumber++;
   int totalEnemies = 5 + waveNumber * m_difficulty;
   std::vector<BeginPath*> entryPath = terrain->getEntry();
@@ -36,13 +48,18 @@ void EnemyManager::newWave(Terrain* terrain) {
   std::uniform_int_distribution<> hundredRoll(1, 100);
   std::uniform_int_distribution<> enemyTypeRoll(0, 1);  //
 
-  //diff = {2,3,4,5,6}
+  // diff = {2,3,4,5,6}
   int eliteProba = std::min(
-      30*(m_difficulty/2), (waveNumber - 1) * 2*(m_difficulty-1));  // elites commencent à 0% et augmentent de 2*diff%
-                                  // par vague (plafond à 30(*diff/2)%)
-  int mediumProba = std::min(
-      30/(m_difficulty/2), (waveNumber - 1) * 4*(m_difficulty-1));  // elites commencent à 0% et augmentent de 4*(diff-1)%
-                                  // par vague (plafond à 30/(diff/2)%)
+      30 * (m_difficulty / 2),
+      (waveNumber - 1) * 2 *
+          (m_difficulty - 1));  // elites commencent à 0% et augmentent de
+                                // 2*diff% par vague (plafond à 30(*diff/2)%)
+  int mediumProba =
+      std::min(30 / (m_difficulty / 2),
+               (waveNumber - 1) * 4 *
+                   (m_difficulty -
+                    1));  // elites commencent à 0% et augmentent de 4*(diff-1)%
+                          // par vague (plafond à 30/(diff/2)%)
   int baseProba =
       100 - eliteProba - mediumProba;  // le reste des ennemis sont des basiques
 
@@ -69,29 +86,32 @@ void EnemyManager::newWave(Terrain* terrain) {
 }
 
 void EnemyManager::spawnEnemy(EnemyType type) {
-    if (!m_terrain) return;
-    std::vector<BeginPath*> entryPath = m_terrain->getEntry();
+  if (!m_terrain) return;
+  std::vector<BeginPath*> entryPath = m_terrain->getEntry();
 
-    switch (type) {
-        case EnemyType::Cyrano:
-            enemies.push_back(std::make_unique<Cyrano>(getRandomPath(entryPath)));
-            break;
-        case EnemyType::Kamikaze:
-            enemies.push_back(std::make_unique<Kamikaze>(getRandomPath(entryPath)));
-            break;
-        case EnemyType::HorseSoldier:
-            enemies.push_back(std::make_unique<HorseSoldier>(getRandomPath(entryPath)));
-            break;
-        case EnemyType::Dog:
-            enemies.push_back(std::make_unique<Dog>(getRandomPath(entryPath)));
-            break;
-        case EnemyType::FirearmSoldier:
-            enemies.push_back(std::make_unique<FirearmSoldier>(getRandomPath(entryPath)));
-            break;
-        case EnemyType::MeleeSoldier:
-            enemies.push_back(std::make_unique<MeleeSoldier>(getRandomPath(entryPath)));
-            break;
-    }
+  switch (type) {
+    case EnemyType::Cyrano:
+      enemies.push_back(std::make_unique<Cyrano>(getRandomPath(entryPath)));
+      break;
+    case EnemyType::Kamikaze:
+      enemies.push_back(std::make_unique<Kamikaze>(getRandomPath(entryPath)));
+      break;
+    case EnemyType::HorseSoldier:
+      enemies.push_back(
+          std::make_unique<HorseSoldier>(getRandomPath(entryPath)));
+      break;
+    case EnemyType::Dog:
+      enemies.push_back(std::make_unique<Dog>(getRandomPath(entryPath)));
+      break;
+    case EnemyType::FirearmSoldier:
+      enemies.push_back(
+          std::make_unique<FirearmSoldier>(getRandomPath(entryPath)));
+      break;
+    case EnemyType::MeleeSoldier:
+      enemies.push_back(
+          std::make_unique<MeleeSoldier>(getRandomPath(entryPath)));
+      break;
+  }
 }
 
 void EnemyManager::removeDeadEnemies() {
@@ -100,22 +120,34 @@ void EnemyManager::removeDeadEnemies() {
 }
 
 void EnemyManager::update(const context& ctx) {
-  if(!m_spawner.empty()){
+  if (!m_spawner.empty()) {
     m_spawnerTimer -= ctx.dt;
-    if(m_spawnerTimer <=0){
+    if (m_spawnerTimer <= 0) {
       spawnEnemy(m_spawner.front());
       m_spawner.pop();
-      m_spawnerTimer=500;
+      m_spawnerTimer = 500;
     }
   }
   for (const auto& enemy : enemies) {
     enemy->update(ctx);
   }
   removeDeadEnemies();
+  if (enemies.empty() && m_spawner.empty()) {
+    newWave(m_terrain);
+  }
 }
 
 void EnemyManager::draw(const context& ctx) {
   for (const auto& enemy : enemies) {
     enemy->draw(ctx);
   }
+}
+
+void EnemyManager::drawWave(const context& ctx) {
+  std::ostringstream oss("");
+  oss << "Wave  " << (int)waveNumber;
+  m_text_displayer.setString(oss.str());
+  m_text_displayer.setPosition(sf::Vector2f(0.0f, 30.0f));
+  ctx.window->draw(m_text_displayer);
+  // View::draw();
 }

@@ -4,9 +4,10 @@
 #include <string>
 
 #include "building/Archer.h"
-#include "enemy/Cyrano.h"
-#include "enemy/Kamikaze.h"
 #include "enemy/Attack.h"
+#include "enemy/Cyrano.h"
+#include "enemy/EnemyManager.h"
+#include "enemy/Kamikaze.h"
 #include "map/BeginPath.h"
 #include "map/EndPath.h"
 #include "map/Ground.h"
@@ -319,44 +320,50 @@ TEST(BuildingTest, TakeDamageAndDie) {
 /**
  * @brief Test 2 : Le Radar et la détection (Critique IA)
  * @details S'assure que la tour scrute correctement les chemins environnants.
- * Elle ne doit cibler une case QUE si celle-ci est dans sa portée ET 
+ * Elle ne doit cibler une case QUE si celle-ci est dans sa portée ET
  * qu'elle contient un ennemi. Elle doit ignorer les cases vides ou lointaines.
  */
 TEST(BuildingTest, RadarDetectsEnemyOnPath) {
-    Ground g(0, 0);
-    Archer tower(100); // L'archer a une portée (range) de 3 cases
-    tower.setOnTile(&g);
-    
-    Path farPath(0, 10);   // Case beaucoup trop loin (distance 10)
-    Path closePath(0, 2);  // Case à portée (distance 2)
+  Ground g(0, 0);
+  Archer tower(100);  // L'archer a une portée (range) de 3 cases
+  tower.setOnTile(&g);
 
-    // On simule le lien que le Terrain crée normalement au début du jeu
-    farPath.addDistanceFrom(&tower);
-    closePath.addDistanceFrom(&tower);
+  Path farPath(0, 10);   // Case beaucoup trop loin (distance 10)
+  Path closePath(0, 1);  // Case à portée (distance 1)
 
-    // --- LE GENERATEUR ALEATOIRE REQUIS PAR TA NOUVELLE METHODE ---
-    std::mt19937 fakeRand(42);
+  // On simule le lien que le Terrain crée normalement au début du jeu
+  tower.addDistanceFrom(&farPath);
+  tower.addDistanceFrom(&closePath);
 
-    // 1. Les deux chemins sont vides, la tour ne doit rien cibler
-    EXPECT_EQ(tower.setTarget(fakeRand), nullptr) << "La tour cible une case vide !";
+  // --- LE GENERATEUR ALEATOIRE REQUIS PAR TA NOUVELLE METHODE ---
+  std::mt19937 fakeRand(42);
 
-    // 2. On ajoute un ennemi sur le chemin hors de portée
-    Cyrano farEnemy(&farPath); 
-    EXPECT_EQ(tower.setTarget(fakeRand), nullptr) << "La tour cible un ennemi hors de sa portee !";
+  // 1. Les deux chemins sont vides, la tour ne doit rien cibler
+  EXPECT_EQ(tower.setTarget(fakeRand), nullptr)
+      << "La tour cible une case vide !";
 
-    // 3. On ajoute un ennemi sur le chemin à portée
-    Cyrano closeEnemy(&closePath);
-    
-    // 1. L'ennemi s'est-il bien inscrit sur la case ?
-    EXPECT_TRUE(closePath.hasEntity()) << "ERREUR 1 : L'ennemi n'a pas ete enregistre sur closePath !";
-    
-    // 2. La tour trouve-t-elle au moins une cible ?
-    Tile* target = tower.setTarget(fakeRand);
-    EXPECT_NE(target, nullptr) << "ERREUR 2 : La tour renvoie NULL ! (Soit m_tracked_path est vide, soit Archer::setTarget n'est pas appele).";
-    
-    // 3. Est-ce la bonne cible ?
-    EXPECT_EQ(target, &closePath) << "ERREUR 3 : La tour a cible une autre case que prevu !";
-  }
+  // 2. On ajoute un ennemi sur le chemin hors de portée
+  Cyrano farEnemy(&farPath);
+  EXPECT_EQ(tower.setTarget(fakeRand), nullptr)
+      << "La tour cible un ennemi hors de sa portee !";
+
+  // 3. On ajoute un ennemi sur le chemin à portée
+  Cyrano closeEnemy(&closePath);
+
+  // 1. L'ennemi s'est-il bien inscrit sur la case ?
+  EXPECT_TRUE(closePath.hasEntity())
+      << "ERREUR 1 : L'ennemi n'a pas ete enregistre sur closePath !";
+
+  // 2. La tour trouve-t-elle au moins une cible ?
+  Tile* target = tower.setTarget(fakeRand);
+  EXPECT_NE(target, nullptr)
+      << "ERREUR 2 : La tour renvoie NULL ! (Soit m_tracked_path est vide, "
+         "soit Archer::setTarget n'est pas appele).";
+
+  // 3. Est-ce la bonne cible ?
+  EXPECT_EQ(target, &closePath)
+      << "ERREUR 3 : La tour a cible une autre case que prevu !";
+}
 
 /**
  * @brief Test 3 : Le respect de la cadence de tir (Critique équilibrage)
@@ -380,12 +387,13 @@ TEST(BuildingTest, AttackRespectsCooldown) {
   EXPECT_EQ(blockedAttack, nullptr)
       << "La tour a tire en rafale sans respecter son cooldown !";
 
-// On crée un contexte vide (le C++ mettra des 0 et des nullptr partout par défaut)
-    context fauxCtx{}; 
-    
-    // On assigne uniquement ce dont le test a besoin
-    fauxCtx.dt = 1001;
-    fauxCtx.rand = std::make_unique<std::mt19937>(42);
+  // On crée un contexte vide (le C++ mettra des 0 et des nullptr partout par
+  // défaut)
+  context fauxCtx{};
+
+  // On assigne uniquement ce dont le test a besoin
+  fauxCtx.dt = 1001;
+  fauxCtx.rand = std::make_unique<std::mt19937>(42);
 
   // La tour met à jour son chronomètre interne
   tower.update(fauxCtx);
@@ -398,60 +406,65 @@ TEST(BuildingTest, AttackRespectsCooldown) {
 
 /**
  * @brief Test 1 : L'impact et les dégâts (Critique Gameplay)
- * @details Vérifie que lorsque le projectile parcourt la distance jusqu'à sa cible,
- * il inflige correctement les dégâts à l'entité présente sur la case, puis se
- * désactive lui-même pour être détruit par le garbage collector de la tour.
+ * @details Vérifie que lorsque le projectile parcourt la distance jusqu'à sa
+ * cible, il inflige correctement les dégâts à l'entité présente sur la case,
+ * puis se désactive lui-même pour être détruit par le garbage collector de la
+ * tour.
  */
 TEST(AttackTest, ProjectileDealsDamageOnImpact) {
-    BeginPath targetTile(2, 2);
-    Cyrano enemy(&targetTile); // Cyrano a 500 PV de base
-    
-    // On crée une attaque qui fait 500 dégâts (coup fatal)
-    // Elle part de la case (0,0) et vise la case (2,2)
-    Attack projectile(500, 10.0, 0.0, 0.0, &targetTile, "arrow");
-    
-    EXPECT_TRUE(enemy.isAlive());
-    EXPECT_TRUE(projectile.isActive());
-    
-    // On simule un dt énorme (10 secondes) pour s'assurer que 
-    // le projectile atteint sa cible instantanément en une seule frame.
-    context ctx{};
-    ctx.dt = 10000; 
-    
-    projectile.update(ctx);
-    
-    // VERIFICATIONS :
-    EXPECT_FALSE(enemy.isAlive()) << "L'ennemi n'a pas recu les degats a l'impact !";
-    EXPECT_FALSE(projectile.isActive()) << "Le projectile doit se desactiver apres l'impact !";
-}
+  BeginPath targetTile(2, 2);
+  Cyrano enemy(&targetTile);  // Cyrano a 500 PV de base
 
+  // On crée une attaque qui fait 500 dégâts (coup fatal)
+  // Elle part de la case (0,0) et vise la case (2,2)
+  Attack projectile(500, 10.0, 0.0, 0.0, &targetTile, "arrow");
+
+  EXPECT_TRUE(enemy.isAlive());
+  EXPECT_TRUE(projectile.isActive());
+
+  // On simule un dt énorme (10 secondes) pour s'assurer que
+  // le projectile atteint sa cible instantanément en une seule frame.
+  context ctx{};
+  ctx.dt = 10000;
+
+  projectile.update(ctx);
+
+  // VERIFICATIONS :
+  EXPECT_FALSE(enemy.isAlive())
+      << "L'ennemi n'a pas recu les degats a l'impact !";
+  EXPECT_FALSE(projectile.isActive())
+      << "Le projectile doit se desactiver apres l'impact !";
+}
 
 /**
  * @brief Test 2 : La sécurité "Cible Fantôme" (Critique Anti-Crash)
- * @details Si un ennemi meurt (ou avance à la case suivante) PENDANT que la 
- * flèche est en l'air, le pointeur de la cible devient invalide ou mort. 
+ * @details Si un ennemi meurt (ou avance à la case suivante) PENDANT que la
+ * flèche est en l'air, le pointeur de la cible devient invalide ou mort.
  * L'attaque doit s'en rendre compte et s'annuler sans faire crasher le jeu.
  */
 TEST(AttackTest, ProjectileDeactivatesIfTargetIsLost) {
-    BeginPath targetTile(5, 5);
-    context ctx{};
-    ctx.dt = 16; // Une frame normale
-    
-    // SCÉNARIO A : Le projectile vise une case qui est devenue vide
-    Attack projEmpty(100, 10.0, 0.0, 0.0, &targetTile, "arrow");
-    
-    projEmpty.update(ctx);
-    EXPECT_FALSE(projEmpty.isActive()) << "L'attaque doit s'annuler si la case visée est vide.";
-    
-    // SCÉNARIO B : Le projectile vise un ennemi, mais celui-ci meurt avant l'impact
-    Cyrano dyingEnemy(&targetTile);
-    Attack projDead(100, 10.0, 0.0, 0.0, &targetTile, "arrow");
-    
-    // Une autre tour achève l'ennemi pendant le vol du projectile
-    dyingEnemy.takeDamage(500); 
-    
-    projDead.update(ctx);
-    EXPECT_FALSE(projDead.isActive()) << "L'attaque doit s'annuler si sa cible est deja morte.";
+  BeginPath targetTile(5, 5);
+  context ctx{};
+  ctx.dt = 16;  // Une frame normale
+
+  // SCÉNARIO A : Le projectile vise une case qui est devenue vide
+  Attack projEmpty(100, 10.0, 0.0, 0.0, &targetTile, "arrow");
+
+  projEmpty.update(ctx);
+  EXPECT_FALSE(projEmpty.isActive())
+      << "L'attaque doit s'annuler si la case visée est vide.";
+
+  // SCÉNARIO B : Le projectile vise un ennemi, mais celui-ci meurt avant
+  // l'impact
+  Cyrano dyingEnemy(&targetTile);
+  Attack projDead(100, 10.0, 0.0, 0.0, &targetTile, "arrow");
+
+  // Une autre tour achève l'ennemi pendant le vol du projectile
+  dyingEnemy.takeDamage(500);
+
+  projDead.update(ctx);
+  EXPECT_FALSE(projDead.isActive())
+      << "L'attaque doit s'annuler si sa cible est deja morte.";
 }
 
 /**
@@ -460,47 +473,100 @@ TEST(AttackTest, ProjectileDeactivatesIfTargetIsLost) {
  * inflige ses dégâts de zone/ciblés, puis meurt de sa propre explosion.
  */
 TEST(EnemyTest, KamikazeExplosionSequence) {
-    // 1. MISE EN PLACE DE LA SCÈNE
-    BeginPath pathTile(0, 0);
-    Ground groundTile(0, 1); // Juste à côté (Distance de 1)
-    
-    // On donne 100 PV à la tour (Le Kamikaze fait 500 de dégâts)
-    Archer tower(100); 
-    tower.setOnTile(&groundTile);
-    Kamikaze kami(&pathTile);       
-    
-    // Pour que le Kamikaze "voie" la tour au moment d'exploser
-    pathTile.addDistanceFrom(&tower);
-    
-    // Contexte temporel artificiel
-    context fauxCtx{};
-    fauxCtx.rand = std::make_unique<std::mt19937>(42);
+  // 1. MISE EN PLACE DE LA SCÈNE
+  BeginPath pathTile(0, 0);
+  Ground groundTile(0, 1);  // Juste à côté (Distance de 1)
 
-    // On enlève 500 PV à la tour AVANT que le Kamikaze attaque 
-    // pour qu'il puisse la finir avec ses propres 500 de dégâts !
-    tower.takeDamage(500);
+  // On donne 100 PV à la tour (Le Kamikaze fait 500 de dégâts)
+  Archer tower(100);
+  tower.setOnTile(&groundTile);
+  Kamikaze kami(&pathTile);
 
-    // 2. ACTIVATION DU DÉTONATEUR
-    // On force l'activation de l'attaque comme si le Kamikaze venait d'arriver à portée
-    kami.attacking(&tower);
-    
-    // Vérification de sécurité initiale : Personne n'est mort
-    EXPECT_TRUE(kami.isAlive());
-    EXPECT_TRUE(tower.isAlive());
+  // Pour que le Kamikaze "voie" la tour au moment d'exploser
+  pathTile.addDistanceFrom(&tower);
 
-    // 3. ÉCOULEMENT DU TEMPS : 1000 ms (1 seconde)
-    fauxCtx.dt = 1000;
-    kami.update(fauxCtx);
-    
-    // VERIFICATION 1 : L'attente
-    EXPECT_TRUE(kami.isAlive()) << "Le Kamikaze a explose trop tot (avant les 2 secondes) !";
-    EXPECT_TRUE(tower.isAlive()) << "La tour a pris des degats avant la fin du chronometre !";
+  // Contexte temporel artificiel
+  context fauxCtx{};
+  fauxCtx.rand = std::make_unique<std::mt19937>(42);
 
-    // 4. ÉCOULEMENT DU TEMPS : 1001 ms (Total = 2001 ms)
-    fauxCtx.dt = 1001;
-    kami.update(fauxCtx);
-    
-    // VERIFICATION 2 : L'explosion (BOUM !)
-    EXPECT_FALSE(kami.isAlive()) << "Le Kamikaze n'est pas mort dans sa propre explosion !";
-    EXPECT_FALSE(tower.isAlive()) << "La tour n'a pas ete detruite par l'explosion !";
+  // On enlève 500 PV à la tour AVANT que le Kamikaze attaque
+  // pour qu'il puisse la finir avec ses propres 500 de dégâts !
+  tower.takeDamage(500);
+
+  // 2. ACTIVATION DU DÉTONATEUR
+  // On force l'activation de l'attaque comme si le Kamikaze venait d'arriver à
+  // portée
+  kami.attacking(&tower);
+
+  // Vérification de sécurité initiale : Personne n'est mort
+  EXPECT_TRUE(kami.isAlive());
+  EXPECT_TRUE(tower.isAlive());
+
+  // 3. ÉCOULEMENT DU TEMPS : 1000 ms (1 seconde)
+  fauxCtx.dt = 1000;
+  kami.update(fauxCtx);
+
+  // VERIFICATION 1 : L'attente
+  EXPECT_TRUE(kami.isAlive())
+      << "Le Kamikaze a explose trop tot (avant les 2 secondes) !";
+  EXPECT_TRUE(tower.isAlive())
+      << "La tour a pris des degats avant la fin du chronometre !";
+
+  // 4. ÉCOULEMENT DU TEMPS : 1001 ms (Total = 2001 ms)
+  fauxCtx.dt = 1001;
+  kami.update(fauxCtx);
+
+  // VERIFICATION 2 : L'explosion (BOUM !)
+  EXPECT_FALSE(kami.isAlive())
+      << "Le Kamikaze n'est pas mort dans sa propre explosion !";
+  EXPECT_FALSE(tower.isAlive())
+      << "La tour n'a pas ete detruite par l'explosion !";
+}
+
+/**
+ * @brief Test du changement de vague
+ * @details Vérifie que la vague s'incrémente UNIQUEMENT quand tous les ennemis
+ * générés sont morts.
+ */
+TEST(EnemyManagerTest, NextWaveStartsWhenAllEnemiesDie) {
+  std::mt19937 gen(42);
+  Terrain terrain(20, 15, 3, gen);
+
+  EnemyManager manager(2);
+  EXPECT_EQ(manager.getWaveNumber(), 0);
+
+  manager.newWave(&terrain);
+  EXPECT_EQ(manager.getWaveNumber(), 1);
+
+  context ctx{};
+  ctx.dt = 501;  
+  ctx.rand = std::make_unique<std::mt19937>(42);
+
+  for (int i = 0; i < 7; i++) {
+    manager.update(ctx);
+  }
+
+  EXPECT_EQ(manager.getWaveNumber(), 1)
+      << "La vague a change alors que les ennemis sont en vie !";
+
+  // --- LA CORRECTION EST ICI ---
+  // On récupère les vraies entrées du terrain, et on remonte tout le chemin.
+  for (BeginPath* entry : terrain.getEntry()) {
+      Path* currentTile = entry;
+      
+      // Tant qu'on n'est pas à la fin du chemin...
+      while (currentTile != nullptr) {
+          // On tue absolument tout ce qui s'y trouve !
+          for (Entity* e : currentTile->getEntity()) {
+              e->takeDamage(99999);
+          }
+          currentTile = currentTile->next(); // On passe à la case suivante
+      }
+  }
+
+  manager.update(ctx);
+
+  // VERIFICATION CRITIQUE
+  EXPECT_EQ(manager.getWaveNumber(), 2)
+      << "La vague 2 n'a pas demarre apres la mort des ennemis !";
 }
