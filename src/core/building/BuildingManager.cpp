@@ -41,7 +41,7 @@ void BuildingManager::update(const context& ctx){
     }
     if (m_placeholder && sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
     {
-        auto p = sf::Mouse::getPosition();
+        auto p = sf::Mouse::getPosition(*ctx.window);
         p.x += ctx.offsetX;
         p.y += ctx.offsetY;
         p.x /= TILE_SIZE;
@@ -62,7 +62,7 @@ void BuildingManager::draw(const context& ctx){
     post->draw(ctx);
     //
     if (!m_placeholder)return;
-    auto p = sf::Mouse::getPosition();
+    auto p = sf::Mouse::getPosition(*ctx.window);
     p.x += ctx.offsetX;
     p.y += ctx.offsetY;
     p.x /= TILE_SIZE;
