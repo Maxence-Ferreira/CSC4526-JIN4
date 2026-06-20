@@ -63,7 +63,9 @@ Game::Game(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, int diffi
 		"melee1",
 		"melee2",
 		"canonball",
-		"arrow"
+		"arrow",
+		"coin",
+		"white"
 	};
 	for (int i = 0; i < names.size(); i++)
 		m_context.rm->setTileCoordinate(names[i], { {16 * i,0},{16,16} });

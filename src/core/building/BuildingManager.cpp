@@ -13,7 +13,10 @@ m_building_cast{  }, buildings{},m_placeholder() {
 }
 
 void BuildingManager::removeDeadBuildings() {
+    int sz = buildings.size();
     std::erase_if(buildings, [](std::unique_ptr<Building>& b) {return !b->isAlive(); });
+    if (buildings.size() != sz)
+        m_terrain->setBuildings(buildings);
 }
 
 void BuildingManager::planConstruct(std::string s)
@@ -27,18 +30,8 @@ void BuildingManager::update(const context& ctx){
     for (const auto& b : buildings){
         b->update(ctx);
     }
-    int sz = buildings.size();
     removeDeadBuildings();
-    // re update les nearest building des paths
-    if (buildings.size() != sz)
-    {
-        for (Path* p : m_terrain->getPaths())
-        {
-            p->invalidNearestBuilding();
-            for (auto& b : buildings)
-                p->addDistanceFrom(b.get());
-        }
-    }
+    
     if (m_placeholder && sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
     {
         auto p = sf::Mouse::getPosition(*ctx.window);
@@ -47,7 +40,7 @@ void BuildingManager::update(const context& ctx){
         p.x /= TILE_SIZE;
         p.y /= TILE_SIZE;
         Ground* tr = dynamic_cast<Ground*>(m_terrain->getTile(p.x, p.y));
-        if (tr)
+        if (tr && !tr->hasEntity())
         {
             addBuilding(std::move(m_placeholder), tr);
             m_placeholder = 0;
@@ -68,8 +61,12 @@ void BuildingManager::draw(const context& ctx){
     p.x /= TILE_SIZE;
     p.y /= TILE_SIZE;
     Ground* tr = dynamic_cast<Ground*>(m_terrain->getTile(p.x, p.y)); if (tr)
-    if (tr)
+    if (tr && !tr->hasEntity())
     {
+        ctx.rm->draw({ 
+            {(p.x - m_placeholder->getRange()) * TILE_SIZE,(p.y - m_placeholder->getRange()) * TILE_SIZE},
+            {(m_placeholder->getRange() * 2 + 1) * TILE_SIZE,(m_placeholder->getRange() * 2 + 1) * TILE_SIZE} },
+            "white", sf::Color(255,0,0,127));
         m_placeholder->setOnTile(tr);
         m_placeholder->draw(ctx);
         m_placeholder->setOnTile(0);

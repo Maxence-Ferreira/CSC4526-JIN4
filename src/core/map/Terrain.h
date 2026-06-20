@@ -17,6 +17,7 @@ public:
 	int getWidth() const;
 	int getHeight() const;
 	int countEnemyInPost() const;
+	void setBuildings(const std::vector<std::unique_ptr<Building>>& buildings);
 	const std::vector<BeginPath*>& getEntry() const;
 	void draw(const context& ctx)override;
 	virtual void update(const context& ctx)override;

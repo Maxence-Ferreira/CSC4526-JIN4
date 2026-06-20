@@ -156,6 +156,16 @@ int Terrain::countEnemyInPost() const
 	return m_end->howManyEnemiesIn();
 }
 
+void Terrain::setBuildings(const std::vector<std::unique_ptr<Building>>& buildings)
+{
+	for (Path* p : m_paths)
+	{
+		p->invalidNearestBuilding();
+		for (auto& b : buildings)
+			p->addDistanceFrom(b.get());
+	}
+}
+
 const std::vector<BeginPath*>& Terrain::getEntry() const
 {
 	return m_inputs;

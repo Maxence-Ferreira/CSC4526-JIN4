@@ -30,6 +30,5 @@ std::vector<Entity*> Ground::getEntity() const
 }
 
 bool Ground::hasEntity() const{
-	if (m_building==nullptr){return false;}
-	else {return true;}
+	return m_building;
 }
