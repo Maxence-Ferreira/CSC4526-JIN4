@@ -61,8 +61,9 @@ Ground* Building::getTile() const { return m_tile; }
 
 void Building::setOnTile(Ground* tile)
 {
-    m_tile = tile;
-    m_tile->setBuilding(this);
+    if (m_tile)m_tile->setBuilding(0);
+    if(m_tile = tile)
+        m_tile->setBuilding(this);
 }
 
 Attack* Building::attacking(Tile* targetTile) {
@@ -147,19 +148,20 @@ void Building::changeRange(int range) {
 }
 
 void Building::levelUp() {
-  if (m_level < 5) {
+    if (m_level >= 5)return;
     m_level += 1;
     m_pv_max *= 1.5;
     m_pv = m_pv_max;
     m_damage *= 1.2;
     if (m_level % 2 == m_level / 2) {
-      changeRange(m_range + 1);
+        changeRange(m_range + 1);
     }
-  }
-  else {return;}
 }
 
-Building::~Building() = default;
+Building::~Building()
+{
+    if(m_tile)m_tile->setBuilding(0);
+}
 
 int Building::getRange() { return m_range; };
 int Building::getPrice() { return m_price; };

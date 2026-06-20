@@ -217,5 +217,6 @@ void Terrain::addBuilding(Building* ptr) const
 
 Tile* Terrain::getTile(int x, int y) const
 {
+	if (x < 0 || y < 0 || x >= m_width || y >= m_height)return 0;
 	return m_tiles[y * (long long)m_width + x].get();
 }

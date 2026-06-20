@@ -13,7 +13,8 @@ class BuildingManager : public Drawable{
 	std::map<std::string, std::unique_ptr<Building>> m_building_cast;
 	std::unique_ptr<Post> post;
 	std::unordered_map<std::string, int> prices;
-	Terrain* terter;
+	Terrain* m_terrain;
+	std::unique_ptr<Building> m_placeholder;
  
 public:
   BuildingManager(Terrain* terter);
@@ -23,6 +24,7 @@ public:
   virtual void draw(const context& ctx)override;
   virtual void update(const context& ctx)override;
   void removeDeadBuildings();
+  void planConstruct(std::string s);
   void addBuilding(std::string s, Ground* ground);
   void addBuilding(std::unique_ptr<Building> b, Ground* ground);
   std::unique_ptr<Building> createBuilding(std::string s);

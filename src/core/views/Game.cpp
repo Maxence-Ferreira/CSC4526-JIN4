@@ -125,12 +125,12 @@ bool Game::behavior(const std::string& action_name)
 {
 	if (action_name == "placeArcher")
 	{
-		std::cout << "Le joueur veut placer un archer" << std::endl;
+		m_building_manager->planConstruct("Archer");
 		return true;
 	}
 	else if (action_name == "placeCanon")
 	{
-		std::cout << "Le joueur veut placer un canon" << std::endl;
+		m_building_manager->planConstruct("Canon");
 		return true;
 	}
 	else if (action_name == "removeBuilding")
