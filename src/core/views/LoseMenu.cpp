@@ -1,10 +1,11 @@
 #include "LoseMenu.h"
 
 LoseMenu::LoseMenu(Game* game, ViewManager* vm, sf::RenderWindow* rw, std::string tileset, unsigned int seed)
-	:View(vm, rw, tileset, { "continue" },{ nullptr }, seed),m_font("resources/Cyrano.ttf"),m_text(m_font,"T'as perdu, \nJamais Roxane ne posera les yeux sur toi, \nJamais elle ne t'aimera.\nBien a toi\n\tCyrano",50)
+	:View(vm, rw, tileset, { "continue","quit"}, {nullptr,nullptr}, seed), m_font("resources/Cyrano.ttf"), m_text(m_font, "T'as perdu, \nJamais Roxane ne posera les yeux sur toi, \nJamais elle ne t'aimera.\nBien a toi\n\tCyrano", 50)
 {
 	m_text.setFillColor(sf::Color::Black);
 	m_context.rm->setTileCoordinate("background", { {0,0},{810,448} });
+	m_gui_widget["quit"]->onClick([this] {m_context.window->close(); });
 }
 
 void LoseMenu::handle(const std::optional<sf::Event>& ev)

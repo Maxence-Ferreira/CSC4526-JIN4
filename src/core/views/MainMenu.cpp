@@ -2,9 +2,10 @@
 
 #include "DifficultyMenu.h"
 MainMenu::MainMenu(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, unsigned int seed)
-	:View(vm, rw,tileset, {"continue","new"},{ 0, std::make_shared<DifficultyMenu>(vm,rw,tileset,seed) },seed)
+	:View(vm, rw,tileset, {"continue","new" ,"quit" },{ 0, std::make_shared<DifficultyMenu>(vm,rw,tileset,seed),0 },seed)
 {
 	m_context.rm->setTileCoordinate("background", { {0,0},{810,448} });
+	m_gui_widget["quit"]->onClick([this] {m_context.window->close(); });
 }
 
 void MainMenu::handle(const std::optional<sf::Event>& ev)

@@ -1,9 +1,10 @@
 #include "GameMenu.h"
 
 GameMenu::GameMenu(Game* game, ViewManager* vm, sf::RenderWindow* rw, std::string tileset, unsigned int seed)
-	:View(vm, rw, tileset, { "continue" , "save" },{ nullptr,nullptr }, seed)
+	:View(vm, rw, tileset, { "continue" , "save", "quit"}, {nullptr,nullptr,nullptr}, seed)
 {
 	m_context.rm->setTileCoordinate("background", { {0,0},{810,448} });
+	m_gui_widget["quit"]->onClick([this] {m_context.window->close(); });
 }
 
 void GameMenu::handle(const std::optional<sf::Event>& ev)
