@@ -61,4 +61,5 @@ protected:
 	std::unordered_set<Path*> m_tracked_path;
 	std::map<int,std::vector<Path*>> m_path_at_range;
 	std::vector<std::unique_ptr<Attack>> attacks;
+	float m_levelUp_timer;
 };

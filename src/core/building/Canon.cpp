@@ -3,9 +3,15 @@
 Canon::Canon(int price) : Building(1000, 50, 1, 1000, price) {}
 
 void Canon::draw(const context& ctx) {
-	ctx.rm->draw({ { TILE_SIZE * getX(), TILE_SIZE * getY()},{ TILE_SIZE, TILE_SIZE} }, "canon");
-	this->drawAttacks(ctx);
+  if (m_levelUp_timer > 0.0f) {
+    ctx.rm->draw({{TILE_SIZE * (getX()-.25f), TILE_SIZE * (getY()-.25f)},{TILE_SIZE * 1.5, TILE_SIZE * 1.5}},"canon");
+  } else {
+    ctx.rm->draw(
+        {{TILE_SIZE * getX(), TILE_SIZE * getY()}, {TILE_SIZE, TILE_SIZE}}, "canon");
+  }
+  this->drawAttacks(ctx);
 }
+
 
 void Canon::update(const context& ctx) { Building::update(ctx); }
 
@@ -44,3 +50,4 @@ std::string Canon::projectileSkin() const
 {
 	return "canonball";
 }
+

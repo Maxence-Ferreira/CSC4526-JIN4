@@ -23,7 +23,8 @@ Building::Building(int pv_max, int damage, int range,
     attacks{},
     m_tracked_path(),
     m_path_at_range(),
-    m_nearest_path(0) {
+    m_nearest_path(0),
+    m_levelUp_timer(0.0f) {
 }
 Building::Building(const Building& b)
     : m_tile(),
@@ -113,6 +114,10 @@ void Building::update(const context& ctx) {
     else
       it++;
   }
+
+  if(m_levelUp_timer>0.0f){
+    m_levelUp_timer-=ctx.dt;
+  }
 }
 
 void Building::drawAttacks(const context& ctx) {
@@ -154,6 +159,7 @@ void Building::levelUp() {
     m_pv = m_pv_max;
     m_damage *= 1.2;
     m_price *=1.5;
+    m_levelUp_timer+=100.0f;
     if (m_level % 2 == m_level / 2) {
         changeRange(m_range + 1);
     }
