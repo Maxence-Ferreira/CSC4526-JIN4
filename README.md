@@ -98,4 +98,10 @@ Actuellement les tours tire sur des tiles non vides, pour ce faire quand on ajou
 <br>
 Ainsi le batiment peut choisir un tile dans son range
 
-## TODO
+# RESOURCES
+
+- Tile fait maison inspiré de certains jeu pour la référence
+- Musiques libre de droit trouvée sur internet : 
+	- In game : Market Day de RandomMind
+	- Click : Pas d'auteur, trouvé sur Mixkit.co (Mouse click close)
+	- Musique menu : The Rainbow Bridge by Hildegard Tummers
