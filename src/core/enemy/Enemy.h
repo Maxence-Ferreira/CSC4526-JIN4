@@ -40,6 +40,7 @@ class Enemy : public Entity {
   virtual Attack* attacking(Building* targetBuilding);
   void takeDamage(int damage) override;
   void kill();
+  void reachObjective();
   bool isAlive() const override { return !isDead; };
   int getBounty() const { return bounty; };
   double getX() const { return x; };

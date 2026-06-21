@@ -73,6 +73,12 @@ void Enemy::kill()
     currentPath->removeEnemy(this);
 }
 
+void Enemy::reachObjective()
+{
+    kill();
+    bounty = 0;
+}
+
 void Enemy::update(const context& ctx) {
   // mouvement
   move(ctx.dt);

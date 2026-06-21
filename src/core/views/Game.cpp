@@ -4,210 +4,194 @@
 #include "LoseMenu.h"
 
 Game::Game(ViewManager* vm, sf::RenderWindow* rw, std::string tileset,
-           int difficulty, unsigned int seed)
-    : View(vm, rw, tileset, {"placeArcher", "placeCanon", "removeBuilding"},
-           {nullptr, nullptr, nullptr}, seed),
-      m_terrain(std::make_unique<Terrain>(rw->getSize().x / TILE_SIZE,
-                                          rw->getSize().y / TILE_SIZE,
-                                          difficulty, *m_context.rand)),
-      m_building_manager(std::make_unique<BuildingManager>(m_terrain.get())),
-      m_enemy_manager(std::make_unique<EnemyManager>(difficulty)),
-      m_clock(),
-      m_font("resources/Cyrano.ttf"),
-      m_text_displayer(m_font),
-      m_money_displayer(m_font),
-      m_song("resources/loop.ogg"),
-      m_difficulty(difficulty),
-      m_money(500) {
-  m_building_manager->setTerrain(m_terrain.get());
-  m_enemy_manager->newWave(m_terrain.get());
-  m_building_manager->addBuilding(
-      "Archer", static_cast<Ground*>(m_terrain->getTile(3, 0)));
-  m_building_manager->addBuilding(
-      "Canon", static_cast<Ground*>(m_terrain->getTile(6, 0)));
-  m_building_manager->addBuilding(
-      "Post", static_cast<Ground*>(m_terrain->getTile(
-                  m_terrain->getWidth() - 1, m_terrain->getHeight() / 2)));
-  m_clock.restart();
+    int difficulty, unsigned int seed)
+    : View(vm, rw, tileset, { "placeArcher", "placeCanon", "removeBuilding" },
+        { nullptr, nullptr, nullptr }, seed),
+    m_terrain(std::make_unique<Terrain>(rw->getSize().x / TILE_SIZE,
+        rw->getSize().y / TILE_SIZE,
+        difficulty, *m_context.rand)),
+    m_building_manager(std::make_unique<BuildingManager>(m_terrain.get())),
+    m_enemy_manager(std::make_unique<EnemyManager>(difficulty)),
+    m_clock(),
+    m_font("resources/Cyrano.ttf"),
+    m_text_displayer(m_font),
+    m_money_displayer(m_font),
+    m_song("resources/loop.ogg"),
+    m_difficulty(difficulty),
+    m_money(500) {
+    m_building_manager->setTerrain(m_terrain.get());
+    m_enemy_manager->newWave(m_terrain.get());
+    m_building_manager->addBuilding(
+        "Archer", static_cast<Ground*>(m_terrain->getTile(3, 0)));
+    m_building_manager->addBuilding(
+        "Canon", static_cast<Ground*>(m_terrain->getTile(6, 0)));
+    m_building_manager->addBuilding(
+        "Post", static_cast<Ground*>(m_terrain->getTile(
+            m_terrain->getWidth() - 1, m_terrain->getHeight() / 2)));
+    m_clock.restart();
 
-  m_navigator["menu"] = std::make_shared<GameMenu>(
-      this, vm, rw, "resources/mainmenu_tileset.png", seed);
-  m_navigator["lose"] = std::make_shared<LoseMenu>(
-      this, vm, rw, "resources/mainmenu_tileset.png", seed);
-  for (const auto& name : m_ordered_id_views) {
-    if (m_gui_widget[name] != nullptr) {
-      auto lay = m_gui_widget[name]->getPositionLayout();
-      lay.x = "100%";
-      m_gui_widget[name]->setPosition(lay);
-      m_gui_widget[name]->setOrigin(1, .5);
+    m_navigator["menu"] = std::make_shared<GameMenu>(
+        this, vm, rw, "resources/mainmenu_tileset.png", seed);
+    m_navigator["lose"] = std::make_shared<LoseMenu>(
+        this, vm, rw, "resources/mainmenu_tileset.png", seed);
+    for (const auto& name : m_ordered_id_views) {
+        if (m_gui_widget[name] != nullptr) {
+            auto lay = m_gui_widget[name]->getPositionLayout();
+            lay.x = "100%";
+            m_gui_widget[name]->setPosition(lay);
+            m_gui_widget[name]->setOrigin(1, .5);
+        }
     }
-  }
 
-  std::vector<std::string> names{
-      "post",          "archer",  "canon",         "outmap1",
-      "outmap2",       "outmap3", "outmap4",       "ground1",
-      "groundflower1", "ground2", "groundflower2", "ground3",
-      "groundflower3", "ground4", "groundflower4", "path1",
-      "path2",         "path3",   "path4",         "cyrano1",
-      "cyrano2",       "dog1",    "dog2",          "firearm1",
-      "firearm2",      "horse1",  "horse2",        "kamikaze1",
-      "kamikaze2",     "melee1",  "melee2",        "canonball",
-      "arrow",         "white",   "coin"};
-  for (int i = 0; i < names.size(); i++)
-    m_context.rm->setTileCoordinate(names[i], {{16 * i, 0}, {16, 16}});
+    std::vector<std::string> names{
+        "post",          "archer",  "canon",         "outmap1",
+        "outmap2",       "outmap3", "outmap4",       "ground1",
+        "groundflower1", "ground2", "groundflower2", "ground3",
+        "groundflower3", "ground4", "groundflower4", "path1",
+        "path2",         "path3",   "path4",         "cyrano1",
+        "cyrano2",       "dog1",    "dog2",          "firearm1",
+        "firearm2",      "horse1",  "horse2",        "kamikaze1",
+        "kamikaze2",     "melee1",  "melee2",        "canonball",
+        "arrow",         "coin",    "white" };
+    for (int i = 0; i < names.size(); i++)
+        m_context.rm->setTileCoordinate(names[i], { {16 * i, 0}, {16, 16} });
 }
 
 void Game::update() {
-  m_context.time += (m_context.dt = m_clock.restart().asMilliseconds());
-  m_terrain->update(m_context);
-  m_building_manager->update(m_context);
-  m_enemy_manager->update(m_context);
-  m_money += m_enemy_manager->collectBounties();
-  if (m_terrain->countEnemyInPost() >= 10 - m_difficulty) {
-    reset();
-    m_manager->changeView(m_navigator["lose"]);
-  }
+    m_context.time += (m_context.dt = m_clock.restart().asMilliseconds());
+    m_terrain->update(m_context);
+    m_building_manager->update(m_context);
+    m_enemy_manager->update(m_context);
+    m_money += m_enemy_manager->collectBounties();
+    if (m_terrain->countEnemyInPost() >= 10 - m_difficulty) {
+        reset();
+        m_manager->changeView(m_navigator["lose"]);
+    }
 }
 
 void Game::draw() {
-  static float fps_[100] = {};
-  static float fps = 120;
-  static int fps_i = 0;
+    static float fps_[100] = {};
+    static float fps = 120;
+    static int fps_i = 0;
 
-  m_terrain->draw(m_context);
-  m_building_manager->draw(m_context);
-  m_enemy_manager->draw(m_context);
-  m_context.rm->render(m_context.window,
-                       {m_context.offsetX, m_context.offsetY});
-  m_enemy_manager->drawWave(m_context);
+    m_terrain->draw(m_context);
+    m_building_manager->draw(m_context);
+    m_enemy_manager->draw(m_context);
+    m_enemy_manager->drawWave(m_context);
 
-  fps_[fps_i = (fps_i + 1) % 100] = 1000. / m_context.dt;
-  if (!fps_i) {
-    fps = 0;
-    for (int i = 0; i < 100; i++) fps += fps_[i];
-    fps /= 100.f;
-  }
-  std::ostringstream oss("");
-  oss << "fps : " << (int)fps;
-  m_text_displayer.setString(oss.str());
-  m_text_displayer.setPosition(sf::Vector2f(10.0f, 0.0f));
-  m_context.window->draw(m_text_displayer);
+    sf::FloatRect textBounds(m_money_displayer.getLocalBounds());                               //dimension text
+    const float textX = m_context.window->getView().getSize().x - textBounds.size.x - 20.0f;    //text fit to the end
+    const float iconSize = 32.0f;
+    const float iconX = textX - iconSize - 10.f;                                                //coin before text
+    const float iconY = textBounds.position.y + (textBounds.size.y / 2.0f) - (iconSize / 2.0f);//align coin & text
 
-  // dessin de la piece avec la qté d'argent
-  std::ostringstream oss1("");
-  oss1 << (int)m_money;
-  m_money_displayer.setString(oss1.str());
+    m_context.rm->draw({ {iconX + m_context.offsetX, iconY + m_context.offsetY}, {iconSize, iconSize} }, "coin");
 
-  // 2. On récupère la largeur actuelle de la vue (s'adapte au
-  // redimensionnement)
-  float windowWidth = m_context.window->getView().getSize().x;
+    m_context.rm->render(m_context.window,
+        { m_context.offsetX, m_context.offsetY });
 
-  // 3. On mesure le texte pour l'aligner parfaitement à droite
-  sf::FloatRect textBounds = m_money_displayer.getLocalBounds();
+    fps_[fps_i = (fps_i + 1) % 100] = 1000. / m_context.dt;
+    if (!fps_i) {
+        fps = 0;
+        for (int i = 0; i < 100; i++) fps += fps_[i];
+        fps /= 100.f;
+    }
+    std::ostringstream oss("");
+    oss << "fps : " << (int)fps;
+    m_text_displayer.setString(oss.str());
+    m_text_displayer.setPosition(sf::Vector2f(10.0f, 0.0f));
+    m_context.window->draw(m_text_displayer);
 
-  // 4. Calcul des coordonnées (avec une marge de 20 pixels du bord)
-  float margin = 20.0f;
-  float textX = windowWidth - textBounds.size.x - margin;
-  float textY = 0.0f;
+    // dessin de la piece avec la qté d'argent
+    std::ostringstream oss1("");
+    oss1 << (int)m_money;
+    m_money_displayer.setString(oss1.str());
 
-  // Placement et dessin du texte
-  m_money_displayer.setPosition(sf::Vector2f(textX, textY));
-  m_context.window->draw(m_money_displayer);
+    // Placement et dessin du texte
+    m_money_displayer.setPosition(sf::Vector2f(textX, 0));
+    m_context.window->draw(m_money_displayer);
 
-  // 5. Calcul de la position de la pièce (à gauche du texte)
-  float iconSize = 32.0f;  // La taille de l'icone (à ajuster, ex: 16.0f ou 32.0f)
-  float spacing = 10.0f;  // Espace entre la pièce et le texte
-  float iconX = textX - iconSize - spacing;
 
-  // On centre la pièce verticalement par rapport à la hauteur du texte
-  float trueTextCenterY = textY + textBounds.position.y + (textBounds.size.y / 2.0f);
-  float iconY = trueTextCenterY - (iconSize / 2.0f);
-
-  // 6. Ajout de la pièce dans le ResourceManager
-  m_context.rm->draw({{iconX, iconY}, {iconSize, iconSize}}, "coin");
-
-  // 7. RENDU DE L'INTERFACE UTILISATEUR
-  // On force le rendu immédiat du ResourceManager avec un offset de {0, 0}.
-  // Ainsi, la pièce reste fixe à l'écran et ne suit pas les mouvements de
-  // caméra du jeu !
-  m_context.rm->render(m_context.window, {0.0f, 0.0f});
-
-  View::draw();
+    View::draw();
 }
 
 void Game::onEnter() {
-  m_song.setLooping(true);
-  m_song.play();
-  m_context.mouseX = sf::Mouse::getPosition().x;
-  m_context.mouseY = sf::Mouse::getPosition().y;
+    m_song.setLooping(true);
+    m_song.play();
+    m_context.mouseX = sf::Mouse::getPosition().x;
+    m_context.mouseY = sf::Mouse::getPosition().y;
 }
 
 void Game::onExit() { m_song.pause(); }
 
 bool Game::behavior(const std::string& action_name) {
-  if (action_name == "placeArcher") {
-    int cost = m_building_manager->getPrice("Archer");
-    if (m_money >= cost) {
-      m_building_manager->planConstruct("Archer");
-      m_money -= cost;
-    } else {
-      std::cout << "Pas assez d'argent !" << std::endl;
+    if (action_name == "placeArcher") {
+        int cost = m_building_manager->getPrice("Archer");
+        if (m_money >= cost) {
+            m_building_manager->planConstruct("Archer");
+            m_money -= cost;
+        }
+        else {
+            std::cout << "Pas assez d'argent !" << std::endl;
+        }
+        return true;
     }
-    return true;
-  } else if (action_name == "placeCanon") {
-    int cost = m_building_manager->getPrice("Canon");
-    if (m_money >= cost) {
-      m_building_manager->planConstruct("Canon");
-      m_money -= cost;
-    } else {
-      std::cout << "Pas assez d'argent !" << std::endl;
+    else if (action_name == "placeCanon") {
+        int cost = m_building_manager->getPrice("Canon");
+        if (m_money >= cost) {
+            m_building_manager->planConstruct("Canon");
+            m_money -= cost;
+        }
+        else {
+            std::cout << "Pas assez d'argent !" << std::endl;
+        }
+        return true;
     }
-    return true;
-  } else if (action_name == "removeBuilding") {
-    // pour les difficultés noob et facile, detruire un batiment rend de
-    // l'argent
-    if (m_difficulty <= 3) {
-      m_money += 50;
-      std::cout << "Le joueur veut retirer un batiment" << std::endl;
-      return true;
+    else if (action_name == "removeBuilding") {
+        // pour les difficultés noob et facile, detruire un batiment rend de
+        // l'argent
+        if (m_difficulty <= 3) {
+            m_money += 50;
+            std::cout << "Le joueur veut retirer un batiment" << std::endl;
+            return true;
+        }
+        std::cout << "Le joueur veut retirer un batiment" << std::endl;
+        return true;
     }
-    std::cout << "Le joueur veut retirer un batiment" << std::endl;
-    return true;
-  }
-  return false;
+    return false;
 }
 
 void Game::reset() {
-  m_terrain = std::make_unique<Terrain>(
-      m_context.window->getSize().x / TILE_SIZE,
-      m_context.window->getSize().y / TILE_SIZE, m_difficulty, *m_context.rand);
-  m_enemy_manager = std::make_unique<EnemyManager>(m_difficulty);
-  m_enemy_manager->newWave(m_terrain.get());
-  m_building_manager = std::make_unique<BuildingManager>(m_terrain.get());
-  m_building_manager->addBuilding(
-      "Archer", static_cast<Ground*>(m_terrain->getTile(3, 0)));
-  m_building_manager->addBuilding(
-      "Canon", static_cast<Ground*>(m_terrain->getTile(6, 0)));
-  m_building_manager->addBuilding(
-      "Post", static_cast<Ground*>(m_terrain->getTile(
-                  m_terrain->getWidth() - 1, m_terrain->getHeight() / 2)));
-  m_clock.restart();
-  m_money = 500;
+    m_terrain = std::make_unique<Terrain>(
+        m_context.window->getSize().x / TILE_SIZE,
+        m_context.window->getSize().y / TILE_SIZE, m_difficulty, *m_context.rand);
+    m_enemy_manager = std::make_unique<EnemyManager>(m_difficulty);
+    m_enemy_manager->newWave(m_terrain.get());
+    m_building_manager = std::make_unique<BuildingManager>(m_terrain.get());
+    m_building_manager->addBuilding(
+        "Archer", static_cast<Ground*>(m_terrain->getTile(3, 0)));
+    m_building_manager->addBuilding(
+        "Canon", static_cast<Ground*>(m_terrain->getTile(6, 0)));
+    m_building_manager->addBuilding(
+        "Post", static_cast<Ground*>(m_terrain->getTile(
+            m_terrain->getWidth() - 1, m_terrain->getHeight() / 2)));
+    m_clock.restart();
+    m_money = 500;
 
-  m_song.stop();
+    m_song.stop();
 }
 
 void Game::handle(const std::optional<sf::Event>& ev) {
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))
-    m_manager->changeView(m_navigator["menu"]);
-  else if (auto mev = ev->getIf<sf::Event::MouseMoved>()) {
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
-      m_context.offsetX -= mev->position.x - m_context.mouseX;
-      m_context.offsetY -= mev->position.y - m_context.mouseY;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))
+        m_manager->changeView(m_navigator["menu"]);
+    else if (auto mev = ev->getIf<sf::Event::MouseMoved>()) {
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+            m_context.offsetX -= mev->position.x - m_context.mouseX;
+            m_context.offsetY -= mev->position.y - m_context.mouseY;
+        }
+        m_context.mouseX = mev->position.x;
+        m_context.mouseY = mev->position.y;
     }
-    m_context.mouseX = mev->position.x;
-    m_context.mouseY = mev->position.y;
-  }
 
-  View::handle(ev);
+    View::handle(ev);
 }

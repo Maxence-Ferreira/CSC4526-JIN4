@@ -13,7 +13,7 @@ void EndPath::update(const context& ctx)
 	std::cout << "i have "<<m_enemies.size()<<" enemy" << std::endl;
 	for (Enemy* e : m_enemies)
 	{
-		e->kill();
+		e->reachObjective();
 		m_enemies_in++;
 	}
 	m_enemies = {};
