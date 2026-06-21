@@ -1,7 +1,7 @@
 #include "GameMenu.h"
 
 GameMenu::GameMenu(Game* game, ViewManager* vm, sf::RenderWindow* rw, std::string tileset, unsigned int seed)
-	:View(vm, rw, tileset, { "continue" },{ nullptr }, seed)
+	:View(vm, rw, tileset, { "continue" , "save" },{ nullptr,nullptr }, seed)
 {
 	m_context.rm->setTileCoordinate("background", { {0,0},{810,448} });
 }

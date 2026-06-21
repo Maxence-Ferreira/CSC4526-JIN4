@@ -5,8 +5,8 @@
 
 Game::Game(ViewManager* vm, sf::RenderWindow* rw, std::string tileset,
     int difficulty, unsigned int seed)
-    : View(vm, rw, tileset, { "placeArcher", "placeCanon", "removeBuilding" },
-        { nullptr, nullptr, nullptr }, seed),
+    : View(vm, rw, tileset, { "placeArcher", "placeCanon", "removeBuilding", "levelup" },
+        { nullptr, nullptr, nullptr, nullptr }, seed),
     m_terrain(std::make_unique<Terrain>(rw->getSize().x / TILE_SIZE,
         rw->getSize().y / TILE_SIZE,
         difficulty, *m_context.rand)),
@@ -131,9 +131,6 @@ bool Game::behavior(const std::string& action_name) {
             m_building_manager->planConstruct("Archer");
             m_money -= cost;
         }
-        else {
-            std::cout << "Pas assez d'argent !" << std::endl;
-        }
         return true;
     }
     else if (action_name == "placeCanon") {
@@ -142,9 +139,6 @@ bool Game::behavior(const std::string& action_name) {
             m_building_manager->planConstruct("Canon");
             m_money -= cost;
         }
-        else {
-            std::cout << "Pas assez d'argent !" << std::endl;
-        }
         return true;
     }
     else if (action_name == "removeBuilding") {
@@ -152,10 +146,12 @@ bool Game::behavior(const std::string& action_name) {
         // l'argent
         if (m_difficulty <= 3) {
             m_money += 50;
-            std::cout << "Le joueur veut retirer un batiment" << std::endl;
-            return true;
         }
         std::cout << "Le joueur veut retirer un batiment" << std::endl;
+        return true;
+    }
+    else if (action_name == "levelup") {
+        std::cout << "Le joueur veut améliorer un batiment" << std::endl;
         return true;
     }
     return false;
