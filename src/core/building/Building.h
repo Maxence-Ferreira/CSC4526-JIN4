@@ -40,7 +40,7 @@ public:
 	virtual std::unique_ptr<Building> clone(Ground* ground) = 0;
 	virtual std::unique_ptr<Building> clone() = 0;
 	int getRange();
-	int getPrice();
+	int getPrice()const;
 
 private:
 protected:

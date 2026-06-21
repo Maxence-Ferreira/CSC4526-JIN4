@@ -12,7 +12,6 @@ class BuildingManager : public Drawable{
 	std::vector<std::unique_ptr<Building>> buildings;
 	std::map<std::string, std::unique_ptr<Building>> m_building_cast;
 	std::unique_ptr<Post> post;
-	std::unordered_map<std::string, int> prices;
 	Terrain* m_terrain;
 	std::unique_ptr<Building> m_placeholder;
  
@@ -31,5 +30,5 @@ public:
   void addBuildingCast(std::string s, std::unique_ptr<Building> cast);
   void setTerrain(Terrain* t);
   int getPrice(const std::string& buildingName) const;
-
+  int getPrice(const Building* b) const;
 };

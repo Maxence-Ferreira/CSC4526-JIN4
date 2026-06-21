@@ -153,6 +153,7 @@ void Building::levelUp() {
     m_pv_max *= 1.5;
     m_pv = m_pv_max;
     m_damage *= 1.2;
+    m_price *=1.5;
     if (m_level % 2 == m_level / 2) {
         changeRange(m_range + 1);
     }
@@ -164,4 +165,4 @@ Building::~Building()
 }
 
 int Building::getRange() { return m_range; };
-int Building::getPrice() { return m_price; };
+int Building::getPrice() const { return m_price; };

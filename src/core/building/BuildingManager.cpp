@@ -110,9 +110,13 @@ void BuildingManager::setTerrain(Terrain* t)
 }
 
 int BuildingManager::getPrice(const std::string& buildingName) const {
-  auto it = prices.find(buildingName);
-  if (it != prices.end()) {
-    return it->second;
+  auto it =  m_building_cast.find(buildingName);
+  if (it != m_building_cast.end()) {
+    return it->second->getPrice();
   }
-  return 0;
+  return INT32_MAX;
+}
+
+int BuildingManager::getPrice(const Building* b) const{
+  return b->getPrice();
 }
