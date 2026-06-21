@@ -66,7 +66,7 @@ void BuildingManager::update(const context& ctx) {
         for (Entity* e : tr->getEntity()) {
           if (b.get() == e) {
             m_pending_refunds += b->getPrice() / 2;
-            b->takeDamage(999999);
+            b->kill();
             destroyedSomething = true;
           }
         }

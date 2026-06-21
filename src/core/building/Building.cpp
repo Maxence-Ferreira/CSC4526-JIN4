@@ -159,6 +159,11 @@ void Building::levelUp() {
     }
 }
 
+void Building::kill()
+{
+    m_dead = true;
+}
+
 Building::~Building()
 {
     if(m_tile)m_tile->setBuilding(0);

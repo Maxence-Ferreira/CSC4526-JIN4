@@ -37,6 +37,7 @@ public:
 	void addDistanceFrom(Path* path);
 	void changeRange(int range);
 	void levelUp();
+	virtual void kill()override;
 	virtual std::unique_ptr<Building> clone(Ground* ground) = 0;
 	virtual std::unique_ptr<Building> clone() = 0;
 	int getRange();
