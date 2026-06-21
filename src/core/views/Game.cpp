@@ -148,7 +148,7 @@ bool Game::behavior(const std::string& action_name) {
 		return true;
     } 
     else if (action_name == "levelup") {
-        std::cout << "Le joueur veut améliorer un batiment" << std::endl;
+        m_building_manager->levelUpBuilding();
         return true;
     }
     return false;

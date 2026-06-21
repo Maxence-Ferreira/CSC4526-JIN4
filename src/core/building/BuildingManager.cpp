@@ -14,7 +14,8 @@ BuildingManager::BuildingManager(Terrain* terter)
       buildings{},
       m_placeholder(),
       m_destroy_mode(false),
-      m_pending_refunds(0) {
+      m_pending_refunds(0),
+      m_levelup_mode(false) {
   m_building_cast["Archer"] = std::make_unique<Archer>(100);
   m_building_cast["Canon"] = std::make_unique<Canon>(200);
 }
@@ -76,6 +77,30 @@ void BuildingManager::update(const context& ctx) {
       }
     }
   }
+
+  if (m_levelup_mode && sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)){
+    auto p = sf::Mouse::getPosition(*ctx.window);
+    p.x += ctx.offsetX;
+    p.y += ctx.offsetY;
+    p.x /= TILE_SIZE;
+    p.y /= TILE_SIZE;
+    Ground* tr = dynamic_cast<Ground*>(m_terrain->getTile(p.x, p.y));
+
+    if (tr && tr->hasEntity()) {
+      bool levelUpSomething = false;
+      for (auto& b : buildings) {
+        for (Entity* e : tr->getEntity()) {
+          if (b.get() == e) {
+            b->levelUp();
+            levelUpSomething = true;
+          }
+        }
+      }
+      if (levelUpSomething) {
+        m_levelup_mode = false;
+      }
+    }
+  }
 }
 
 void BuildingManager::draw(const context& ctx) {
@@ -83,6 +108,29 @@ void BuildingManager::draw(const context& ctx) {
     b->draw(ctx);
   }
   post->draw(ctx);
+
+  if (m_levelup_mode) {
+    auto p = sf::Mouse::getPosition(*ctx.window);
+    p.x += ctx.offsetX;
+    p.y += ctx.offsetY;
+    p.x /= TILE_SIZE;
+    p.y /= TILE_SIZE;
+    Ground* tr = dynamic_cast<Ground*>(m_terrain->getTile(p.x, p.y));
+
+    if (tr && tr->hasEntity()) {
+      bool isTower = false;
+      for (auto& b : buildings) {
+        for (Entity* e : tr->getEntity()) {
+          if (b.get() == e) isTower = true;
+        }
+      }
+      if (isTower) {
+        ctx.rm->draw({{p.x * (float)TILE_SIZE, p.y * (float)TILE_SIZE},
+                      {(float)TILE_SIZE, (float)TILE_SIZE}},
+                     "white", sf::Color(255, 255, 0, 127));
+      }
+    }
+  }
 
   if (m_destroy_mode) {
     auto p = sf::Mouse::getPosition(*ctx.window);
@@ -178,3 +226,9 @@ int BuildingManager::collectRefunds() {
   m_pending_refunds = 0;
   return refunds;
 }
+
+void BuildingManager::levelUpBuilding() {
+  m_placeholder = nullptr;
+  m_levelup_mode = true;
+}
+
