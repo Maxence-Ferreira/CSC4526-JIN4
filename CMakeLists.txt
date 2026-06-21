@@ -31,6 +31,9 @@ FetchContent_Declare(
 set(TGUI_BACKEND "SFML_GRAPHICS" CACHE STRING "TGUI backend" FORCE)
 FetchContent_MakeAvailable(TGUI)
 
+FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.12.0/json.tar.xz)
+FetchContent_MakeAvailable(json)
+
 add_subdirectory(src/core)
 add_subdirectory(src/main)
 

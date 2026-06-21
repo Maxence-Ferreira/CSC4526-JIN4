@@ -7,8 +7,9 @@
 #include <memory>
 #include <random>
 #include "building/Building.h"
+#include "Serializable.h"
 
-class Terrain :public Drawable
+class Terrain :public Drawable, public Serializable
 {
 public:
 	Terrain(int size_x, int size_y, int difficulty, std::mt19937& rand);
@@ -25,6 +26,7 @@ public:
 	void addBuilding(Building*ptr) const;
 	std::vector<Path*> getPaths() {return m_paths;};
 private:
+	virtual json serialize()override;
 #ifdef TESTING
 public:
 #else

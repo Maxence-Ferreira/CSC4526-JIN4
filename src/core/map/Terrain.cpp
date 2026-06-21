@@ -225,6 +225,17 @@ void Terrain::addBuilding(Building* ptr) const
 	}
 }
 
+json Terrain::serialize()
+{
+	json o=json::parse("{\
+\"firstname\":\"maxence\",\
+\"lastname\":\"FERREIRA\",\
+\"age\":22\
+}");
+	std::cout << o.dump() << std::endl;
+	return o;
+}
+
 Tile* Terrain::getTile(int x, int y) const
 {
 	if (x < 0 || y < 0 || x >= m_width || y >= m_height)return 0;
