@@ -225,15 +225,32 @@ void Terrain::addBuilding(Building* ptr) const
 	}
 }
 
-json Terrain::serialize()
+void Terrain::serialize(json& output)
 {
-	json o=json::parse("{\
-\"firstname\":\"maxence\",\
-\"lastname\":\"FERREIRA\",\
-\"age\":22\
-}");
-	std::cout << o.dump() << std::endl;
-	return o;
+	json& o = output["terrain"];
+	output["tiles"] = {};
+	o["width"] = m_width;
+	o["height"] = m_height;
+	std::vector<int> indices;
+	for (const auto& tile : m_tiles) {
+		indices.push_back(indices.size());
+		output["tiles"].push_back(json());
+		tile->serialize(output["tiles"].back());
+	}
+	o["tiles"] = indices;
+	std::vector<int> indices_path;
+	for (Path* p : m_paths)
+	{
+		indices_path.push_back(p->getX() + p->getY() * m_width);
+	}
+	o["paths"] = indices_path;
+	o["end"] = m_end->getX()+m_end->getY()*m_width;
+	std::vector<int> indices_begin;
+	for (Path* p : m_inputs)
+	{
+		indices_begin.push_back(p->getX() + p->getY() * m_width);
+	}
+	o["inputs"] = indices_begin;
 }
 
 Tile* Terrain::getTile(int x, int y) const

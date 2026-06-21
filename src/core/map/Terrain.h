@@ -26,7 +26,7 @@ public:
 	void addBuilding(Building*ptr) const;
 	std::vector<Path*> getPaths() {return m_paths;};
 private:
-	virtual json serialize()override;
+	virtual void serialize(json& output)override;
 #ifdef TESTING
 public:
 #else

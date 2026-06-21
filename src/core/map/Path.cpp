@@ -109,3 +109,10 @@ void Path::repath()
 bool Path::hasEntity() const{
 	return !m_enemies.empty();
 }
+
+void Path::serialize(json& output)
+{
+	Tile::serialize(output);
+	output["tex"] = m_tex;
+	//serialize enemies
+}

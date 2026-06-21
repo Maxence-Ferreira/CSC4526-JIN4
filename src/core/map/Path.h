@@ -26,6 +26,7 @@ public:
 	virtual bool hasEntity() const override;
 private:
 	std::string m_tex;
+	virtual void serialize(json& output)override;
 protected:
 	//TODO
 	unsigned int cost()const;

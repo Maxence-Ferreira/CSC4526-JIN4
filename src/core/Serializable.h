@@ -7,5 +7,5 @@ class Serializable
 {
 public:
 	virtual ~Serializable() = default;
-	virtual json serialize() = 0;
+	virtual void serialize(json& output) = 0;
 };

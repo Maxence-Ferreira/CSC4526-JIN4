@@ -32,3 +32,9 @@ std::vector<Entity*> Ground::getEntity() const
 bool Ground::hasEntity() const{
 	return m_building;
 }
+
+void Ground::serialize(json& output)
+{
+	Tile::serialize(output);
+	output["tex"] = m_tex;
+}

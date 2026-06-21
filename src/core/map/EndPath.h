@@ -8,6 +8,7 @@ public:
 	virtual void update(const context& ctx) override;
 	int howManyEnemiesIn();
 private:
+	virtual void serialize(json& output)override;
 protected:
 	int m_enemies_in;
 };

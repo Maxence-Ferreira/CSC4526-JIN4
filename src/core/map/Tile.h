@@ -2,8 +2,9 @@
 #include "Drawable.h"
 #include "common.h"
 #include "Entity.h"
+#include "Serializable.h"
 
-class Tile : public Drawable
+class Tile : public Drawable, public Serializable
 {
 public:
 	Tile(int x, int y);
@@ -18,6 +19,8 @@ public:
 	/// </summary>
 	/// <param name="dt">temps �coul� depuis le dernier affichage (pour g�rer les animations si besoin)</param>
 	virtual void draw(const context& ctx) = 0;
+	virtual void serialize(json& output)override;
 protected:
 	int m_x, m_y;
+private:
 };
