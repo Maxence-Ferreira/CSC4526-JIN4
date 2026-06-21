@@ -19,7 +19,8 @@ EnemyManager::EnemyManager(int difficulty)
       m_spawnerTimer(0.f),
       m_terrain(nullptr),
       m_font(),
-      m_text_displayer(m_font) {
+      m_text_displayer(m_font),
+      m_pending_bounties(0) {
   // pour eviter les crashs pendant les tests qui n'ont pas accès à ressource
   try {
     if (m_font.openFromFile("resources/Cyrano.ttf")) {
@@ -115,8 +116,14 @@ void EnemyManager::spawnEnemy(EnemyType type) {
 }
 
 void EnemyManager::removeDeadEnemies() {
-  std::erase_if(enemies,
-                [](std::unique_ptr<Enemy>& u) { return !u->isAlive(); });
+  for (auto it = enemies.begin(); it != enemies.end();) {
+    if (!(*it)->isAlive()) {
+      m_pending_bounties += (*it)->getBounty();
+      it = enemies.erase(it);  // renvoie l'iterateur suivant
+    } else {
+      ++it;
+    }
+  }
 }
 
 void EnemyManager::update(const context& ctx) {
@@ -147,7 +154,13 @@ void EnemyManager::drawWave(const context& ctx) {
   std::ostringstream oss("");
   oss << "Wave  " << (int)waveNumber;
   m_text_displayer.setString(oss.str());
-  m_text_displayer.setPosition(sf::Vector2f(0.0f, 30.0f));
+  m_text_displayer.setPosition(sf::Vector2f(10.0f, 30.0f));
   ctx.window->draw(m_text_displayer);
   // View::draw();
+}
+
+int EnemyManager::collectBounties() {
+  int res = m_pending_bounties;
+  m_pending_bounties = 0;
+  return res;
 }

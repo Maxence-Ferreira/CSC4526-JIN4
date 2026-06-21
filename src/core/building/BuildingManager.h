@@ -30,5 +30,6 @@ public:
   std::unique_ptr<Building> createBuilding(std::string s);
   void addBuildingCast(std::string s, std::unique_ptr<Building> cast);
   void setTerrain(Terrain* t);
+  int getPrice(const std::string& buildingName) const;
 
 };

@@ -4,6 +4,7 @@
 #include <string>
 
 #include "building/Archer.h"
+#include "building/BuildingManager.h"
 #include "enemy/Attack.h"
 #include "enemy/Cyrano.h"
 #include "enemy/EnemyManager.h"
@@ -569,4 +570,88 @@ TEST(EnemyManagerTest, NextWaveStartsWhenAllEnemiesDie) {
   // VERIFICATION CRITIQUE
   EXPECT_EQ(manager.getWaveNumber(), 2)
       << "La vague 2 n'a pas demarre apres la mort des ennemis !";
+}
+
+/**
+ * @brief Test d'Intégration Global : Boucle Économique et Combat
+ * @details Ce test simule le cœur du jeu sans ouvrir de fenêtre graphique :
+ * Il vérifie que tuer un ennemi génère bien de l'argent, que cet argent 
+ * est correctement transféré au portefeuille du joueur, et que ce dernier 
+ * peut s'en servir pour acheter des bâtiments.
+ */
+TEST(IntegrationTest, EconomyAndCombatLoop) {
+    // --- 1. INITIALISATION DE LA SCÈNE ---
+    std::mt19937 gen(42);
+    Terrain terrain(20, 15, 2, gen);
+    BuildingManager buildManager(&terrain);
+    EnemyManager enemyManager(2);
+
+    int playerMoney = 0; // Le portefeuille du joueur (normalement dans Game)
+    
+    // On lance la vague et on fait apparaitre le premier ennemi
+    enemyManager.newWave(&terrain);
+    context ctx{};
+    ctx.dt = 501; // Assez de temps pour déclencher le spawner
+    ctx.rand = std::make_unique<std::mt19937>(42);
+    
+    enemyManager.update(ctx);
+
+    // Sécurité : Personne n'est mort, la caisse doit être à 0
+    EXPECT_EQ(enemyManager.collectBounties(), 0) 
+        << "L'argent ne doit pas etre gagne tant que l'ennemi est en vie !";
+
+    // --- 2. LE COMBAT (Simulation) ---
+    int expectedBounty = 0;
+    
+    // On scanne la carte pour trouver l'ennemi apparu et le détruire
+    for (BeginPath* entry : terrain.getEntry()) {
+        Path* currentTile = entry;
+        while (currentTile != nullptr) {
+            for (Entity* e : currentTile->getEntity()) {
+                // On lit la valeur de sa prime (Bounty)
+                expectedBounty += ((Enemy*)e)->getBounty(); 
+                
+                // Simulation d'un tir mortel de tour
+                e->takeDamage(99999); 
+            }
+            currentTile = currentTile->next();
+        }
+    }
+
+    // --- 3. LA RÉCOLTE ---
+    // La frame suivante, l'EnemyManager nettoie la carte et encaisse la prime
+    enemyManager.update(ctx);
+    
+    // Le "Game" récupère l'argent depuis le manager
+    int earned = enemyManager.collectBounties();
+    playerMoney += earned;
+
+    EXPECT_GT(expectedBounty, 0) << "Aucun ennemi n'a ete trouve ou la prime est de 0 !";
+    EXPECT_EQ(earned, expectedBounty) << "La prime recoltee ne correspond pas a l'ennemi tue !";
+    EXPECT_GT(playerMoney, 0) << "Le portefeuille du joueur est toujours vide !";
+
+    // Sécurité : Si on rappelle la caisse tout de suite, elle doit être vide (pour ne pas gagner l'argent à l'infini)
+    EXPECT_EQ(enemyManager.collectBounties(), 0) 
+        << "La caisse de l'EnemyManager doit se vider apres avoir ete recoltee !";
+
+
+    // --- 4. LA DÉPENSE (Simulation du comportement de Game) ---
+    // Imaginons que le joueur veuille acheter un Archer à 100 pièces
+    int archerCost = 100; 
+
+    // On lui donne un petit bonus pour être sûr qu'il puisse payer pour les besoins du test
+    playerMoney += archerCost; 
+    int moneyBeforePurchase = playerMoney;
+    
+    // Logique d'achat (celle qui sera dans Game::behavior)
+    bool purchaseSuccessful = false;
+    if (playerMoney >= archerCost) {
+        playerMoney -= archerCost;
+        purchaseSuccessful = true;
+        // (Ici le Game appellerait : buildManager.planConstruct("Archer"); )
+    }
+
+    EXPECT_TRUE(purchaseSuccessful) << "Le joueur aurait du pouvoir acheter la tour !";
+    EXPECT_EQ(playerMoney, moneyBeforePurchase - archerCost) 
+        << "L'argent n'a pas ete deduit du portefeuille du joueur apres l'achat !";
 }

@@ -22,6 +22,7 @@ class EnemyManager : public Drawable{
   Terrain* m_terrain;
   sf::Font m_font;
   sf::Text m_text_displayer;
+  int m_pending_bounties;
   
 
  public:
@@ -36,4 +37,5 @@ class EnemyManager : public Drawable{
 	int getWaveNumber() const { return waveNumber; };
 	int getDifficulty() const {return m_difficulty; };
   void drawWave(const context& ctx);
+  int collectBounties();
 };
