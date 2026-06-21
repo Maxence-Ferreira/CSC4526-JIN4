@@ -35,6 +35,16 @@ void MainMenu::reset()
 {
 }
 
+void MainMenu::onEnter()
+{
+	m_manager->loopOn("resources/mieloreille.mp3");
+}
+
+void MainMenu::onExit()
+{
+	m_manager->pauseMusic();
+}
+
 bool MainMenu::behavior(const std::string& action_name)
 {
 	return false;

@@ -11,6 +11,8 @@ public:
 	virtual void update() override;
 	virtual void draw() override;
 	virtual void reset() override;
+	virtual void onEnter()override;
+	virtual void onExit()override;
 protected:
 private:
 	virtual bool behavior(const std::string& action_name) override;

@@ -28,6 +28,5 @@ private:
 	sf::Font m_font;
 	sf::Text m_text_displayer;
 	sf::Text m_money_displayer;
-	sf::Music m_song;
 	int m_money;
 };

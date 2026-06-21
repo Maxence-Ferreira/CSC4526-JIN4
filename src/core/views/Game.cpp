@@ -16,7 +16,6 @@ Game::Game(ViewManager* vm, sf::RenderWindow* rw, std::string tileset,
     m_font("resources/Cyrano.ttf"),
     m_text_displayer(m_font),
     m_money_displayer(m_font),
-    m_song("resources/loop.ogg"),
     m_difficulty(difficulty),
     m_money(500) {
     m_building_manager->setTerrain(m_terrain.get());
@@ -116,13 +115,12 @@ void Game::draw() {
 }
 
 void Game::onEnter() {
-    m_song.setLooping(true);
-    m_song.play();
+    m_manager->loopOn("resources/loop.ogg");
     m_context.mouseX = sf::Mouse::getPosition().x;
     m_context.mouseY = sf::Mouse::getPosition().y;
 }
 
-void Game::onExit() { m_song.pause(); }
+void Game::onExit() { m_manager->pauseMusic(); }
 
 bool Game::behavior(const std::string& action_name) {
     if (action_name == "placeArcher") {
@@ -173,7 +171,7 @@ void Game::reset() {
     m_clock.restart();
     m_money = 500;
 
-    m_song.stop();
+    m_manager->stopMusic();
 }
 
 void Game::handle(const std::optional<sf::Event>& ev) {

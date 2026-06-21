@@ -32,6 +32,15 @@ void DifficultyMenu::update()
 {
 }
 
+void DifficultyMenu::onEnter()
+{
+	m_manager->loopOn("resources/mieloreille.mp3");
+}
+
+void DifficultyMenu::onExit()
+{
+	m_manager->pauseMusic();
+}
 void DifficultyMenu::draw()
 {
 	float height = 448.f / 796.f * m_context.window->getSize().x;
