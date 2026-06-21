@@ -8,13 +8,15 @@ DifficultyMenu::DifficultyMenu(ViewManager* vm, sf::RenderWindow* rw, std::strin
 			"easy",
 			"normal",
 			"difficult",
-			"hell"},
+			"hell",
+			"back"},
 		{ 
 			std::make_shared<Game>(vm,rw,"resources/tileset.png",2,seed) , 
 			std::make_shared<Game>(vm, rw, "resources/tileset.png", 3, seed), 
 			std::make_shared<Game>(vm, rw, "resources/tileset.png", 4, seed), 
 			std::make_shared<Game>(vm, rw, "resources/tileset.png", 5, seed), 
-			std::make_shared<Game>(vm, rw, "resources/tileset.png", 6, seed)
+			std::make_shared<Game>(vm, rw, "resources/tileset.png", 6, seed),
+			nullptr
 		}, 
 		seed)
 {

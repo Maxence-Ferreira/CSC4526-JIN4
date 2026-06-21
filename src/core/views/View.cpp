@@ -12,11 +12,12 @@ View::View(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, const std
 	.rand = std::make_unique<std::mt19937>(seed),
 },m_manager(vm), m_gui(*rw), m_gui_textures(), m_gui_widget(), m_navigator(),m_ordered_id_views(id_view)
 {
-	for (int i = 0; i < id_view.size(); i++)
-		m_navigator[id_view[i]] = views[i];
-	int it = -(m_navigator.size() / 2.f);
-	for (const auto& [i, ev] : m_navigator)
+	int it = -(id_view.size() / 2.f);
+	for (int i_ = 0; i_ < id_view.size(); i_++)
 	{
+		m_navigator[id_view[i_]] = views[i_];
+		const auto& i = id_view[i_];
+		const auto& ev = m_navigator[i];;
 		m_gui_textures[i + "1"] = sf::Texture("resources/" + i + "1.png");
 		m_gui_textures[i + "2"] = sf::Texture("resources/" + i + "2.png");
 		m_gui_widget[i] = std::make_shared<tgui::Button>();
