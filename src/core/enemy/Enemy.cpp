@@ -70,6 +70,7 @@ void Enemy::takeDamage(int damage) {
 void Enemy::kill()
 {
     isDead = true;
+    bounty = 0;
     currentPath->removeEnemy(this);
 }
 
