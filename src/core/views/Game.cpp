@@ -77,7 +77,6 @@ void Game::draw() {
     m_terrain->draw(m_context);
     m_building_manager->draw(m_context);
     m_enemy_manager->draw(m_context);
-    m_enemy_manager->drawWave(m_context);
 
     sf::FloatRect textBounds(m_money_displayer.getLocalBounds());                               //dimension text
     const float textX = m_context.window->getView().getSize().x - textBounds.size.x - 20.0f;    //text fit to the end
@@ -90,6 +89,7 @@ void Game::draw() {
     m_context.rm->render(m_context.window,
         { m_context.offsetX, m_context.offsetY });
 
+	m_enemy_manager->drawWave(m_context);
     fps_[fps_i = (fps_i + 1) % 100] = 1000. / m_context.dt;
     if (!fps_i) {
         fps = 0;
@@ -142,14 +142,13 @@ bool Game::behavior(const std::string& action_name) {
         return true;
     }
     else if (action_name == "removeBuilding") {
-        // pour les difficultés noob et facile, detruire un batiment rend de
-        // l'argent
-        if (m_difficulty <= 3) {
-            m_money += 50;
-        }
-        std::cout << "Le joueur veut retirer un batiment" << std::endl;
-        return true;
-    }
+        m_building_manager->planDestruct();
+		int refunds = m_building_manager->collectRefunds();
+    	if (m_difficulty <= 4) {
+        	m_money += refunds;
+   		}
+		return true;
+    } 
     else if (action_name == "levelup") {
         std::cout << "Le joueur veut améliorer un batiment" << std::endl;
         return true;

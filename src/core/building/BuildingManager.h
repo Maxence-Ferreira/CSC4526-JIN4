@@ -14,6 +14,8 @@ class BuildingManager : public Drawable{
 	std::unique_ptr<Post> post;
 	Terrain* m_terrain;
 	std::unique_ptr<Building> m_placeholder;
+  bool m_destroy_mode ;
+  int m_pending_refunds ;
  
 public:
   BuildingManager(Terrain* terter);
@@ -31,4 +33,6 @@ public:
   void setTerrain(Terrain* t);
   int getPrice(const std::string& buildingName) const;
   int getPrice(const Building* b) const;
+  void planDestruct();
+  int collectRefunds();
 };
