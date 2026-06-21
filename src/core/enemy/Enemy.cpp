@@ -70,8 +70,13 @@ void Enemy::takeDamage(int damage) {
 void Enemy::kill()
 {
     isDead = true;
-    bounty = 0;
     currentPath->removeEnemy(this);
+}
+
+void Enemy::reachObjective()
+{
+    kill();
+    bounty = 0;
 }
 
 void Enemy::update(const context& ctx) {
