@@ -1,5 +1,8 @@
 #include "View.h"
 
+static sf::SoundBuffer sbuf("resources/click.wav");
+static sf::Sound cilck_sound(sbuf);
+
 View::View(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, const std::vector<std::string>& id_view, const std::vector<std::shared_ptr<View>>& views, unsigned int seed) :m_context{
 	.time = 0,
 	.dt = 0,
@@ -37,6 +40,7 @@ View::View(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, const std
 			{
 				if (ev)m_manager->changeView(ev);
 				else if(!behavior(i))m_manager->backView();
+				cilck_sound.play();
 			});
 		m_gui.add(m_gui_widget[i]);
 		it++;
