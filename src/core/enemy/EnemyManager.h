@@ -32,7 +32,8 @@ class EnemyManager : public Drawable,public Serializable{
 	virtual ~EnemyManager() = default;
 
   void spawnEnemy(EnemyType type);
-	void newWave(Terrain* terrain);
+  void newWave(Terrain* terrain);
+  void loadWave(Terrain* terrain, json& save);
 	virtual void draw(const context& ctx)override;
 	virtual void update(const context& ctx) override;
 	void removeDeadEnemies();

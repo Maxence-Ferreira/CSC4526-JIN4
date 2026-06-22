@@ -57,20 +57,21 @@ Game::Game(ViewManager* vm, sf::RenderWindow* rw, std::string tileset,
         m_context.rm->setTileCoordinate(names[i], { {16 * i, 0}, {16, 16} });
 }
 
-Game::Game(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, std::string save_path, unsigned int seed):View(vm, rw, tileset, { "placeArcher", "placeCanon", "removeBuilding", "levelup" },
+Game::Game(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, json& parsed, unsigned int seed):View(vm, rw, tileset, { "placeArcher", "placeCanon", "removeBuilding", "levelup" },
     { nullptr, nullptr, nullptr, nullptr }, seed),
     m_font("resources/Cyrano.ttf"),
     m_text_displayer(m_font),
     m_money_displayer(m_font),
     m_clock()
 {
-    std::ifstream f(save_path);
-    json parsed(json::parse(f));
     m_money = parsed["money"];
     m_difficulty = parsed["difficulty"];
     m_terrain = std::make_unique<Terrain>(parsed, parsed["terrain"]);
     m_building_manager = std::make_unique<BuildingManager>(m_terrain.get(), parsed, parsed["buildingManager"]);
     m_enemy_manager = std::make_unique<EnemyManager>(parsed, parsed["enemyManager"]);
+
+    std::vector<json> es = parsed["enemies"];
+    m_enemy_manager->loadWave(m_terrain.get(), parsed["enemies"]);
 }
 
 void Game::update() {

@@ -105,6 +105,21 @@ void EnemyManager::newWave(Terrain* terrain) {
   m_spawner.push(EnemyType::Cyrano);
 }
 
+void EnemyManager::loadWave(Terrain* terrain, json& save)
+{
+    m_terrain=(terrain);
+    for (json& j : save)
+    {
+        Path* c = (Path*)terrain->getTile(j["x"], j["y"]);
+        if (j["type"] == "Cyrano")enemies.push_back(std::make_unique<Cyrano>(j,c));
+        else if (j["type"] == "Dog")enemies.push_back(std::make_unique<Dog>(j, c));
+        else if (j["type"] == "FirearmSoldier")enemies.push_back(std::make_unique<FirearmSoldier>(j, c));
+        else if (j["type"] == "Kamikaze")enemies.push_back(std::make_unique<Kamikaze>(j, c));
+        else if (j["type"] == "MeleeSoldier")enemies.push_back(std::make_unique<MeleeSoldier>(j, c));
+        else if (j["type"] == "HorseSoldier")enemies.push_back(std::make_unique<HorseSoldier>(j, c));
+    }
+}
+
 void EnemyManager::spawnEnemy(EnemyType type) {
   if (!m_terrain) return;
   std::vector<BeginPath*> entryPath = m_terrain->getEntry();

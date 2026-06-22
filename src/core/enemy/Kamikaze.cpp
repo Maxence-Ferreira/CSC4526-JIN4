@@ -3,7 +3,8 @@
 #include <iostream>
 
 Kamikaze::Kamikaze(Path* beginPath)
-    : Enemy(150, 0.00055, 500, 5, 10000, 20, beginPath) {};
+    : Enemy(150, 0.00055, 500, 5, 10000, 20, beginPath) {}
+Kamikaze::Kamikaze(json& save, Path* p) : Enemy(save, 150, 0.00055, 500, 5, 10000, 20, p) {}
 
 Attack* Kamikaze::attacking(Building* targetBuilding) {
   std::cout << ">>> LE KAMIKAZE A VU LA TOUR ET ACTIVE LE DETONATEUR ! <<<"

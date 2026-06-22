@@ -9,7 +9,7 @@ class Game:public View
 {
 public:
 	Game(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, int difficulty, unsigned int seed = 42);
-	Game(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, std::string save_path, unsigned int seed = 42);
+	Game(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, json& save, unsigned int seed = 42);
 
 	// H�rit� via View
 	virtual void reset() override;

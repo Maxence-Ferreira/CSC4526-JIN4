@@ -32,9 +32,11 @@ class Enemy : public Entity {
   std::vector<std::unique_ptr<Attack>> attacks;
 
  public:
-  Enemy(double maxHealth, double movementSpeed, int attackDamage,
+    Enemy(double maxHealth, double movementSpeed, int attackDamage,
         double attackRange, double attackCooldown, int bounty, Path* beginPath);
-  virtual ~Enemy();
+    Enemy(json& save, double maxHealth, double movementSpeed, int attackDamage,
+        double attackRange, double attackCooldown, int bounty, Path* current);
+    virtual ~Enemy();
 
   void move(const int dt);
   virtual Attack* attacking(Building* targetBuilding);

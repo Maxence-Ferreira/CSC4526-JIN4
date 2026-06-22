@@ -4,7 +4,11 @@
 #include "common.h"
 
 Cyrano::Cyrano(Path* beginPath)
-    : Enemy(500.0, 0.0005, 200, 1000.0, 1000.0, 100, beginPath) {};
+    : Enemy(500.0, 0.0005, 200, 1000.0, 1000.0, 100, beginPath) {}
+Cyrano::Cyrano(json& save, Path* current) : Enemy(save, 500.0, 0.0005, 200, 1000.0, 1000.0, 100, current)
+{
+}
+;
 
 
 void Cyrano::draw(const context& ctx) {

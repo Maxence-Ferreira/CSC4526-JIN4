@@ -21,7 +21,25 @@ Enemy::Enemy(double maxHealth, double movementSpeed, int attackDamage,
       currentPath(beginPath),
       attacks{} {
         beginPath->addEnemy(this);
-      };
+      }
+Enemy::Enemy(json& save, double maxHealth, double movementSpeed, int attackDamage,
+    double attackRange, double attackCooldown, int bounty,Path* current) :
+    maxHealth(maxHealth),
+currentHealth(save["currentHealth"]),
+movementSpeed(movementSpeed),
+attackDamage(attackDamage),
+attackRange(attackRange),
+attackCooldown(attackCooldown),
+x(save["x"]),
+y(save["y"]),
+isDead(save["isDead"]),
+bounty(bounty),
+currentCooldown(0),
+currentPath(current),
+attacks{}
+{
+    currentPath->addEnemy(this);
+}
 
 void Enemy::move(const int dt) {
   // verif fin de chemin

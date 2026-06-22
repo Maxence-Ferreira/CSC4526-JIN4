@@ -1,18 +1,25 @@
 #include "MainMenu.h"
 
 #include "DifficultyMenu.h"
+#include "Game.h"
+#include <fstream>
 MainMenu::MainMenu(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, unsigned int seed)
-	:View(vm, rw,tileset, {"continue","new" ,"quit" },{ 0, std::make_shared<DifficultyMenu>(vm,rw,tileset,seed),0 },seed), m_img_sprite(m_img_tex), m_titre_sprite(m_titre_tex)
+	:View(vm, rw, tileset, { "continue","new" ,"quit" }, { 0, std::make_shared<DifficultyMenu>(vm,rw,tileset,seed),0}, seed), m_img_sprite(m_img_tex), m_titre_sprite(m_titre_tex)
 {
 	m_context.rm->setTileCoordinate("background", { {0,0},{2483,1366} });
 	m_gui_widget["quit"]->onClick([this] {m_context.window->close(); });
-	
+
+	/*
+	if (std::ifstream f = std::ifstream("resources/save.json"))
+		m_navigator["continue"]=std::make_shared<Game>(vm, rw, json::parse(f),seed);
+		*/
+
 	if (m_img_tex.loadFromFile("resources/grandCyrano.png")) {
-        m_img_sprite.setTextureRect(sf::IntRect({0, 0}, { (int)m_img_tex.getSize().x, (int)m_img_tex.getSize().y }));
-    }
+		m_img_sprite.setTextureRect(sf::IntRect({ 0, 0 }, { (int)m_img_tex.getSize().x, (int)m_img_tex.getSize().y }));
+	}
 	if (m_titre_tex.loadFromFile("resources/logo_sans_nez.png")) {
-        m_titre_sprite.setTextureRect(sf::IntRect({0, 0}, { (int)m_titre_tex.getSize().x, (int)m_titre_tex.getSize().y }));
-    }
+		m_titre_sprite.setTextureRect(sf::IntRect({ 0, 0 }, { (int)m_titre_tex.getSize().x, (int)m_titre_tex.getSize().y }));
+	}
 }
 
 void MainMenu::handle(const std::optional<sf::Event>& ev)

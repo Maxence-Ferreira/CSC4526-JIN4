@@ -6,10 +6,11 @@ class Kamikaze : public Enemy {
   bool isExploding = false;
   float explosionTimer = 2000.0f;
  public:
-  Kamikaze(Path* beginPath);
-  ~Kamikaze() = default;
-  virtual Attack* attacking(Building* targetBuilding) override;
-  void draw(const context& ctx) override;
-  virtual void update(const context& ctx) override;
-  virtual void serialize(json& glob, json& output)override;
+	Kamikaze(Path* beginPath);
+	Kamikaze(json& save, Path* p);
+	~Kamikaze() = default;
+	virtual Attack* attacking(Building* targetBuilding) override;
+	void draw(const context& ctx) override;
+	virtual void update(const context& ctx) override;
+	virtual void serialize(json& glob, json& output)override;
 };
