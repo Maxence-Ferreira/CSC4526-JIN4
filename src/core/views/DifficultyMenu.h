@@ -6,7 +6,7 @@ class DifficultyMenu : public View
 {
 public:
 	DifficultyMenu(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, unsigned int seed);
-	// Hérité via View
+	// Hï¿½ritï¿½ via View
 	virtual void handle(const std::optional<sf::Event>& ev) override;
 	virtual void update() override;
 	virtual void draw() override;
@@ -16,4 +16,6 @@ public:
 protected:
 private:
 	virtual bool behavior(const std::string& action_name) override;
+	sf::Texture m_img_tex;
+    sf::Sprite m_img_sprite;
 };
