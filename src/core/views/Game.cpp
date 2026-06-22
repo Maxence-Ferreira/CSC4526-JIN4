@@ -57,7 +57,7 @@ Game::Game(ViewManager* vm, sf::RenderWindow* rw, std::string tileset,
         m_context.rm->setTileCoordinate(names[i], { {16 * i, 0}, {16, 16} });
 }
 
-Game::Game(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, std::string save_path, unsigned int seed = 42):View(vm, rw, tileset, { "placeArcher", "placeCanon", "removeBuilding", "levelup" },
+Game::Game(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, std::string save_path, unsigned int seed):View(vm, rw, tileset, { "placeArcher", "placeCanon", "removeBuilding", "levelup" },
     { nullptr, nullptr, nullptr, nullptr }, seed),
     m_font("resources/Cyrano.ttf"),
     m_text_displayer(m_font),
