@@ -13,6 +13,12 @@ void Post::update(const context& ctx) {
     //Building::update(ctx); 
 }
 
+void Post::serialize(json& glob, json& output)
+{
+    Building::serialize(glob,output);
+    output["type"] = "Post";
+}
+
 std::unique_ptr<Building> Post::clone(Ground* ground)
 {
     std::unique_ptr<Post> ptr(std::make_unique<Post>(*this));

@@ -15,7 +15,7 @@ int Tile::getY() const
 	return m_y;
 }
 
-void Tile::serialize(json& output)
+void Tile::serialize(json& glob, json& output)
 {
 	output["x"] = m_x;
 	output["y"] = m_y;

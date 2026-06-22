@@ -225,7 +225,7 @@ void Terrain::addBuilding(Building* ptr) const
 	}
 }
 
-void Terrain::serialize(json& output)
+void Terrain::serialize(json& glob, json& output)
 {
 	json& o = output["terrain"];
 	output["tiles"] = {};
@@ -235,7 +235,7 @@ void Terrain::serialize(json& output)
 	for (const auto& tile : m_tiles) {
 		indices.push_back(indices.size());
 		output["tiles"].push_back(json());
-		tile->serialize(output["tiles"].back());
+		tile->serialize(glob,output["tiles"].back());
 	}
 	o["tiles"] = indices;
 	std::vector<int> indices_path;

@@ -12,5 +12,6 @@ public:
 	virtual std::unique_ptr<Building> clone(Ground* ground) override;
 	virtual std::unique_ptr<Building> clone() override;
 	virtual std::string projectileSkin()const override;
+	virtual void serialize(json& glob, json& output) override;
 private:
 };

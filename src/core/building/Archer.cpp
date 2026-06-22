@@ -36,6 +36,12 @@ std::unique_ptr<Building> Archer::clone(Ground* ground) {
   return std::move(ptr);
 }
 
+void Archer::serialize(json& glob, json& output)
+{
+    Building::serialize(glob, output);
+    output["type"] = "Archer";
+}
+
 std::unique_ptr<Building> Archer::clone() {
   return std::make_unique<Archer>(*this);
 }

@@ -12,6 +12,7 @@ public:
 	virtual Tile* setTarget(std::mt19937& rand) override;
 	virtual std::string projectileSkin()const override;
 	virtual std::unique_ptr<Building> clone(Ground* ground) override;
+	virtual void serialize(json& glob, json& output) override;
 private:
 
 	// Hérité via Building

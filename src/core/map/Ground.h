@@ -16,6 +16,6 @@ public:
 private:
 	std::string m_tex;
 	Building* m_building;
-	virtual void serialize(json& output)override;
+	virtual void serialize(json& glob, json& output)override;
 protected:
 };

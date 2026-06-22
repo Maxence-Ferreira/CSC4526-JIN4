@@ -2,6 +2,7 @@
 
 #include "GameMenu.h"
 #include "LoseMenu.h"
+#include <fstream>
 
 Game::Game(ViewManager* vm, sf::RenderWindow* rw, std::string tileset,
     int difficulty, unsigned int seed)
@@ -121,6 +122,15 @@ void Game::onEnter() {
 }
 
 void Game::onExit() { m_manager->pauseMusic(); }
+
+void Game::save()
+{
+    json output;
+    m_terrain->serialize(output, output);
+    std::ofstream f("resources/save.json");
+    f << to_string(output);
+    f.close();
+}
 
 bool Game::behavior(const std::string& action_name) {
     if (action_name == "placeArcher") {

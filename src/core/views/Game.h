@@ -17,6 +17,7 @@ public:
 	virtual void draw()override;
 	virtual void onEnter()override;
 	virtual void onExit()override;
+	void save();
 private:
 	virtual bool behavior(const std::string& action_name) override;
 private:

@@ -25,8 +25,8 @@ public:
 	std::vector<Tile*> pathfind(int from_x, int from_y) const;
 	void addBuilding(Building*ptr) const;
 	std::vector<Path*> getPaths() {return m_paths;};
+	virtual void serialize(json& glob, json& output)override;
 private:
-	virtual void serialize(json& output)override;
 #ifdef TESTING
 public:
 #else

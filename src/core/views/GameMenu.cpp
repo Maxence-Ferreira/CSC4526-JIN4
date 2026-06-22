@@ -1,7 +1,7 @@
 #include "GameMenu.h"
 
 GameMenu::GameMenu(Game* game, ViewManager* vm, sf::RenderWindow* rw, std::string tileset, unsigned int seed)
-	:View(vm, rw, tileset, { "continue" , "save", "quit"}, {nullptr,nullptr,nullptr}, seed)
+	:View(vm, rw, tileset, { "continue" , "save", "quit"}, {nullptr,nullptr,nullptr}, seed),m_game(game)
 {
 	m_context.rm->setTileCoordinate("background", { {0,0},{810,448} });
 	m_gui_widget["quit"]->onClick([this] {m_context.window->close(); });
@@ -36,6 +36,12 @@ void GameMenu::reset()
 
 bool GameMenu::behavior(const std::string& action_name)
 {
+	if (action_name == "save")
+	{
+		std::cout << "le joueur sauvegarde" << std::endl;
+		m_game->save();
+		return true;
+	}
 	return false;
 }
 

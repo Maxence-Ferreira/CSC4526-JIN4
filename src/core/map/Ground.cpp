@@ -33,8 +33,17 @@ bool Ground::hasEntity() const{
 	return m_building;
 }
 
-void Ground::serialize(json& output)
+void Ground::serialize(json& glob, json& output)
 {
-	Tile::serialize(output);
+	Tile::serialize(glob,output);
 	output["tex"] = m_tex;
+
+	if (m_building)
+	{
+		output["building"] = glob["buildings"].size();
+		glob["buildings"].push_back(json());
+		json& b = glob["buildings"].back();
+		m_building->serialize(glob, b);
+
+	}
 }

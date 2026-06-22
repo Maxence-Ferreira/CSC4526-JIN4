@@ -51,3 +51,9 @@ std::string Canon::projectileSkin() const
 	return "canonball";
 }
 
+void Canon::serialize(json& glob, json& output)
+{
+	Building::serialize(glob,output);
+	output["type"] = "Canon";
+}
+

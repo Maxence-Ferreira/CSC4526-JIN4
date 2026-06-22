@@ -110,9 +110,18 @@ bool Path::hasEntity() const{
 	return !m_enemies.empty();
 }
 
-void Path::serialize(json& output)
+void Path::serialize(json& glob, json& output)
 {
-	Tile::serialize(output);
+	Tile::serialize(glob, output);
 	output["tex"] = m_tex;
 	//serialize enemies
+
+	for (int i = 0;i<m_enemies.size();i++)
+	{
+		output["enemie"] = glob["enemies"].size();
+		glob["enemies"].push_back(json());
+		json& b = glob["enemies"].back();
+		m_enemies[i]->serialize(glob, b);
+
+	}
 }

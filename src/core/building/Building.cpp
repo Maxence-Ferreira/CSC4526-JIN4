@@ -175,5 +175,16 @@ Building::~Building()
     if(m_tile)m_tile->setBuilding(0);
 }
 
-int Building::getRange() { return m_range; };
-int Building::getPrice() const { return m_price; };
+int Building::getRange() { return m_range; }
+int Building::getPrice() const { return m_price; }
+void Building::serialize(json& glob, json& output)
+{
+    output["pv_max"] = m_pv_max;
+    output["pv"] = m_pv;
+    output["damage"] = m_damage;
+    output["range"] = m_range;
+    output["cooldown"] = m_cooldown;
+    output["dead"] = m_dead;
+    output["level"] = m_level;
+    output["price"] = m_price;
+}

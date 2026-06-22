@@ -135,4 +135,8 @@ Building* Enemy::setTarget(std::mt19937& rand) {
   return nullptr;
 }
 
+void Enemy::serialize(json& glob, json& output)
+{
+}
+
 Enemy::~Enemy() = default;

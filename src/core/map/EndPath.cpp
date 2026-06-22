@@ -23,8 +23,8 @@ int EndPath::howManyEnemiesIn()
 	return m_enemies_in;
 }
 
-void EndPath::serialize(json& output)
+void EndPath::serialize(json& glob, json& output)
 {
-	Tile::serialize(output);
+	Tile::serialize(glob,output);
 	output["enemies_in"] = m_enemies_in;
 }

@@ -43,6 +43,7 @@ public:
 	int getRange();
 	int getPrice()const;
 
+	virtual void serialize(json& glob, json& output) override;
 private:
 protected:
 	virtual Tile* setTarget(std::mt19937& rand);

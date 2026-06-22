@@ -14,4 +14,5 @@ public:
 protected:
 private:
 	virtual bool behavior(const std::string& action_name) override;
+	Game* m_game;
 };

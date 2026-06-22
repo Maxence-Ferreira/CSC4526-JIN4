@@ -48,4 +48,5 @@ class Enemy : public Entity {
   virtual void update(const context& ctx) override;
   void drawAttacks(const context& ctx);
   virtual Building* setTarget(std::mt19937& rand);
+  virtual void serialize(json& glob, json& output)override;
 };
