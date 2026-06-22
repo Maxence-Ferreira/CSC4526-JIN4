@@ -30,15 +30,16 @@ EnemyManager::EnemyManager(int difficulty)
   }
 }
 
-EnemyManager::EnemyManager(json& glob,json& save) :
+EnemyManager::EnemyManager(json& glob, json& save) :
     Drawable(),
     m_difficulty(glob["difficulty"]),
     waveNumber(save["wave"]),
     m_spawnerTimer(save["spawnerTimer"]),
-    m_pending_bounties(save["pendingBounties"]),
+    m_pending_bounties(0),
     m_terrain(nullptr),
     m_font(),
-    m_text_displayer(m_font)
+    m_text_displayer(m_font),
+    m_spawner()
 {
     try {
         if (m_font.openFromFile("resources/Cyrano.ttf")) {
@@ -47,6 +48,8 @@ EnemyManager::EnemyManager(json& glob,json& save) :
     }
     catch (...) {
     }
+    for (EnemyType t : save["spawner"])m_spawner.push(t);
+
 }
 
 static BeginPath* getRandomPath(const std::vector<BeginPath*>& path) {
@@ -206,4 +209,10 @@ void EnemyManager::serialize(json& glob, json& output)
     output["wave"] = waveNumber;
     output["spawnerTimer"] = m_spawnerTimer;
     output["pendingBounties"] = m_pending_bounties;
+    auto q = m_spawner;
+    while(q.size())
+    {
+        output["spawner"].push_back(q.front());
+        q.pop();
+    }
 }

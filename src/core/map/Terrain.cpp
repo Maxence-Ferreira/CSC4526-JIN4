@@ -146,9 +146,9 @@ Terrain::Terrain(json& glob, json& terrain):m_width(terrain["width"]), m_height(
 	m_tiles = std::vector<std::unique_ptr<Tile>>(m_width * m_height);
 	std::vector<json> tiles = glob["tiles"];
 	std::vector<int> paths_i = terrain["paths"];
-	std::vector<int> inps_i = glob["inputs"];
-	int end_i = glob["end"];
-	for (int i = 0; i < tiles.size(); i++)
+	std::vector<int> inps_i = terrain["inputs"];
+	int end_i = terrain["end"];
+	for (int i = 0; i < tiles.size(); i++)if(tiles[i]["type"]=="Ground")
 	{
 		m_tiles[i] = std::make_unique<Ground>(tiles[i]);
 	}
@@ -225,11 +225,6 @@ void Terrain::draw(const context& ctx)
 				ctx.rm->draw({ {x * TILE_SIZE,y * TILE_SIZE}, {TILE_SIZE,TILE_SIZE} }, choosen_tile);
 			}
 		}
-	}
-	return;
-	for (const auto& i : m_tiles)
-	{
-		i->draw(ctx);
 	}
 }
 

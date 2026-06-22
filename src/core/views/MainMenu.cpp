@@ -9,10 +9,11 @@ MainMenu::MainMenu(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, u
 	m_context.rm->setTileCoordinate("background", { {0,0},{2483,1366} });
 	m_gui_widget["quit"]->onClick([this] {m_context.window->close(); });
 
-	/*
 	if (std::ifstream f = std::ifstream("resources/save.json"))
-		m_navigator["continue"]=std::make_shared<Game>(vm, rw, json::parse(f),seed);
-		*/
+	{
+		json parsed = json::parse(f);
+		m_navigator["continue"] = std::make_shared<Game>(parsed, vm, rw,"resources/tileset.png", seed);
+	}
 
 	if (m_img_tex.loadFromFile("resources/grandCyrano.png")) {
 		m_img_sprite.setTextureRect(sf::IntRect({ 0, 0 }, { (int)m_img_tex.getSize().x, (int)m_img_tex.getSize().y }));

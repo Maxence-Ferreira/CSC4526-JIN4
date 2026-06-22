@@ -36,7 +36,9 @@ BuildingManager::BuildingManager(Terrain* terter, json& glob, json& save):
     m_pending_refunds(save["pendingRefunds"]),
     m_levelup_mode(false),
     m_font("resources/Cyrano.ttf"), 
-    m_price_text(m_font)
+    m_price_text(m_font),
+    m_pending_costs(0),
+    m_available_money(0)
 {
     m_building_cast["Archer"] = std::make_unique<Archer>(100);
     m_building_cast["Canon"] = std::make_unique<Canon>(200);
@@ -149,7 +151,7 @@ void BuildingManager::draw(const context& ctx) {
   for (const auto& b : buildings) {
     b->draw(ctx);
   }
-  post->draw(ctx);
+  if(post)post->draw(ctx);
 
   if (m_levelup_mode) {
     auto p = sf::Mouse::getPosition(*ctx.window);
@@ -274,6 +276,12 @@ void BuildingManager::addBuilding(std::string s, Ground* ground) {
 }
 
 void BuildingManager::addBuilding(std::unique_ptr<Building> b, Ground* ground) {
+    if (dynamic_cast<Post*>(b.get()))
+    {
+        post=std::unique_ptr<Post>(dynamic_cast<Post*>(b.release()));
+        post->setOnTile(ground);
+        return;
+    }
   b->setOnTile(ground);  // place sur une tile
   m_terrain->addBuilding(
       b.get());  // initialise les path dist en fonction du terrain

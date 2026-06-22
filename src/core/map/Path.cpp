@@ -9,8 +9,9 @@ Path::Path(int x, int y) :Tile(x, y), m_neighbors{}, m_distance{ (unsigned int)(
 	m_tex += '1' + rand() % 4;
 }
 
-Path::Path(json& inp):Tile(inp)
+Path::Path(json& inp):Tile(inp), m_neighbors{}, m_distance{ (unsigned int)(-1) }, m_next(0), m_enemies{}, m_tex("path"), m_nearest_building(0)
 {
+	m_tex += '1' + rand() % 4;
 }
 
 void Path::addNeighbor(Path* nei)
@@ -118,6 +119,7 @@ void Path::serialize(json& glob, json& output)
 {
 	Tile::serialize(glob, output);
 	output["tex"] = m_tex;
+	output["type"] = "Path";
 	//serialize enemies
 	output["enemies"] = {};
 	for (int i = 0;i<m_enemies.size();i++)
