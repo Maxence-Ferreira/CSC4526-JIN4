@@ -1,7 +1,7 @@
 #include "Dog.h"
 
 Dog::Dog(Path* beginPath) : Enemy(75.0, 0.0015, 100, 1.0, 500, 15, beginPath) {}
-Dog::Dog(json& save, Path* beginPath) : Enemy(save,75.0, 0.0015, 100, 1.0, 500, 15, beginPath)
+Dog::Dog(json& save, Path* beginPath) : Enemy(save,75.0, 0.0015, 100, 1.0, 500, 100, beginPath)
 {
 }
 ;
