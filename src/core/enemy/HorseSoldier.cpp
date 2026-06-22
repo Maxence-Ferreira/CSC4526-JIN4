@@ -1,7 +1,7 @@
 #include "HorseSoldier.h"
 
 HorseSoldier::HorseSoldier(Path* beginPath) : Enemy(200.0, 0.001, 100, 5.0, 2000, 30, beginPath) {}
-HorseSoldier::HorseSoldier(json& save, Path* beginPath) : Enemy(save,200.0, 0.001, 100, 5.0, 2000, 30, beginPath)
+HorseSoldier::HorseSoldier(json& save, Path* beginPath) : Enemy(save,200.0, 0.001, 100, 5.0, 2000, 150, beginPath)
 {
 }
 ;
