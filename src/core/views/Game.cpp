@@ -31,9 +31,9 @@ Game::Game(ViewManager* vm, sf::RenderWindow* rw, std::string tileset,
     m_clock.restart();
 
     m_navigator["menu"] = std::make_shared<GameMenu>(
-        this, vm, rw, "resources/mainmenu_tileset.png", seed);
+        this, vm, rw, "resources/mainmenu_tileset_sans_cyrano.png", seed);
     m_navigator["lose"] = std::make_shared<LoseMenu>(
-        this, vm, rw, "resources/mainmenu_tileset.png", seed);
+        this, vm, rw, "resources/mainmenu_tileset_sans_cyrano.png", seed);
     for (const auto& name : m_ordered_id_views) {
         if (m_gui_widget[name] != nullptr) {
             auto lay = m_gui_widget[name]->getPositionLayout();
@@ -55,6 +55,19 @@ Game::Game(ViewManager* vm, sf::RenderWindow* rw, std::string tileset,
         "arrow",         "coin",    "white" };
     for (int i = 0; i < names.size(); i++)
         m_context.rm->setTileCoordinate(names[i], { {16 * i, 0}, {16, 16} });
+}
+
+Game::Game(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, std::string save_path, unsigned int seed = 42):View(vm, rw, tileset, { "placeArcher", "placeCanon", "removeBuilding", "levelup" },
+    { nullptr, nullptr, nullptr, nullptr }, seed),
+    m_font("resources/Cyrano.ttf"),
+    m_text_displayer(m_font),
+    m_money_displayer(m_font),
+    m_clock()
+{
+    std::ifstream f(save_path);
+    json parsed(json::parse(f));
+    m_money = parsed["money"];
+    m_difficulty = parsed["difficulty"];
 }
 
 void Game::update() {
@@ -126,6 +139,9 @@ void Game::onExit() { m_manager->pauseMusic(); }
 void Game::save()
 {
     json output;
+    output["seed"] = (*m_context.rand)();
+    output["difficulty"] = m_difficulty;
+    output["money"] = m_money;
     m_terrain->serialize(output, output);
     std::ofstream f("resources/save.json");
     f << to_string(output);
