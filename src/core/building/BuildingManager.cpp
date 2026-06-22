@@ -16,7 +16,11 @@ BuildingManager::BuildingManager(Terrain* terter)
       m_placeholder(),
       m_destroy_mode(false),
       m_pending_refunds(0),
-      m_levelup_mode(false) {
+      m_levelup_mode(false),
+      m_font("resources/Cyrano.ttf"),
+      m_price_text(m_font),
+      m_pending_costs(0),
+      m_available_money(0) {
   m_building_cast["Archer"] = std::make_unique<Archer>(100);
   m_building_cast["Canon"] = std::make_unique<Canon>(200);
 }
@@ -30,7 +34,9 @@ BuildingManager::BuildingManager(Terrain* terter, json& glob, json& save):
     m_placeholder(),
     m_destroy_mode(false),
     m_pending_refunds(save["pendingRefunds"]),
-    m_levelup_mode(false)
+    m_levelup_mode(false),
+    m_font("resources/Cyrano.ttf"), 
+    m_price_text(m_font)
 {
     m_building_cast["Archer"] = std::make_unique<Archer>(100);
     m_building_cast["Canon"] = std::make_unique<Canon>(200);
@@ -117,8 +123,13 @@ void BuildingManager::update(const context& ctx) {
       for (auto& b : buildings) {
         for (Entity* e : tr->getEntity()) {
           if (b.get() == e) {
-            b->levelUp();
-            levelUpSomething = true;
+            int cost = b->getPrice();
+            if (m_available_money >= cost) {
+                b->levelUp();
+                m_pending_costs += cost;
+                m_available_money -= cost; 
+                levelUpSomething = true;
+            }
           }
         }
       }
@@ -149,16 +160,24 @@ void BuildingManager::draw(const context& ctx) {
     Ground* tr = dynamic_cast<Ground*>(m_terrain->getTile(p.x, p.y));
 
     if (tr && tr->hasEntity()) {
-      bool isTower = false;
+      Building* hoveredBuilding = nullptr;
       for (auto& b : buildings) {
         for (Entity* e : tr->getEntity()) {
-          if (b.get() == e) isTower = true;
+          if (b.get() == e) hoveredBuilding = b.get();
         }
       }
-      if (isTower) {
+      if (hoveredBuilding) {
         ctx.rm->draw({{p.x * (float)TILE_SIZE, p.y * (float)TILE_SIZE},
                       {(float)TILE_SIZE, (float)TILE_SIZE}},
                      "white", sf::Color(255, 255, 0, 127));
+        
+        sf::Text dummyText(m_font, std::to_string(hoveredBuilding->getPrice()), 20);
+        float totalWidth = dummyText.getLocalBounds().size.x + 5.0f + 24.0f; 
+        
+        float mapIconX = (p.x * TILE_SIZE) + (TILE_SIZE / 2.0f) - (totalWidth / 2.0f) + dummyText.getLocalBounds().size.x + 5.0f;
+        float mapIconY = (p.y * TILE_SIZE) - 30.0f; 
+        
+        ctx.rm->draw({{mapIconX, mapIconY}, {24.0f, 24.0f}}, "coin");
       }
     }
   }
@@ -205,6 +224,41 @@ void BuildingManager::draw(const context& ctx) {
       m_placeholder->draw(ctx);
       m_placeholder->setOnTile(0);
     }
+}
+
+void BuildingManager::drawUI(const context& ctx) {
+  if (m_levelup_mode) {
+    auto p = sf::Mouse::getPosition(*ctx.window);
+    p.x += ctx.offsetX;
+    p.y += ctx.offsetY;
+    p.x /= TILE_SIZE;
+    p.y /= TILE_SIZE;
+    Ground* tr = dynamic_cast<Ground*>(m_terrain->getTile(p.x, p.y));
+
+    if (tr && tr->hasEntity()) {
+      Building* hoveredBuilding = nullptr;
+      for (auto& b : buildings) {
+        for (Entity* e : tr->getEntity()) {
+          if (b.get() == e) hoveredBuilding = b.get();
+        }
+      }
+      
+      if (hoveredBuilding) {
+        m_price_text.setString(std::to_string(hoveredBuilding->getPrice()));
+        m_price_text.setCharacterSize(20);
+        m_price_text.setFillColor(sf::Color::White);
+        m_price_text.setOutlineColor(sf::Color::Black);
+        m_price_text.setOutlineThickness(2.0f);
+
+        float totalWidth = m_price_text.getLocalBounds().size.x + 5.0f + 24.0f;
+        float screenTextX = (p.x * TILE_SIZE) - ctx.offsetX + (TILE_SIZE / 2.0f) - (totalWidth / 2.0f);
+        float screenTextY = (p.y * TILE_SIZE) - ctx.offsetY - 30.0f - m_price_text.getLocalBounds().position.y;
+
+        m_price_text.setPosition(sf::Vector2f(screenTextX, screenTextY));
+        ctx.window->draw(m_price_text);
+      }
+    }
+  }
 }
 
 void BuildingManager::addBuilding(std::string s, Ground* ground) {
@@ -261,5 +315,15 @@ int BuildingManager::collectRefunds() {
 void BuildingManager::levelUpBuilding() {
   m_placeholder = nullptr;
   m_levelup_mode = true;
+}
+
+void BuildingManager::setAvailableMoney(int money) {
+    m_available_money = money;
+}
+
+int BuildingManager::collectCosts() {
+    int costs = m_pending_costs;
+    m_pending_costs = 0;
+    return costs;
 }
 

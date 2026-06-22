@@ -188,6 +188,8 @@ void EnemyManager::drawWave(const context& ctx) {
   std::ostringstream oss("");
   oss << "Wave  " << (int)waveNumber;
   m_text_displayer.setString(oss.str());
+  m_text_displayer.setOutlineColor(sf::Color::Black);
+  m_text_displayer.setOutlineThickness(2.0f);
   m_text_displayer.setPosition(sf::Vector2f(10.0f, 30.0f));
   ctx.window->draw(m_text_displayer);
   // View::draw();

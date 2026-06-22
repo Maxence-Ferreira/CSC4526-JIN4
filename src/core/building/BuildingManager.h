@@ -7,6 +7,7 @@
 #include "../Drawable.h"
 #include "Post.h"
 #include "Serializable.h"
+#include <SFML/Graphics.hpp>
 
 class BuildingManager : public Drawable, public Serializable {
  private:
@@ -18,6 +19,10 @@ class BuildingManager : public Drawable, public Serializable {
   bool m_destroy_mode ;
   int m_pending_refunds ;
   bool m_levelup_mode;
+  sf::Font m_font;
+  sf::Text m_price_text;
+  int m_pending_costs ;
+  int m_available_money ;
  
 public:
 	BuildingManager(Terrain* terter);
@@ -40,4 +45,7 @@ public:
   void planDestruct();
   int collectRefunds();
   void levelUpBuilding();
+  void setAvailableMoney(int money);
+  int collectCosts();
+  void drawUI(const context& ctx);
 };

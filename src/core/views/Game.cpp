@@ -77,7 +77,9 @@ Game::Game(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, json& par
 void Game::update() {
     m_context.time += (m_context.dt = m_clock.restart().asMilliseconds());
     m_terrain->update(m_context);
-    m_building_manager->update(m_context);
+    m_building_manager->setAvailableMoney(m_money); 
+    m_building_manager->update(m_context);          
+    m_money -= m_building_manager->collectCosts();
     m_enemy_manager->update(m_context);
     m_money += m_enemy_manager->collectBounties();
     if (m_terrain->countEnemyInPost() >= 10 - m_difficulty) {
@@ -132,6 +134,7 @@ void Game::draw() {
     m_context.rm->render(m_context.window,
         { m_context.offsetX, m_context.offsetY });
 
+    m_building_manager->drawUI(m_context);
 	m_enemy_manager->drawWave(m_context);
     fps_[fps_i = (fps_i + 1) % 100] = 1000. / m_context.dt;
     if (!fps_i) {
@@ -143,12 +146,15 @@ void Game::draw() {
     oss << "fps : " << (int)fps;
     m_text_displayer.setString(oss.str());
     m_text_displayer.setPosition(sf::Vector2f(10.0f, 0.0f));
+    m_text_displayer.setOutlineColor(sf::Color::Black);
+    m_text_displayer.setOutlineThickness(2.0f);
     m_context.window->draw(m_text_displayer);
 
     std::ostringstream oss1("");
     oss1 << (int)m_money;
     m_money_displayer.setString(oss1.str());
-
+    m_money_displayer.setOutlineColor(sf::Color::Black);
+    m_money_displayer.setOutlineThickness(2.0f);
     m_money_displayer.setPosition(sf::Vector2f(textX, 0));
     m_context.window->draw(m_money_displayer);
 
@@ -161,6 +167,8 @@ void Game::draw() {
         float archerTextX = posArcher.x - buttonWidth - priceText.getLocalBounds().size.x - 10.0f;
         float archerTextY = posArcher.y - (priceText.getLocalBounds().size.y / 2.0f) - priceText.getLocalBounds().position.y;
         
+        priceText.setOutlineColor(sf::Color::Black);
+        priceText.setOutlineThickness(2.0f);
         priceText.setPosition(sf::Vector2f(archerTextX, archerTextY));
         m_context.window->draw(priceText);
     }
@@ -172,6 +180,8 @@ void Game::draw() {
         float canonTextX = posCanon.x - buttonWidth - priceText.getLocalBounds().size.x - 10.0f;
         float canonTextY = posCanon.y - (priceText.getLocalBounds().size.y / 2.0f) - priceText.getLocalBounds().position.y;
         
+        priceText.setOutlineColor(sf::Color::Black);
+        priceText.setOutlineThickness(2.0f);
         priceText.setPosition(sf::Vector2f(canonTextX, canonTextY));
         m_context.window->draw(priceText);
     }
