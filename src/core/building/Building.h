@@ -34,7 +34,8 @@ public:
 	virtual Attack* attacking(Tile* targetTile);
 	virtual std::string projectileSkin()const;
 	virtual void update(const context& ctx) override;
-  	void drawAttacks(const context& ctx);
+	void drawAttacks(const context& ctx);
+	void draw(const context& ctx)override;
 	void addDistanceFrom(Path* path);
 	void changeRange(int range);
 	void levelUp();

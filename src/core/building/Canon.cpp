@@ -14,6 +14,7 @@ void Canon::draw(const context& ctx) {
         {{TILE_SIZE * getX(), TILE_SIZE * getY()}, {TILE_SIZE, TILE_SIZE}}, "canon");
   }
   this->drawAttacks(ctx);
+  Building::draw(ctx);
 }
 
 

@@ -18,6 +18,7 @@ void Archer::draw(const context& ctx) {
         {{TILE_SIZE * getX(), TILE_SIZE * getY()}, {TILE_SIZE, TILE_SIZE}}, "archer");
   }
   this->drawAttacks(ctx);
+  Building::draw(ctx);
 }
 
 void Archer::update(const context& ctx) { Building::update(ctx); }

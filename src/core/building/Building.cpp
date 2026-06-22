@@ -145,6 +145,12 @@ void Building::drawAttacks(const context& ctx) {
   for (const auto& att : attacks) att->draw(ctx);
 }
 
+void Building::draw(const context& ctx)
+{
+    ctx.rm->draw({ {m_tile->getX() * TILE_SIZE,m_tile->getY() * TILE_SIZE},{TILE_SIZE,4} }, "white");
+    ctx.rm->draw({ {m_tile->getX() * TILE_SIZE,m_tile->getY() * TILE_SIZE},{TILE_SIZE*(float)m_pv/m_pv_max,4} }, "white",sf::Color::Red);
+}
+
 // r�cuperer al�atoirement un path
 Tile* Building::setTarget(std::mt19937& rand) {
   /*
