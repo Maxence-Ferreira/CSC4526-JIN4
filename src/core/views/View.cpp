@@ -41,7 +41,7 @@ View::View(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, const std
 			});
 		m_gui.add(m_gui_widget[i]);
 		it++;
-	}
+	}	
 }
 
 void View::handle(const std::optional<sf::Event>& ev)

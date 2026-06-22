@@ -1,7 +1,7 @@
 #include "ViewManager.h"
 #include "MainMenu.h"
 
-ViewManager::ViewManager(sf::RenderWindow* rw, unsigned int seed) :m_active_view(std::make_shared<MainMenu>(this, rw, "resources/mainmenu_tileset.png", seed)), m_views{m_active_view},
+ViewManager::ViewManager(sf::RenderWindow* rw, unsigned int seed) :m_active_view(std::make_shared<MainMenu>(this, rw, "resources/mainmenu_tileset_sans_cyrano.png", seed)), m_views{m_active_view},
 	m_music(),m_sounds(),m_music_name()
 {
 	m_active_view->onEnter();

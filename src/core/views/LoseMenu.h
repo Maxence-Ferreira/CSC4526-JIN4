@@ -6,7 +6,7 @@ class LoseMenu : public View
 {
 public:
 	LoseMenu(Game* game, ViewManager* vm, sf::RenderWindow* rw, std::string tileset, unsigned int seed);
-	// Hérité via View
+	// Hï¿½ritï¿½ via View
 	virtual void handle(const std::optional<sf::Event>& ev) override;
 	virtual void update() override;
 	virtual void draw() override;
@@ -17,4 +17,6 @@ private:
 private:
 	sf::Font m_font;
 	sf::Text m_text;
+	sf::Texture m_img_tex;
+    sf::Sprite m_img_sprite;
 };
