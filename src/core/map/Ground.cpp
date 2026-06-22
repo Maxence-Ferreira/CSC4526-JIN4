@@ -8,6 +8,11 @@ Ground::Ground(int x, int y):Tile(x,y), m_tex((rand() % 10) ? "ground" : "ground
 	m_tex += '1' + rand() % 4;
 }
 
+Ground::Ground(json& inp):Tile(inp),m_tex(inp["tex"]), m_building(nullptr)
+{
+	
+}
+
 void Ground::draw(const context& ctx)
 {
 	/*

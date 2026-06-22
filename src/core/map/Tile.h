@@ -8,6 +8,7 @@ class Tile : public Drawable, public Serializable
 {
 public:
 	Tile(int x, int y);
+	Tile(json& inp);
 	int getX()const;
 	int getY()const;
 	virtual std::vector<Entity*> getEntity() const = 0;

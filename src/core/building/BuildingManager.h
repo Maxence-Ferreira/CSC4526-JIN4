@@ -6,8 +6,9 @@
 #include "../map/Terrain.h"
 #include "../Drawable.h"
 #include "Post.h"
+#include "Serializable.h"
 
-class BuildingManager : public Drawable{
+class BuildingManager : public Drawable, public Serializable {
  private:
 	std::vector<std::unique_ptr<Building>> buildings;
 	std::map<std::string, std::unique_ptr<Building>> m_building_cast;
@@ -19,12 +20,14 @@ class BuildingManager : public Drawable{
   bool m_levelup_mode;
  
 public:
-  BuildingManager(Terrain* terter);
+	BuildingManager(Terrain* terter);
+	BuildingManager(Terrain* terter, json& glob, json& save);
   ~BuildingManager() = default;
 
 
   virtual void draw(const context& ctx)override;
   virtual void update(const context& ctx)override;
+  virtual void serialize(json& glob, json& output)override;
   void removeDeadBuildings();
   void planConstruct(std::string s);
   void addBuilding(std::string s, Ground* ground);

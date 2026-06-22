@@ -21,7 +21,8 @@ public:
 		int cooldown,
 		int price);
 	Building(
-		const Building & b);
+		const Building& b);
+	Building(json& save);
 	virtual~Building()override;
 	int getX() const;
 	int getY() const;

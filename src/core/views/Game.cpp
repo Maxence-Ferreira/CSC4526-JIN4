@@ -68,6 +68,9 @@ Game::Game(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, std::stri
     json parsed(json::parse(f));
     m_money = parsed["money"];
     m_difficulty = parsed["difficulty"];
+    m_terrain = std::make_unique<Terrain>(parsed, parsed["terrain"]);
+    m_building_manager = std::make_unique<BuildingManager>(m_terrain.get(), parsed, parsed["buildingManager"]);
+    m_enemy_manager = std::make_unique<EnemyManager>(parsed, parsed["enemyManager"]);
 }
 
 void Game::update() {
@@ -142,7 +145,9 @@ void Game::save()
     output["seed"] = (*m_context.rand)();
     output["difficulty"] = m_difficulty;
     output["money"] = m_money;
-    m_terrain->serialize(output, output);
+    m_terrain->serialize(output, output["terrain"]);
+    m_enemy_manager->serialize(output, output["enemyManager"]);
+    m_building_manager->serialize(output, output["buildingManager"]);
     std::ofstream f("resources/save.json");
     f << to_string(output);
     f.close();

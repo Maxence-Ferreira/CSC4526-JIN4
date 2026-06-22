@@ -13,6 +13,7 @@ class Terrain :public Drawable, public Serializable
 {
 public:
 	Terrain(int size_x, int size_y, int difficulty, std::mt19937& rand);
+	Terrain(json& glob, json& terrain);
 public:
 	Tile* getTile(int x, int y) const;
 	int getWidth() const;

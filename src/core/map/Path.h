@@ -11,6 +11,7 @@ class Path : public Tile
 {
 public:
 	Path(int x, int y);
+	Path(json& inp);
 public:
 	void addNeighbor(Path* nei);
 	const std::vector<Path*>& getNeighbors();

@@ -5,6 +5,7 @@
 class Canon : public Building {
 public:
 	Canon(int price);
+	Canon(json& save);
 	// H�rit� via Building
 	virtual void draw(const context& ctx) override;
 	virtual void update(const context& ctx) override;

@@ -6,6 +6,7 @@ class Archer : public Building {
 public:
 	Archer(int price);
 	Archer(const Archer& a);
+	Archer(json& save);
 	// H�rit� via Building
 	virtual void draw(const context& ctx) override;
 	virtual void update(const context& ctx) override;

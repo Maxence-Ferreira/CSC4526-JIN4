@@ -8,7 +8,8 @@
 #include "Post.h"
 
 BuildingManager::BuildingManager(Terrain* terter)
-    : m_terrain(terter),
+    : Drawable(),
+      m_terrain(terter),
       post(),
       m_building_cast{},
       buildings{},
@@ -18,6 +19,31 @@ BuildingManager::BuildingManager(Terrain* terter)
       m_levelup_mode(false) {
   m_building_cast["Archer"] = std::make_unique<Archer>(100);
   m_building_cast["Canon"] = std::make_unique<Canon>(200);
+}
+
+BuildingManager::BuildingManager(Terrain* terter, json& glob, json& save):
+    Drawable(),
+    m_terrain(terter),
+    post(),
+    m_building_cast{},
+    buildings{},
+    m_placeholder(),
+    m_destroy_mode(false),
+    m_pending_refunds(save["pendingRefunds"]),
+    m_levelup_mode(false)
+{
+    m_building_cast["Archer"] = std::make_unique<Archer>(100);
+    m_building_cast["Canon"] = std::make_unique<Canon>(200);
+    std::vector<json> blds = glob["buildings"];
+    for (auto& bld : blds)
+    {
+        if (bld["type"] == "Archer")
+            addBuilding(std::make_unique<Archer>(bld), (Ground*)terter->getTile(bld["x"], bld["y"]));
+        else if (bld["type"] == "Canon")
+            addBuilding(std::make_unique<Canon>(bld), (Ground*)terter->getTile(bld["x"], bld["y"]));
+        else if (bld["type"] == "Post")
+            addBuilding(std::make_unique<Post>(bld), (Ground*)terter->getTile(bld["x"], bld["y"]));
+    }
 }
 
 void BuildingManager::removeDeadBuildings() {
@@ -101,6 +127,11 @@ void BuildingManager::update(const context& ctx) {
       }
     }
   }
+}
+
+void BuildingManager::serialize(json& glob, json& output)
+{
+    output["pendingRefunds"] = m_pending_refunds;
 }
 
 void BuildingManager::draw(const context& ctx) {

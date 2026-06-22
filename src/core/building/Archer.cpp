@@ -6,6 +6,10 @@ Archer::Archer(int price) : Building(1000, 40, 1, 1000, price) {}
 
 Archer::Archer(const Archer& a) : Building(a) {}
 
+Archer::Archer(json& save):Building(save)
+{
+}
+
 void Archer::draw(const context& ctx) {
   if (m_levelUp_timer > 0.0f) {
     ctx.rm->draw({{TILE_SIZE * getX()+0.5f, TILE_SIZE * getY()+0.5f},{TILE_SIZE * 1.5, TILE_SIZE * 1.5}},"archer");

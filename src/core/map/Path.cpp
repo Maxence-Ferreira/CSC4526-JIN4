@@ -9,6 +9,10 @@ Path::Path(int x, int y) :Tile(x, y), m_neighbors{}, m_distance{ (unsigned int)(
 	m_tex += '1' + rand() % 4;
 }
 
+Path::Path(json& inp):Tile(inp)
+{
+}
+
 void Path::addNeighbor(Path* nei)
 {
 	if (!nei||std::find(m_neighbors.begin(), m_neighbors.end(),nei)!= m_neighbors.end() && nei != this)return;

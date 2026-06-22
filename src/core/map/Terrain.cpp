@@ -141,6 +141,41 @@ Terrain::Terrain(int size_x, int size_y, int difficulty, std::mt19937& gen) : m_
 	m_end->update({});
 }
 
+Terrain::Terrain(json& glob, json& terrain):m_width(terrain["width"]), m_height(terrain["height"]), m_end(0), m_inputs{}, m_paths{}
+{
+	m_tiles = std::vector<std::unique_ptr<Tile>>(m_width * m_height);
+	std::vector<json> tiles = glob["tiles"];
+	std::vector<int> paths_i = terrain["paths"];
+	std::vector<int> inps_i = glob["inputs"];
+	int end_i = glob["end"];
+	for (int i = 0; i < tiles.size(); i++)
+	{
+		m_tiles[i] = std::make_unique<Ground>(tiles[i]);
+	}
+	for (int i = 0; i < inps_i.size(); i++)
+	{
+		auto ptr = std::make_unique<BeginPath>(tiles[inps_i[i]]);
+		m_paths.push_back(ptr.get());
+		m_inputs.push_back(ptr.get());
+		m_tiles[inps_i[i]] = std::move(ptr);
+	}
+	auto ptr_ = std::make_unique<EndPath>(tiles[end_i]);
+	m_paths.push_back(ptr_.get());
+	m_end = ptr_.get();
+	m_tiles[end_i] = std::move(ptr_);
+	for (int i = 0; i < paths_i.size(); i++)if(paths_i[i]!=end_i && std::find(inps_i.begin(), inps_i.end(), paths_i[i])==inps_i.end())
+	{
+		auto ptr= std::make_unique<Path>(tiles[paths_i[i]]);
+		m_paths.push_back(ptr.get());
+		m_tiles[paths_i[i]] = std::move(ptr);
+	}
+	//link paths
+	for (auto it = m_paths.begin(); it != m_paths.end(); it++)
+		for (auto it2 = it + 1; it2 != m_paths.end(); it2++)
+			(*it)->addNeighbor(*it2);//auto eject non neighbor case 
+	m_end->update({});
+}
+
 int Terrain::getWidth() const
 {
 	return m_width;
@@ -227,15 +262,15 @@ void Terrain::addBuilding(Building* ptr) const
 
 void Terrain::serialize(json& glob, json& output)
 {
-	json& o = output["terrain"];
-	output["tiles"] = {};
+	json& o = output;
+	glob["tiles"] = {};
 	o["width"] = m_width;
 	o["height"] = m_height;
 	std::vector<int> indices;
 	for (const auto& tile : m_tiles) {
 		indices.push_back(indices.size());
-		output["tiles"].push_back(json());
-		tile->serialize(glob,output["tiles"].back());
+		glob["tiles"].push_back(json());
+		tile->serialize(glob, glob["tiles"].back());
 	}
 	o["tiles"] = indices;
 	std::vector<int> indices_path;

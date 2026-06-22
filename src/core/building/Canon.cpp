@@ -2,6 +2,10 @@
 
 Canon::Canon(int price) : Building(1000, 50, 1, 1000, price) {}
 
+Canon::Canon(json& save):Building(save)
+{
+}
+
 void Canon::draw(const context& ctx) {
   if (m_levelUp_timer > 0.0f) {
     ctx.rm->draw({{TILE_SIZE * (getX()-.25f), TILE_SIZE * (getY()-.25f)},{TILE_SIZE * 1.5, TILE_SIZE * 1.5}},"canon");

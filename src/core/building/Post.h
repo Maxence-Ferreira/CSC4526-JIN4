@@ -5,6 +5,7 @@ class Post : public Building
 {
 public:
 	Post();
+	Post(json& save);
 	virtual void draw(const context& ctx) override;
 	virtual void update(const context& ctx) override;
 	virtual void serialize(json& glob, json& output)override;

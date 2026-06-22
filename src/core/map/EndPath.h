@@ -5,6 +5,7 @@
 class EndPath :public Path {
 public:
 	EndPath(int x, int y);
+	EndPath(json& inp);
 	virtual void update(const context& ctx) override;
 	int howManyEnemiesIn();
 private:

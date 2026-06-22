@@ -6,13 +6,14 @@
 #include "../map/Terrain.h"
 #include "../Drawable.h"
 #include <sstream>
+#include "Serializable.h"
 
 
 enum class EnemyType {
     Cyrano, Kamikaze, HorseSoldier, Dog, FirearmSoldier, MeleeSoldier
 };
 
-class EnemyManager : public Drawable{
+class EnemyManager : public Drawable,public Serializable{
  private:
   std::vector<std::unique_ptr<Enemy>> enemies;
   int waveNumber;
@@ -27,6 +28,7 @@ class EnemyManager : public Drawable{
 
  public:
 	EnemyManager(int difficulty);
+	EnemyManager(json& glob,json& save);
 	virtual ~EnemyManager() = default;
 
   void spawnEnemy(EnemyType type);
@@ -38,4 +40,7 @@ class EnemyManager : public Drawable{
 	int getDifficulty() const {return m_difficulty; };
   void drawWave(const context& ctx);
   int collectBounties();
+
+  // Hérité via Serializable
+  virtual void serialize(json& glob, json& output) override;
 };

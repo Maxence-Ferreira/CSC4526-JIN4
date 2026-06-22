@@ -5,6 +5,10 @@ EndPath::EndPath(int x, int y):Path(x,y),m_enemies_in(0)
 {
 }
 
+EndPath::EndPath(json& inp) : Path(inp)
+{
+}
+
 void EndPath::update(const context& ctx)
 {
 	repath();

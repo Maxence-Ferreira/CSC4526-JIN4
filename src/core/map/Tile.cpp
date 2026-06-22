@@ -5,6 +5,10 @@ Tile::Tile(int x, int y) : m_x(x),m_y(y)
 
 }
 
+Tile::Tile(json& inp):m_x(inp["x"]), m_y(inp["y"])
+{
+}
+
 int Tile::getX() const
 {
 	return m_x;

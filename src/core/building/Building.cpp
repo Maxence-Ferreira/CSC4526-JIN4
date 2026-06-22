@@ -41,7 +41,28 @@ Building::Building(const Building& b)
     attacks{},
     m_tracked_path(),
     m_path_at_range(),
-    m_nearest_path() {
+    m_nearest_path(),
+    m_levelUp_timer(0){
+}
+
+Building::Building(json& save)
+    : m_cooldown(save["cooldown"]),
+    m_damage(save["damage"]),
+    m_dead(save["dead"]),
+    m_level(save["level"]),
+    m_price(save["price"]),
+    m_pv(save["pv"]),
+    m_pv_max(save["pv_max"]),
+    m_range(save["range"]), 
+    m_tile(),
+    m_cur_cooldown(0),
+    m_curr_target(nullptr),
+    attacks{},
+    m_tracked_path(),
+    m_path_at_range(),
+    m_nearest_path(),
+    m_levelUp_timer(0)
+{
 }
 
 int Building::getX() const { return m_tile ? m_tile->getX() : 0; }
@@ -187,4 +208,6 @@ void Building::serialize(json& glob, json& output)
     output["dead"] = m_dead;
     output["level"] = m_level;
     output["price"] = m_price;
+    output["x"] = m_tile->getX();
+    output["y"] = m_tile->getY();
 }

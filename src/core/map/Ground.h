@@ -9,6 +9,7 @@ class Building;
 class Ground : public Tile {
 public:
 	Ground(int x, int y);
+	Ground(json& inp);
 	virtual void draw(const context& ctx) override;
 	void setBuilding(Building*b);
 	virtual std::vector<Entity*> getEntity() const override;
