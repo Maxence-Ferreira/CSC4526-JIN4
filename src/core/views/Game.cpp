@@ -94,14 +94,40 @@ void Game::draw() {
     m_building_manager->draw(m_context);
     m_enemy_manager->draw(m_context);
 
-    sf::FloatRect textBounds(m_money_displayer.getLocalBounds());                               //dimension text
-    const float textX = m_context.window->getView().getSize().x - textBounds.size.x - 20.0f;    //text fit to the end
+    sf::FloatRect textBounds(m_money_displayer.getLocalBounds());                            
+    const float textX = m_context.window->getView().getSize().x - textBounds.size.x - 20.0f;  
     const float iconSize = 32.0f;
-    const float iconX = textX - iconSize - 10.f;                                                //coin before text
-    const float iconY = textBounds.position.y + (textBounds.size.y / 2.0f) - (iconSize / 2.0f);//align coin & text
+    const float iconX = textX - iconSize - 10.f;                                               
+    const float iconY = textBounds.position.y + (textBounds.size.y / 2.0f) - (iconSize / 2.0f);
 
     m_context.rm->draw({ {iconX + m_context.offsetX, iconY + m_context.offsetY}, {iconSize, iconSize} }, "coin");
 
+    sf::Text priceText = m_money_displayer; 
+    float buttonWidth = 90.0f; 
+
+    if (m_gui_widget["placeArcher"]) {
+        sf::Vector2f posArcher = m_gui_widget["placeArcher"]->getPosition();
+        priceText.setString(std::to_string(m_building_manager->getPrice("Archer")));
+        
+        float archerTextX = posArcher.x - buttonWidth - priceText.getLocalBounds().size.x - 10.0f;
+        float archerIconX = archerTextX - iconSize - 10.0f;
+        float archerIconY = posArcher.y - (iconSize / 2.0f);
+        
+        m_context.rm->draw({ {archerIconX + m_context.offsetX, archerIconY + m_context.offsetY}, {iconSize, iconSize} }, "coin");
+    }
+
+    if (m_gui_widget["placeCanon"]) {
+        sf::Vector2f posCanon = m_gui_widget["placeCanon"]->getPosition();
+        priceText.setString(std::to_string(m_building_manager->getPrice("Canon")));
+        
+        float canonTextX = posCanon.x - buttonWidth - priceText.getLocalBounds().size.x - 10.0f;
+        float canonIconX = canonTextX - iconSize - 10.0f;
+        float canonIconY = posCanon.y - (iconSize / 2.0f);
+        
+        m_context.rm->draw({ {canonIconX + m_context.offsetX, canonIconY + m_context.offsetY}, {iconSize, iconSize} }, "coin");
+    }
+
+    // RENDER
     m_context.rm->render(m_context.window,
         { m_context.offsetX, m_context.offsetY });
 
@@ -118,17 +144,36 @@ void Game::draw() {
     m_text_displayer.setPosition(sf::Vector2f(10.0f, 0.0f));
     m_context.window->draw(m_text_displayer);
 
-    // dessin de la piece avec la qté d'argent
     std::ostringstream oss1("");
     oss1 << (int)m_money;
     m_money_displayer.setString(oss1.str());
 
-    // Placement et dessin du texte
     m_money_displayer.setPosition(sf::Vector2f(textX, 0));
     m_context.window->draw(m_money_displayer);
 
-
     View::draw();
+
+    if (m_gui_widget["placeArcher"]) {
+        sf::Vector2f posArcher = m_gui_widget["placeArcher"]->getPosition();
+        priceText.setString(std::to_string(m_building_manager->getPrice("Archer")));
+        
+        float archerTextX = posArcher.x - buttonWidth - priceText.getLocalBounds().size.x - 10.0f;
+        float archerTextY = posArcher.y - (priceText.getLocalBounds().size.y / 2.0f) - priceText.getLocalBounds().position.y;
+        
+        priceText.setPosition(sf::Vector2f(archerTextX, archerTextY));
+        m_context.window->draw(priceText);
+    }
+
+    if (m_gui_widget["placeCanon"]) {
+        sf::Vector2f posCanon = m_gui_widget["placeCanon"]->getPosition();
+        priceText.setString(std::to_string(m_building_manager->getPrice("Canon")));
+        
+        float canonTextX = posCanon.x - buttonWidth - priceText.getLocalBounds().size.x - 10.0f;
+        float canonTextY = posCanon.y - (priceText.getLocalBounds().size.y / 2.0f) - priceText.getLocalBounds().position.y;
+        
+        priceText.setPosition(sf::Vector2f(canonTextX, canonTextY));
+        m_context.window->draw(priceText);
+    }
 }
 
 void Game::onEnter() {
