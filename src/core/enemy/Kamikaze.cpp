@@ -39,3 +39,9 @@ void Kamikaze::update(const context& ctx) {
 
   Enemy::update(ctx);
 }
+
+void Kamikaze::serialize(json& glob, json& output)
+{
+    Enemy::serialize(glob, output);
+    output["type"] = "Kamikaze";
+}

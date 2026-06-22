@@ -6,4 +6,5 @@ class HorseSoldier : public Enemy {
   HorseSoldier(Path* beginPath);
   ~HorseSoldier() = default;
   void draw(const context& ctx) override;
+  virtual void serialize(json& glob, json& output)override;
 };

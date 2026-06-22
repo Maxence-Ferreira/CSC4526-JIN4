@@ -8,3 +8,9 @@ void FirearmSoldier::draw(const context& ctx) {
   this->drawAttacks(ctx);
 }
 
+void FirearmSoldier::serialize(json& glob, json& output)
+{
+	Enemy::serialize(glob, output);
+    output["type"] = "FirearmSoldier";
+}
+

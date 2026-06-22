@@ -11,4 +11,5 @@ class Kamikaze : public Enemy {
   virtual Attack* attacking(Building* targetBuilding) override;
   void draw(const context& ctx) override;
   virtual void update(const context& ctx) override;
+  virtual void serialize(json& glob, json& output)override;
 };

@@ -115,10 +115,10 @@ void Path::serialize(json& glob, json& output)
 	Tile::serialize(glob, output);
 	output["tex"] = m_tex;
 	//serialize enemies
-
+	output["enemies"] = {};
 	for (int i = 0;i<m_enemies.size();i++)
 	{
-		output["enemie"] = glob["enemies"].size();
+		output["enemies"].push_back(glob["enemies"].size());
 		glob["enemies"].push_back(json());
 		json& b = glob["enemies"].back();
 		m_enemies[i]->serialize(glob, b);

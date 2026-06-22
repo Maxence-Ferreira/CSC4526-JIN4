@@ -6,3 +6,9 @@ void Dog::draw(const context& ctx) {
 	ctx.rm->draw({ sf::Vector2f(TILE_SIZE * (x - .5), TILE_SIZE * (y - .5)), { TILE_SIZE / 2, TILE_SIZE / 2 } }, std::string("dog") + char('1' + isFrameTwo));
   this->drawAttacks(ctx);
 }
+
+void Dog::serialize(json& glob, json& output)
+{
+	Enemy::serialize(glob, output);
+	output["type"] = "Dog";
+}

@@ -137,6 +137,10 @@ Building* Enemy::setTarget(std::mt19937& rand) {
 
 void Enemy::serialize(json& glob, json& output)
 {
+    output["x"] = x;
+    output["y"] = y;
+    output["currentHealth"] = currentHealth;
+    output["isDead"] = isDead;
 }
 
 Enemy::~Enemy() = default;

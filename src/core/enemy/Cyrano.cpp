@@ -12,4 +12,10 @@ void Cyrano::draw(const context& ctx) {
   this->drawAttacks(ctx);
 }
 
+void Cyrano::serialize(json& glob, json& output)
+{
+    Enemy::serialize(glob, output);
+    output["type"] = "Cyrano";
+}
+
 

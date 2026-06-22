@@ -6,4 +6,5 @@ class MeleeSoldier : public Enemy {
   MeleeSoldier(Path* beginPath);
   ~MeleeSoldier() = default;
   void draw(const context& ctx) override;
+  virtual void serialize(json& glob, json& output)override;
 };
