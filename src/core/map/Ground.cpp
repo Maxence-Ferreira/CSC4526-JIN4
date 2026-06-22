@@ -42,6 +42,7 @@ void Ground::serialize(json& glob, json& output)
 {
 	Tile::serialize(glob,output);
 	output["tex"] = m_tex;
+	output["type"] = "Ground";
 
 	if (m_building)
 	{

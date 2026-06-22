@@ -33,7 +33,7 @@ View::View(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, const std
 		sf::Vector2u v = m_gui_textures[i + "1"].getSize();
 		m_gui_widget[i]->setSize((float)v.x/v.y*64.f, 64);
 		m_gui_widget[i]->setOrigin(.5, .5);
-		m_gui_widget[i]->onClick([this,i , ev]
+		m_gui_widget[i]->onClick([this,i , &ev]
 			{
 				if (ev)m_manager->changeView(ev);
 				else if(!behavior(i))m_manager->backView();

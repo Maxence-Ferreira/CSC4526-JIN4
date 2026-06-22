@@ -57,7 +57,7 @@ Game::Game(ViewManager* vm, sf::RenderWindow* rw, std::string tileset,
         m_context.rm->setTileCoordinate(names[i], { {16 * i, 0}, {16, 16} });
 }
 
-Game::Game(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, json& parsed, unsigned int seed):View(vm, rw, tileset, { "placeArcher", "placeCanon", "removeBuilding", "levelup" },
+Game::Game(json& parsed, ViewManager* vm, sf::RenderWindow* rw, std::string tileset, unsigned int seed) :View(vm, rw, tileset, { "placeArcher", "placeCanon", "removeBuilding", "levelup" },
     { nullptr, nullptr, nullptr, nullptr }, seed),
     m_font("resources/Cyrano.ttf"),
     m_text_displayer(m_font),
@@ -67,18 +67,50 @@ Game::Game(ViewManager* vm, sf::RenderWindow* rw, std::string tileset, json& par
     m_money = parsed["money"];
     m_difficulty = parsed["difficulty"];
     m_terrain = std::make_unique<Terrain>(parsed, parsed["terrain"]);
+    
     m_building_manager = std::make_unique<BuildingManager>(m_terrain.get(), parsed, parsed["buildingManager"]);
     m_enemy_manager = std::make_unique<EnemyManager>(parsed, parsed["enemyManager"]);
 
     std::vector<json> es = parsed["enemies"];
     m_enemy_manager->loadWave(m_terrain.get(), parsed["enemies"]);
+    //m_building_manager = std::make_unique<BuildingManager>(m_terrain.get());
+    //m_building_manager->setTerrain(m_terrain.get());
+    //m_enemy_manager = std::make_unique<EnemyManager>(m_difficulty);
+    //m_enemy_manager->newWave(m_terrain.get());
+    m_clock.restart();
+
+    m_navigator["menu"] = std::make_shared<GameMenu>(
+        this, vm, rw, "resources/mainmenu_tileset_sans_cyrano.png", seed);
+    m_navigator["lose"] = std::make_shared<LoseMenu>(
+        this, vm, rw, "resources/mainmenu_tileset_sans_cyrano.png", seed);
+    for (const auto& name : m_ordered_id_views) {
+        if (m_gui_widget[name] != nullptr) {
+            auto lay = m_gui_widget[name]->getPositionLayout();
+            lay.x = "100%";
+            m_gui_widget[name]->setPosition(lay);
+            m_gui_widget[name]->setOrigin(1, .5);
+        }
+    }
+
+    std::vector<std::string> names{
+        "post",          "archer",  "canon",         "outmap1",
+        "outmap2",       "outmap3", "outmap4",       "ground1",
+        "groundflower1", "ground2", "groundflower2", "ground3",
+        "groundflower3", "ground4", "groundflower4", "path1",
+        "path2",         "path3",   "path4",         "cyrano1",
+        "cyrano2",       "dog1",    "dog2",          "firearm1",
+        "firearm2",      "horse1",  "horse2",        "kamikaze1",
+        "kamikaze2",     "melee1",  "melee2",        "canonball",
+        "arrow",         "coin",    "white" };
+    for (int i = 0; i < names.size(); i++)
+        m_context.rm->setTileCoordinate(names[i], { {16 * i, 0}, {16, 16} });
 }
 
 void Game::update() {
     m_context.time += (m_context.dt = m_clock.restart().asMilliseconds());
     m_terrain->update(m_context);
-    m_building_manager->setAvailableMoney(m_money); 
-    m_building_manager->update(m_context);          
+    m_building_manager->setAvailableMoney(m_money);
+    m_building_manager->update(m_context);
     m_money -= m_building_manager->collectCosts();
     m_enemy_manager->update(m_context);
     m_money += m_enemy_manager->collectBounties();
@@ -97,36 +129,36 @@ void Game::draw() {
     m_building_manager->draw(m_context);
     m_enemy_manager->draw(m_context);
 
-    sf::FloatRect textBounds(m_money_displayer.getLocalBounds());                            
-    const float textX = m_context.window->getView().getSize().x - textBounds.size.x - 20.0f;  
+    sf::FloatRect textBounds(m_money_displayer.getLocalBounds());
+    const float textX = m_context.window->getView().getSize().x - textBounds.size.x - 20.0f;
     const float iconSize = 32.0f;
-    const float iconX = textX - iconSize - 10.f;                                               
+    const float iconX = textX - iconSize - 10.f;
     const float iconY = textBounds.position.y + (textBounds.size.y / 2.0f) - (iconSize / 2.0f);
 
     m_context.rm->draw({ {iconX + m_context.offsetX, iconY + m_context.offsetY}, {iconSize, iconSize} }, "coin");
 
-    sf::Text priceText = m_money_displayer; 
-    float buttonWidth = 90.0f; 
+    sf::Text priceText = m_money_displayer;
+    float buttonWidth = 90.0f;
 
     if (m_gui_widget["placeArcher"]) {
         sf::Vector2f posArcher = m_gui_widget["placeArcher"]->getPosition();
         priceText.setString(std::to_string(m_building_manager->getPrice("Archer")));
-        
+
         float archerTextX = posArcher.x - buttonWidth - priceText.getLocalBounds().size.x - 10.0f;
         float archerIconX = archerTextX - iconSize - 10.0f;
         float archerIconY = posArcher.y - (iconSize / 2.0f);
-        
+
         m_context.rm->draw({ {archerIconX + m_context.offsetX, archerIconY + m_context.offsetY}, {iconSize, iconSize} }, "coin");
     }
 
     if (m_gui_widget["placeCanon"]) {
         sf::Vector2f posCanon = m_gui_widget["placeCanon"]->getPosition();
         priceText.setString(std::to_string(m_building_manager->getPrice("Canon")));
-        
+
         float canonTextX = posCanon.x - buttonWidth - priceText.getLocalBounds().size.x - 10.0f;
         float canonIconX = canonTextX - iconSize - 10.0f;
         float canonIconY = posCanon.y - (iconSize / 2.0f);
-        
+
         m_context.rm->draw({ {canonIconX + m_context.offsetX, canonIconY + m_context.offsetY}, {iconSize, iconSize} }, "coin");
     }
 
@@ -135,7 +167,7 @@ void Game::draw() {
         { m_context.offsetX, m_context.offsetY });
 
     m_building_manager->drawUI(m_context);
-	m_enemy_manager->drawWave(m_context);
+    m_enemy_manager->drawWave(m_context);
     fps_[fps_i = (fps_i + 1) % 100] = 1000. / m_context.dt;
     if (!fps_i) {
         fps = 0;
@@ -163,10 +195,10 @@ void Game::draw() {
     if (m_gui_widget["placeArcher"]) {
         sf::Vector2f posArcher = m_gui_widget["placeArcher"]->getPosition();
         priceText.setString(std::to_string(m_building_manager->getPrice("Archer")));
-        
+
         float archerTextX = posArcher.x - buttonWidth - priceText.getLocalBounds().size.x - 10.0f;
         float archerTextY = posArcher.y - (priceText.getLocalBounds().size.y / 2.0f) - priceText.getLocalBounds().position.y;
-        
+
         priceText.setOutlineColor(sf::Color::Black);
         priceText.setOutlineThickness(2.0f);
         priceText.setPosition(sf::Vector2f(archerTextX, archerTextY));
@@ -176,10 +208,10 @@ void Game::draw() {
     if (m_gui_widget["placeCanon"]) {
         sf::Vector2f posCanon = m_gui_widget["placeCanon"]->getPosition();
         priceText.setString(std::to_string(m_building_manager->getPrice("Canon")));
-        
+
         float canonTextX = posCanon.x - buttonWidth - priceText.getLocalBounds().size.x - 10.0f;
         float canonTextY = posCanon.y - (priceText.getLocalBounds().size.y / 2.0f) - priceText.getLocalBounds().position.y;
-        
+
         priceText.setOutlineColor(sf::Color::Black);
         priceText.setOutlineThickness(2.0f);
         priceText.setPosition(sf::Vector2f(canonTextX, canonTextY));
@@ -228,12 +260,12 @@ bool Game::behavior(const std::string& action_name) {
     }
     else if (action_name == "removeBuilding") {
         m_building_manager->planDestruct();
-		int refunds = m_building_manager->collectRefunds();
-    	if (m_difficulty <= 4) {
-        	m_money += refunds;
-   		}
-		return true;
-    } 
+        int refunds = m_building_manager->collectRefunds();
+        if (m_difficulty <= 4) {
+            m_money += refunds;
+        }
+        return true;
+    }
     else if (action_name == "levelup") {
         m_building_manager->levelUpBuilding();
         return true;
