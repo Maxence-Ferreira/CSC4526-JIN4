@@ -17,41 +17,58 @@ BuildingManager::BuildingManager(Terrain* terter)
       m_destroy_mode(false),
       m_pending_refunds(0),
       m_levelup_mode(false),
-      m_font("resources/Cyrano.ttf"),
+      m_font(),
       m_price_text(m_font),
       m_pending_costs(0),
       m_available_money(0) {
+
+  try {
+    if (m_font.openFromFile("resources/Cyrano.ttf")) {
+      m_price_text.setFont(m_font);
+    }
+  } catch (...) {
+  }
+
   m_building_cast["Archer"] = std::make_unique<Archer>(100);
   m_building_cast["Canon"] = std::make_unique<Canon>(200);
 }
 
-BuildingManager::BuildingManager(Terrain* terter, json& glob, json& save):
-    Drawable(),
-    m_terrain(terter),
-    post(),
-    m_building_cast{},
-    buildings{},
-    m_placeholder(),
-    m_destroy_mode(false),
-    m_pending_refunds(save["pendingRefunds"]),
-    m_levelup_mode(false),
-    m_font("resources/Cyrano.ttf"), 
-    m_price_text(m_font),
-    m_pending_costs(0),
-    m_available_money(0)
-{
-    m_building_cast["Archer"] = std::make_unique<Archer>(100);
-    m_building_cast["Canon"] = std::make_unique<Canon>(200);
-    std::vector<json> blds = glob["buildings"];
-    for (auto& bld : blds)
-    {
-        if (bld["type"] == "Archer")
-            addBuilding(std::make_unique<Archer>(bld), (Ground*)terter->getTile(bld["x"], bld["y"]));
-        else if (bld["type"] == "Canon")
-            addBuilding(std::make_unique<Canon>(bld), (Ground*)terter->getTile(bld["x"], bld["y"]));
-        else if (bld["type"] == "Post")
-            addBuilding(std::make_unique<Post>(bld), (Ground*)terter->getTile(bld["x"], bld["y"]));
+BuildingManager::BuildingManager(Terrain* terter, json& glob, json& save)
+    : Drawable(),
+      m_terrain(terter),
+      post(),
+      m_building_cast{},
+      buildings{},
+      m_placeholder(),
+      m_destroy_mode(false),
+      m_pending_refunds(save["pendingRefunds"]),
+      m_levelup_mode(false),
+      m_font(),
+      m_price_text(m_font),
+      m_pending_costs(0),
+      m_available_money(0) {
+
+  try {
+    if (m_font.openFromFile("resources/Cyrano.ttf")) {
+      m_price_text.setFont(m_font);
     }
+  } catch (...) {
+  }
+
+  m_building_cast["Archer"] = std::make_unique<Archer>(100);
+  m_building_cast["Canon"] = std::make_unique<Canon>(200);
+  std::vector<json> blds = glob["buildings"];
+  for (auto& bld : blds) {
+    if (bld["type"] == "Archer")
+      addBuilding(std::make_unique<Archer>(bld),
+                  (Ground*)terter->getTile(bld["x"], bld["y"]));
+    else if (bld["type"] == "Canon")
+      addBuilding(std::make_unique<Canon>(bld),
+                  (Ground*)terter->getTile(bld["x"], bld["y"]));
+    else if (bld["type"] == "Post")
+      addBuilding(std::make_unique<Post>(bld),
+                  (Ground*)terter->getTile(bld["x"], bld["y"]));
+  }
 }
 
 void BuildingManager::removeDeadBuildings() {
@@ -112,7 +129,7 @@ void BuildingManager::update(const context& ctx) {
     }
   }
 
-  if (m_levelup_mode && sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)){
+  if (m_levelup_mode && sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
     auto p = sf::Mouse::getPosition(*ctx.window);
     p.x += ctx.offsetX;
     p.y += ctx.offsetY;
@@ -127,10 +144,10 @@ void BuildingManager::update(const context& ctx) {
           if (b.get() == e) {
             int cost = b->getPrice();
             if (m_available_money >= cost) {
-                b->levelUp();
-                m_pending_costs += cost;
-                m_available_money -= cost; 
-                levelUpSomething = true;
+              b->levelUp();
+              m_pending_costs += cost;
+              m_available_money -= cost;
+              levelUpSomething = true;
             }
           }
         }
@@ -142,16 +159,15 @@ void BuildingManager::update(const context& ctx) {
   }
 }
 
-void BuildingManager::serialize(json& glob, json& output)
-{
-    output["pendingRefunds"] = m_pending_refunds;
+void BuildingManager::serialize(json& glob, json& output) {
+  output["pendingRefunds"] = m_pending_refunds;
 }
 
 void BuildingManager::draw(const context& ctx) {
   for (const auto& b : buildings) {
     b->draw(ctx);
   }
-  if(post)post->draw(ctx);
+  if (post) post->draw(ctx);
 
   if (m_levelup_mode) {
     auto p = sf::Mouse::getPosition(*ctx.window);
@@ -172,13 +188,16 @@ void BuildingManager::draw(const context& ctx) {
         ctx.rm->draw({{p.x * (float)TILE_SIZE, p.y * (float)TILE_SIZE},
                       {(float)TILE_SIZE, (float)TILE_SIZE}},
                      "white", sf::Color(255, 255, 0, 127));
-        
-        sf::Text dummyText(m_font, std::to_string(hoveredBuilding->getPrice()), 20);
-        float totalWidth = dummyText.getLocalBounds().size.x + 5.0f + 24.0f; 
-        
-        float mapIconX = (p.x * TILE_SIZE) + (TILE_SIZE / 2.0f) - (totalWidth / 2.0f) + dummyText.getLocalBounds().size.x + 5.0f;
-        float mapIconY = (p.y * TILE_SIZE) - 30.0f; 
-        
+
+        sf::Text dummyText(m_font, std::to_string(hoveredBuilding->getPrice()),
+                           20);
+        float totalWidth = dummyText.getLocalBounds().size.x + 5.0f + 24.0f;
+
+        float mapIconX = (p.x * TILE_SIZE) + (TILE_SIZE / 2.0f) -
+                         (totalWidth / 2.0f) +
+                         dummyText.getLocalBounds().size.x + 5.0f;
+        float mapIconY = (p.y * TILE_SIZE) - 30.0f;
+
         ctx.rm->draw({{mapIconX, mapIconY}, {24.0f, 24.0f}}, "coin");
       }
     }
@@ -244,7 +263,7 @@ void BuildingManager::drawUI(const context& ctx) {
           if (b.get() == e) hoveredBuilding = b.get();
         }
       }
-      
+
       if (hoveredBuilding) {
         m_price_text.setString(std::to_string(hoveredBuilding->getPrice()));
         m_price_text.setCharacterSize(20);
@@ -253,8 +272,10 @@ void BuildingManager::drawUI(const context& ctx) {
         m_price_text.setOutlineThickness(2.0f);
 
         float totalWidth = m_price_text.getLocalBounds().size.x + 5.0f + 24.0f;
-        float screenTextX = (p.x * TILE_SIZE) - ctx.offsetX + (TILE_SIZE / 2.0f) - (totalWidth / 2.0f);
-        float screenTextY = (p.y * TILE_SIZE) - ctx.offsetY - 30.0f - m_price_text.getLocalBounds().position.y;
+        float screenTextX = (p.x * TILE_SIZE) - ctx.offsetX +
+                            (TILE_SIZE / 2.0f) - (totalWidth / 2.0f);
+        float screenTextY = (p.y * TILE_SIZE) - ctx.offsetY - 30.0f -
+                            m_price_text.getLocalBounds().position.y;
 
         m_price_text.setPosition(sf::Vector2f(screenTextX, screenTextY));
         ctx.window->draw(m_price_text);
@@ -276,12 +297,11 @@ void BuildingManager::addBuilding(std::string s, Ground* ground) {
 }
 
 void BuildingManager::addBuilding(std::unique_ptr<Building> b, Ground* ground) {
-    if (dynamic_cast<Post*>(b.get()))
-    {
-        post=std::unique_ptr<Post>(dynamic_cast<Post*>(b.release()));
-        post->setOnTile(ground);
-        return;
-    }
+  if (dynamic_cast<Post*>(b.get())) {
+    post = std::unique_ptr<Post>(dynamic_cast<Post*>(b.release()));
+    post->setOnTile(ground);
+    return;
+  }
   b->setOnTile(ground);  // place sur une tile
   m_terrain->addBuilding(
       b.get());  // initialise les path dist en fonction du terrain
@@ -326,12 +346,11 @@ void BuildingManager::levelUpBuilding() {
 }
 
 void BuildingManager::setAvailableMoney(int money) {
-    m_available_money = money;
+  m_available_money = money;
 }
 
 int BuildingManager::collectCosts() {
-    int costs = m_pending_costs;
-    m_pending_costs = 0;
-    return costs;
+  int costs = m_pending_costs;
+  m_pending_costs = 0;
+  return costs;
 }
-
